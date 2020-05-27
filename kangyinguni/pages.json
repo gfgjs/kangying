@@ -2,7 +2,7 @@
 	"pages": [
 		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/Guide/Guide"
+			"path": "pages/Login/Code"
 		},
 		{
 			"path": "pages/tabbar/Home/Home",
@@ -14,15 +14,15 @@
 		{
 			"path": "pages/tabbar/Online/Online",
 			"style": {
-				
-				"navigationBarTitleText": "在线医院"
+				"navigationStyle": "custom",
+				"navigationBarTextStyle":"white"  //状态栏字体颜色
 			}
 		},
 		{
 			"path": "pages/tabbar/Mine/Mine",
 			"style": {
-				
-				"navigationBarTitleText": "个人中心"
+				"navigationStyle": "custom",
+				"navigationBarTextStyle":"white"  //状态栏字体颜色
 			}
 		},
 		{
@@ -45,6 +45,63 @@
 				"navigationBarTitleText": "医疗"
 			}
         }
+        ,{
+            "path" : "pages/tabbar/Online/SeeTheDoctor",
+            "style" : {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "网上看病"
+			}
+        }
+        ,{
+            "path" : "pages/Login/Code",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/SysMessage",
+            "style" : {
+				"navigationBarTitleText": "通知消息"
+			}
+        }
+        ,{
+            "path" : "pages/tabbar/Online/DoctorList",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/Pay",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/tabbar/Online/DoctorHome",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/IM",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/Login/Register",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/tabbar/Mine/Feedback",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/tabbar/Online/ConfirmOrder",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/tabbar/Online/ElecPres",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/tabbar/Mine/Address",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/tabbar/Mine/Cart",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -53,7 +110,6 @@
 		"backgroundColor": "#F8F8F8"
 	},
 	"tabBar": {
-		"borderStyle": "#ececec",
 		"backgroundColor": "white",
 		"color": "#C2CAD5",
 		"selectedColor": "#2981F9",

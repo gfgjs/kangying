@@ -1,28 +1,32 @@
 <script>
 	import Vue from 'vue'
+	import uniIcons from "@/components/uni-icons/uni-icons.vue"
 	export default {
+		components: {
+			uniIcons
+		},
 		onLaunch: function() {
 			console.log('App Launch');
-			
-			let main = plus.android.runtimeMainActivity();  
-				//为了防止快速点按返回键导致程序退出重写quit方法改为隐藏至后台  
-				plus.runtime.quit = function(){  
-				main.moveTaskToBack(false);  
-			};  
-			//重写toast方法如果内容为 ‘再按一次退出应用’ 就隐藏应用，其他正常toast  
-			plus.nativeUI.toast = (function(str){  
-				if(str == '再按一次退出应用'){  
-					main.moveTaskToBack(false);  
-					return false;  
-				}else{  
-					uni.showToast({  
-						title:str,  
-						icon:'none',  
-					})  
-				}  
-			});  
 
-			
+			let main = plus.android.runtimeMainActivity();
+			//为了防止快速点按返回键导致程序退出重写quit方法改为隐藏至后台  
+			plus.runtime.quit = function() {
+				main.moveTaskToBack(false);
+			};
+			//重写toast方法如果内容为 ‘再按一次退出应用’ 就隐藏应用，其他正常toast  
+			plus.nativeUI.toast = (function(str) {
+				if (str == '再按一次退出应用') {
+					main.moveTaskToBack(false);
+					return false;
+				} else {
+					uni.showToast({
+						title: str,
+						icon: 'none',
+					})
+				}
+			});
+
+
 			// uni.getSystemInfo({
 			// 	success: function(e) {
 			// 		Vue.prototype.statusBar = e.statusBarHeight
@@ -55,7 +59,7 @@
 				// uni.showTabBarRedDot({
 				// 	index: 3
 				// });
-				
+
 				plus.navigator.closeSplashscreen()
 			}, 6000);
 		},
@@ -72,6 +76,7 @@
 	}
 
 	.null-nav {
+		height: 40px;
 		height: var(--status-bar-height);
 		width: 100vw;
 		background-color: white;

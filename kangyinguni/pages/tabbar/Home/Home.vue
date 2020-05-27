@@ -1,6 +1,6 @@
 <template>
 	<view class="page">
-		<view class="null-nav"></view>
+	<!-- 	<view class="null-nav"></view>
 		<view class="nav">
 			<view>
 				天心在线医疗
@@ -8,15 +8,17 @@
 			<view class="right">
 				<image class="doctor" src="../../../static/home/15.png" mode=""></image>
 				<image class="message" src="../../../static/home/12.png" mode=""  @click="navTo('我的消息')"></image>
+				<uni-icons type="contact" color="white" size="30"></uni-icons>
+				<uni-icons type="chat" color="white" size="30"></uni-icons>
 			</view>
-		</view>
-
+		</view> -->
+		<navBar title="天心在线医疗"></navBar>
 		<scroll-view scroll-y="true" class="home-scroll">
 			<view class="search-wrap">
 				<view class="search">
-					<image mode="aspectFit" src="../../../static/home/16.png"></image>
+					<uni-icons type="mic-filled" color="#C9C9C9" size="24"></uni-icons>
 					<input type="text" placeholder="找医生、找医院、查疾病">
-					<image mode="aspectFit" src="../../../static/home/9.png"></image>
+					<uni-icons type="search" color="#C9C9C9" size="24"></uni-icons>
 				</view>
 			</view>
 			<view class="place"></view>
@@ -26,7 +28,7 @@
 
 			<view class="wrap func-1">
 				<view class="top">
-					<view @click="navTo('网上看病')">
+					<view @click="navToPage('SeeTheDoctor')">
 						<image src="../../../static/home/5.png" mode=""></image>
 						<view>网上看病</view>
 					</view>
@@ -145,8 +147,9 @@
 <script>
 	import Vue from 'vue'
 	// import img from '../../../static/img/home/doctor.png'
-	 
+	 import navBar from '../../../components/nav-bar.vue'
 	export default {
+		components:{navBar},
 		data() {
 			return {
 				width: 10,
@@ -182,6 +185,11 @@
 			navTo(title){
 				uni.navigateTo({
 					url: './HealthAsk?title='+(title||'')
+				})
+			},
+			navToPage(url){
+				uni.navigateTo({
+					url:'../Online/SeeTheDoctor'
 				})
 			}
 		}
@@ -266,10 +274,10 @@
 			position: relative;
 
 			.search {
-				width: 94%;
+				width: 92vw;
 				height: 42px;
 				position: absolute;
-				left: 2%;
+				left: 4vw;
 				top: 20px;
 				display: flex;
 				justify-content: space-between;
