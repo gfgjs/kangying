@@ -1,9 +1,54 @@
 <script>
+	import {
+		request_sendReSms
+	} from './common/https.js'
+	// let STATUS = false
+	
 	export default {
+		globalData: {
+			verifyCodeCountDown: 0,
+			registerMessage: {
+				mobile: '',
+				userName: '',
+				idcard: '',
+				sex: '',
+				verifyCode: '',
+				password: '',
+				confirmPassword: ''
+			},
+			beforePage: '', // 登录或注册前的页面
+		},
 		onLaunch: function() {
+
+			let main = plus.android.runtimeMainActivity();
+			//重写toast方法如果内容为 ‘再按一次退出应用’ 就隐藏应用，其他正常toast  
+			plus.nativeUI.toast = (function(str) {
+				if (str == '再按一次退出应用') {
+					main.moveTaskToBack(false);
+					return false;
+				} else {
+					uni.showToast({
+						title: str,
+						icon: 'none',
+					})
+				}
+			});
 			console.log('App Launch')
 		},
 		onShow: function() {
+			
+			// setInterval(()=>{
+			// 	// #ifdef APP-PLUS
+			// 	var webView = this.$mp.page.$getAppWebview();  
+				
+			// 	// 修改buttons  
+			// 	// index: 按钮索引, style {WebviewTitleNViewButtonStyles }  
+			// 	webView.setTitleNViewButtonStyle(0, {  
+			// 	    redDot: STATUS,  
+			// 	});  
+			// 	STATUS = !STATUS
+			// 	// #endif
+			// },1000)
 			console.log('App Show')
 		},
 		onHide: function() {
@@ -13,7 +58,7 @@
 </script>
 
 <style lang="scss">
-	@import url("//at.alicdn.com/t/font_1852111_6fcjd2cr1bm.css");
+	// @import url("//at.alicdn.com/t/font_1852111_3ce9eljus1w.css");
 
 	/* 每个页面公共css */
 	*,
@@ -23,14 +68,25 @@
 	button {
 		box-sizing: border-box;
 	}
-	
-	.price{
+
+	.linear-background {
+		// background-image: linear-gradient(114deg, rgba(112, 155, 255, 1.0) 0%, $base-color 74%);
+		background-image: linear-gradient(114deg, #70d8c9 0%, $base-color 74%);
+	}
+
+	.box-shadow {
+		box-shadow: 0px 0px 19px 2px rgba(11, 126, 255, 0.1)
+	}
+
+	.price {
 		color: #F71A1A;
 	}
-	.bold{
+
+	.bold {
 		font-weight: bold;
 	}
-	.ellipsis{
+
+	.ellipsis {
 		text-overflow: ellipsis;
 		overflow: hidden;
 		white-space: nowrap;
@@ -66,7 +122,7 @@
 		background-color: red;
 		position: absolute;
 		left: 0;
-		background: rgba(29, 127, 253, 1);
+		background: $base-color;
 		box-shadow: 0px 8px 21px 0px rgba(36, 131, 253, 0.3);
 		border-top-right-radius: 3px;
 		border-bottom-right-radius: 3px;
@@ -93,13 +149,20 @@
 		justify-content: center;
 		border-radius: 4px;
 		transition: all .1s linear;
+		// box-shadow: 0 0 12px rgba(25, 133, 253, .2);
+		box-shadow: 0px 0px 19px 1px rgba(112, 216, 201, 0.1);
+		// background-image: linear-gradient(114deg, rgba(112, 155, 255, 1.0) 0%, $base-color 74%);
+		background-image: linear-gradient(114deg, #70d8c9 0%, $base-color 74%);
 	}
-	.button-cancel{
-		background:rgba(233,234,235,1);
+
+	.button-cancel {
+		background: rgba(233, 234, 235, 1);
 		color: #7C7C7C;
+		box-shadow: 0px 0px 19px 1px #e7e7e7;
 	}
+
 	.button:active {
 		opacity: .8;
-		box-shadow: 0 0 2px $base-color;
+		// box-shadow: 0 0 2px $base-color;
 	}
 </style>

@@ -77,9 +77,16 @@ $uni-font-size-paragraph:30rpx;
 
 /* 页面左右间距 */
 $page-row-spacing: 30upx;
-$page-color-base: #f7f8fa;
+/* 页面背景色 */
+$page-color-base: #fcfdfe;
 $page-color-light: #f8f6fc;
-$base-color: #1D7FFD;
+
+/* 主题色 */
+// $base-color: #1D7FFD;
+$base-color: #5eb6aa;
+
+/* 提示文字颜色 */
+$tips-color:#1986FD;
 
 /* 文字尺寸 */
 $font-sm: 24upx;

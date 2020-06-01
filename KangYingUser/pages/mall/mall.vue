@@ -67,6 +67,28 @@
 				tabCurr: 1,
 			};
 		},
+		mounted() {
+			
+			// #ifdef APP-PLUS  
+			// var webView = this.$mp.page.$getAppWebview();  
+			// console.log(this.$mp.page.$getAppWebview());
+			
+			// 修改buttons  
+			// index: 按钮索引, style {WebviewTitleNViewButtonStyles }  
+			// webView.setTitleNViewButtonStyle(0, {  
+			//     text: 'hello',  
+			// });  
+			
+			// for(let i in webView){
+			// 	console.log(i)
+			// }
+			 // webView.setTitleNViewBackButtonStyles({
+				//  background:'red'
+			 // })
+			
+			// #endif
+			
+		},
 		onNavigationBarSearchInputClicked(){
 			uni.navigateTo({
 				url:'./search'

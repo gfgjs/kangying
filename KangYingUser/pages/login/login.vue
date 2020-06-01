@@ -16,35 +16,36 @@
 		<view class="input-box" v-if="pageType==='register'">
 			<input type="password" placeholder="确认密码" />
 		</view>
-		
+
 		<!-- 登录 -->
 		<view class="input-box" v-if="pageType!=='register'">
 			<input type="number" placeholder="请输入手机号" v-model="mobile" />
 		</view>
-		
+
 		<!-- 验证码登录 -->
 		<view class="input-box" v-if="pageType==='code'">
 			<input type="number" maxlength="6" placeholder="请输入验证码" v-model="code" class="code" />
 			<view class="button" @click="getCode">{{codeTips}}</view>
 		</view>
-		
+
 		<!-- 密码登录 -->
 		<view class="input-box" v-if="pageType==='password'">
-			<input type="password" placeholder="请输入登录密码" v-model="password"/>
+			<input type="password" placeholder="请输入登录密码" v-model="password" />
 			<!-- <uni-icons v-if="!showPassword" @click="changeShowPassword" type="eye-filled" color="gray"></uni-icons> -->
 			<!-- <uni-icons v-if="showPassword" @click="changeShowPassword" type="eye-slash-filled" color="gray"></uni-icons> -->
 		</view>
 		<!-- 注册按钮 -->
-		<button v-if="pageType==='register'" type="primary">立即注册</button>
+		<view class="button big-button" v-if="pageType==='register'">立即注册</view>
 		<!-- 登录按钮 -->
-		<button v-if="pageType!=='register'" type="primary">登录</button>
-		
+		<view class="button big-button" v-if="pageType==='code'" @click="loginByCode">登录</view>
+		<view class="button big-button" v-if="pageType==='password'" @click="loginByPass">登录</view>
+
 		<view class="jump">
 			<!-- 注册页面 -->
 			<view v-if="pageType==='register'" class="place"></view>
 			<view v-if="pageType==='register'" @click="changeType('code')">已有账号？立即登录</view>
 			<!-- 左 -->
-			<view v-if="pageType!=='register'" @click="changeType('register')">立即注册</view>
+			<view v-if="pageType!=='register'" @click="navToRegister('register')">立即注册</view>
 			<!-- 右 -->
 			<view v-if="pageType==='code'" @click="changeType('password')">密码登录</view>
 			<view v-if="pageType==='password'" @click="changeType('code')">验证码登录</view>
@@ -54,28 +55,77 @@
 
 <script>
 	let timer = null;
+	import {
+		request_sendLoginSms,
+		request_codeLogin,
+		request_login
+	} from '../../common/https.js'
 	export default {
 		data() {
 			return {
 				codeTips: '获取验证码', // 验证码按钮提示
-				
+
 				mobile: '',
 				code: '',
-				password:'',
-				
+				password: '',
+
 				cutdown: 0, // 获取验证码倒计时
 				pageType: 'password', // password密码登录 code验证码登录 register注册 页面功能
-				
+
 				// showPassword: false,
-				
+
 			};
 		},
 		methods: {
-			changeShowPassword(){
+			loginByCode() {
+				if(!this.mobile){
+					this.$api.msg('请输入正确的手机号')
+					return
+				}
+				if(!this.code){
+					this.$api.msg('请输入验证码')
+					return
+				}
+				request_codeLogin({
+					uni,
+					data:{
+						sms_code:this.code,
+						mobile:this.mobile
+					}
+				}).then(res=>{
+					console.log(res)
+				})
+			},
+			loginByPass(){
+				if(!this.mobile){
+					this.$api.msg('请输入正确的手机号')
+					return
+				}
+				if(!this.password){
+					this.$api.msg('请输入密码')
+					return
+				}
+				request_login({
+					uni,
+					data:{
+						pass:this.password,
+						mobile:this.mobile
+					}
+				}).then(res=>{
+					console.log(res)
+				})
+			},
+			changeShowPassword() {
 				this.showPassword = !this.showPassword
 			},
 			changeType(type) {
 				this.pageType = type
+			},
+			navToRegister(type){
+				// this.pageType = type
+				uni.navigateTo({
+					url:'./register'
+				})
 			},
 			getCode() {
 				if (this.cutdown > 0) {
@@ -111,6 +161,13 @@
 		width: 100%;
 	}
 
+	.big-button {
+		margin: 40px auto 0;
+		width: 100%;
+		height: 50px;
+		font-size: 18px;
+	}
+
 	.wrap {
 		height: 100%;
 		width: 100%;
@@ -140,8 +197,9 @@
 				width: 40vw;
 			}
 		}
-		.register-mobile{
-			input{
+
+		.register-mobile {
+			input {
 				width: 50%;
 			}
 		}

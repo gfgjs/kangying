@@ -1,11 +1,54 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				// #ifdef MP 
+				"navigationBarTitleText": "天心医疗",
+				// #endif 
+				"app-plus": {
+					"titleNView": {
+						"type": "transparent",
+						"searchInput": {
+							"backgroundColor": "rgba(231, 231, 231,.7)",
+							"borderRadius": "16px",
+							"placeholder": "找医生、找医院、查疾病",
+							"disabled": false,
+							"placeholderColor": "#606266"
+						},
+						"buttons": [{
+								"fontSrc": "/static/yticon.ttf",
+								"text": "\ue744",
+								"fontSize": "27",
+								"color": "#303133",
+								"background": "rgba(0,0,0,0)",
+								"redDot": true
+							},
+							{
+								"fontSrc": "/static/iconfont.ttf",
+								"text": "\ue649",
+								"fontSize": "27",
+								"color": "#303133",
+								"background": "rgba(0,0,0,0)",
+								"float": "left"
+							}
+						]
+					}
+				}
+			}
+		},
 
+		{
+			"path": "pages/doctor/case",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
 		{
 			"path": "pages/article/article"
 		},
 		{
-			"path": "pages/seeTheDoctor",
+			"path": "pages/doctor/see-the-doctor",
 			"style": {
 				// #ifdef MP 
 				"navigationBarTitleText": "网上看病",
@@ -13,6 +56,9 @@
 				"app-plus": {
 					"titleNView": {
 						"type": "transparent",
+						"backButton": {
+							"background": "rgba(0,0,0,0)"
+						},
 						"searchInput": {
 							"backgroundColor": "rgba(231, 231, 231,.7)",
 							"borderRadius": "16px",
@@ -50,6 +96,9 @@
 				"app-plus": {
 					"titleNView": {
 						"type": "transparent",
+						"backButton": {
+							"background": "rgba(0,0,0,0)"
+						},
 						"searchInput": {
 							"backgroundColor": "rgba(231, 231, 231,.7)",
 							"borderRadius": "16px",
@@ -59,11 +108,13 @@
 						},
 						"buttons": [{
 								"fontSrc": "/static/yticon.ttf",
-								"text": "\ue60c",
-								"fontSize": "27",
+								"text": "北京",
+								"select": true,
+								"fontSize": "16",
 								"color": "#303133",
 								"background": "rgba(0,0,0,0)",
-								"float": "left"
+								"float": "left",
+								"width": "auto"
 							},
 							{
 								"fontSrc": "/static/yticon.ttf",
@@ -87,6 +138,9 @@
 				"app-plus": {
 					"titleNView": {
 						"type": "default",
+						"backButton": {
+							"background": "rgba(0,0,0,0)"
+						},
 						"searchInput": {
 							"backgroundColor": "rgba(231, 231, 231,.7)",
 							"borderRadius": "16px",
@@ -105,42 +159,6 @@
 				}
 			}
 
-		},
-		{
-			"path": "pages/index/index",
-			"style": {
-				// #ifdef MP 
-				"navigationBarTitleText": "天心医疗",
-				// #endif 
-				"app-plus": {
-					"titleNView": {
-						"type": "transparent",
-						"searchInput": {
-							"backgroundColor": "rgba(231, 231, 231,.7)",
-							"borderRadius": "16px",
-							"placeholder": "找医生、找医院、查疾病",
-							"disabled": false,
-							"placeholderColor": "#606266"
-						},
-						"buttons": [{
-								"fontSrc": "/static/yticon.ttf",
-								"text": "\ue744",
-								"fontSize": "27",
-								"color": "#303133",
-								"background": "rgba(0,0,0,0)",
-								"redDot": true
-							},
-							{
-								"fontSrc": "/static/yticon.ttf",
-								"text": "\ue60d",
-								"fontSize": "26",
-								"color": "#303133",
-								"background": "rgba(0,0,0,0)"
-							}
-						]
-					}
-				}
-			}
 		},
 		{
 			"path": "pages/index/online",
@@ -169,11 +187,12 @@
 								"redDot": true
 							},
 							{
-								"fontSrc": "/static/yticon.ttf",
-								"text": "\ue60d",
-								"fontSize": "26",
+								"fontSrc": "/static/iconfont.ttf",
+								"text": "\ue649",
+								"fontSize": "27",
 								"color": "#303133",
-								"background": "rgba(0,0,0,0)"
+								"background": "rgba(0,0,0,0)",
+								"float": "left"
 							}
 						]
 					}
@@ -207,6 +226,11 @@
 			"style": {
 				"navigationStyle": "custom"
 			}
+		}, {
+			"path": "pages/login/register",
+			"style": {
+				"navigationBarBackgroundColor": "white"
+			}
 		}
 
 		, {
@@ -214,36 +238,66 @@
 			"style": {
 				"navigationBarTitleText": "绑定就诊卡"
 			}
+		}, {
+			"path": "pages/card/create",
+			"style": {}
+		}, {
+			"path": "pages/doctor/list",
+			"style": {}
+		}, {
+			"path": "pages/doctor/doctor",
+			"style": {}
+		}, {
+			"path": "pages/doctor/chat",
+			"style": {}
+		}, {
+			"path": "pages/mall/cart",
+			"style": {}
+		}, {
+			"path": "pages/doctor/archives",
+			"style": {}
 		}
-	    ,{
-            "path" : "pages/card/create",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/doctor/list",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/doctor/doctor",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/doctor/chat",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/mall/cart",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/doctor/archives",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/doctor/case",
-            "style" : {}
-        }
-    ],
+
+		, {
+			"path": "pages/message",
+			"style": {}
+		}, {
+			"path": "pages/mall/create-order",
+			"style": {}
+		}, {
+			"path": "pages/mine/address",
+			"style": {}
+		}, {
+			"path": "pages/mall/pay-result",
+			"style": {}
+		}, {
+			"path": "pages/mine/info",
+			"style": {
+				"navigationBarBackgroundColor": "white"
+			}
+		}, {
+			"path": "pages/mall/order",
+			"style": {}
+		}, {
+			"path": "pages/mall/order-list",
+			"style": {}
+		}, {
+			"path": "pages/mine/check-appoint",
+			"style": {}
+		}, {
+			"path": "pages/mall/product",
+			"style": {}
+		}, {
+			"path": "pages/article/list",
+			"style": {}
+		}, {
+			"path": "pages/login/verify-code",
+			"style": {}
+		}, {
+			"path": "pages/login/setPassword",
+			"style": {}
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "天心医疗",
@@ -252,7 +306,7 @@
 	},
 	"tabBar": {
 		"color": "#C2CAD5",
-		"selectedColor": "#2B81F9",
+		"selectedColor": "#5eb6aa",
 		"borderStyle": "#d3d3d3",
 		"backgroundColor": "#ffffff",
 		"fontSize": "14",

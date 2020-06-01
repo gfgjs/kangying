@@ -1,5 +1,5 @@
 {
-    "name" : "KangYingUser",
+    "name" : "康盈医疗",
     "appid" : "__UNI__D0A0EF1",
     "description" : "",
     "versionName" : "1.0.0",
@@ -45,12 +45,15 @@
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
-                ]
+                ],
+                "abiFilters" : [ "arm64-v8a" ]
             },
             /* ios打包配置 */
             "ios" : {},
             /* SDK配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "ad" : {}
+            }
         }
     },
     /* 快应用特有相关 */
@@ -72,7 +75,7 @@
     "mp-toutiao" : {
         "usingComponents" : true
     },
-    "uniStatistics": {  
-        "enable": false
+    "uniStatistics" : {
+        "enable" : false
     }
 }

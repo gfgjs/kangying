@@ -15,7 +15,7 @@
 			</view>
 			<view class="list select">
 				<view class="item" v-for="i in 20" :key="i">
-					<image class="head" src="../static/home/11.png" mode=""></image>
+					<image class="head" src="../../static/home/11.png" mode=""></image>
 					<view class="middle">
 						<view class="title">儿科</view>
 						<view class="text">尿频、尿急、尿痛、尿结石以及尿道感染等泌尿</view>

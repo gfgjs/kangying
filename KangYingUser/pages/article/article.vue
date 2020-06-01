@@ -15,7 +15,7 @@
 		</view>
 		<view class="common-place"></view>
 		<view class="common-place"></view>
-		<view class="comment">
+		<!-- <view class="comment">
 			<view class="row-title">
 				文章评论（2）
 			</view>
@@ -39,7 +39,7 @@
 		<view class="release">
 			<input type="text" value="" placeholder="发布您的评论" />
 			<view class="button">发表评论</view>
-		</view>
+		</view> -->
 	</view>
 </template>
 

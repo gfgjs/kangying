@@ -5,23 +5,32 @@
 				{{item.name}}
 			</view>
 		</scroll-view>
-		<scroll-view scroll-with-animation scroll-y class="right-aside" @scroll="asideScroll" :scroll-top="tabScrollTop">
+		<scroll-view scroll-with-animation scroll-y class="right-aside" 
+		@scroll="asideScroll" :scroll-top="tabScrollTop"
+		@touchstart='tapScrollView'
+		>
 			<view v-for="item in slist" :key="item.id" class="s-list" :id="'main-'+item.id">
 				<text class="s-item">{{item.name}}</text>
 				<view class="t-list">
-					<view @click="navToList(item.id, titem.id)" v-if="titem.pid === item.id" class="t-item" v-for="titem in tlist"
+					<view @click="navToList(item.id, titem.id)" 
+					v-if="titem.pid === item.id" 
+					class="t-item" 
+					v-for="titem in tlist"
 					 :key="titem.id">
-						<image :src="titem.picture"></image>
+						<!-- <image :src="titem.picture"></image> -->
 						<text>{{titem.name}}</text>
 					</view>
 				</view>
 			</view>
+			<!-- 给右侧底部增加40vh高的站位空间，防止内容短于屏幕太多造成左侧按钮位置不对 -->
+			<!-- 原因是左侧按钮通过右侧scrollTop和其中标签所在y轴位置大小比较来定位，如果屏幕过长而内容过短，则无法正确判断 -->
 			<view class="common-place"></view>
 		</scroll-view>
 	</view>
 </template>
 
 <script>
+	let isUserTap // 右侧scrollView的滚动是用户滑动还是js滚动（js控制滚动时不需要触发@scroll事件，否则会出现bug），由此变量控制
 	export default {
 		data() {
 			return {
@@ -35,6 +44,9 @@
 		},
 		onLoad() {
 			this.loadData();
+		},
+		onShow() {
+			
 		},
 		methods: {
 			async loadData() {
@@ -58,9 +70,16 @@
 				this.currentId = item.id;
 				let index = this.slist.findIndex(sitem => sitem.pid === item.id);
 				this.tabScrollTop = this.slist[index].top;
+				
+				isUserTap = false // 点击左侧父级按钮后
 			},
 			//右侧栏滚动
 			asideScroll(e) {
+				if(!isUserTap){
+					// 非用户滑动
+					return
+				}
+				
 				if (!this.sizeCalcState) {
 					this.calcSize();
 				}
@@ -69,6 +88,12 @@
 				if (tabs.length > 0) {
 					this.currentId = tabs[0].pid;
 				}
+			},
+			// 
+			tapScrollView(){
+				// 用户触摸右侧后
+				isUserTap = true
+				console.log(22);
 			},
 			//计算右侧栏每个tab的高度等信息
 			calcSize() {
@@ -87,7 +112,7 @@
 			},
 			navToList(sid, tid) {
 				uni.navigateTo({
-					url: `/pages/product/list?fid=${this.currentId}&sid=${sid}&tid=${tid}`
+					url: `/pages/mall/mall`
 				})
 			}
 		}
@@ -99,6 +124,10 @@
 	.content {
 		height: 100%;
 		background-color: #f8f8f8;
+	}
+	
+	.common-place{
+		height: 40vh;
 	}
 
 	.content {
@@ -158,7 +187,8 @@
 
 	.t-list {
 		display: flex;
-		flex-wrap: wrap;
+		/* flex-wrap: wrap; */
+		flex-direction: column;
 		width: 100%;
 		background: #fff;
 		padding-top: 12upx;
@@ -173,13 +203,16 @@
 	.t-item {
 		flex-shrink: 0;
 		display: flex;
-		justify-content: center;
+		justify-content: flex-start;
 		align-items: center;
-		flex-direction: column;
-		width: 176upx;
+		/* flex-direction: column; */
+		width: 100%;
 		font-size: 26upx;
 		color: #666;
-		padding-bottom: 20upx;
+		/* padding-bottom: 20upx; */
+		height: 60px;
+		border-bottom: 1px solid #fafafa;
+		padding-left: 20px;
 
 		image {
 			width: 140upx;

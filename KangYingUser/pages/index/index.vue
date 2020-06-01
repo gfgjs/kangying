@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="nav-place"></view>
+		<!-- <view class="nav-place"></view> -->
 		<!-- <view class="search-wrap">
 			<view class="search">
 				<uni-icons type="mic-filled" color="#C9C9C9" size="24"></uni-icons>
@@ -8,14 +8,25 @@
 				<uni-icons type="search" color="#C9C9C9" size="24"></uni-icons>
 			</view>
 		</view> -->
-		<view class="place"></view>
-		<view class="banner">
-			<image src="../../static/home/13.png" mode="aspectFill"></image>
-		</view>
+		<view class="place linear-background"></view>
+
+		<swiper class="swiper banner" indicator-color='rgba(0,0,0,.1)' indicator-active-color='rgba(0,0,0,.6)'
+		 :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
+			<swiper-item>
+				<image src="../../static/home/13.png" mode="aspectFill"></image>
+			</swiper-item>
+			<swiper-item>
+				<image src="../../static/home/13.png" mode="aspectFill"></image>
+			</swiper-item>
+			<swiper-item>
+				<image src="../../static/home/13.png" mode="aspectFill"></image>
+			</swiper-item>
+		</swiper>
+
 
 		<view class="wrap func-1">
 			<view class="top">
-				<view @click="navToPage('SeeTheDoctor')">
+				<view @click="navTo('/pages/doctor/see-the-doctor')">
 					<image src="../../static/home/5.png" mode=""></image>
 					<view>网上看病</view>
 				</view>
@@ -23,17 +34,17 @@
 					<image src="../../static/home/6.png" mode=""></image>
 					<view>线下就诊</view>
 				</view>
-				<view @click="navTo('快速购药')">
+				<view @click="switchTab('/pages/index/online')">
 					<image src="../../static/home/7.png" mode=""></image>
 					<view>快速购药</view>
 				</view>
 			</view>
 			<view class="bottom">
-				<view class="item item-1">
+				<view class="item item-1" @click="navTo('/pages/doctor/list')">
 					<view>免费问医生</view>
 					<view class="little">有问题快速问医生</view>
 				</view>
-				<view class="item item-2">
+				<view class="item item-2" @click="navTo('/pages/doctor/case')">
 					<view>云病例</view>
 					<view class="little">随时查看云病例</view>
 				</view>
@@ -46,7 +57,7 @@
 			</view>
 			<view class="list">
 				<view class="top">
-					<view class="item" @click="navTo('注册建档')">
+					<view class="item" @click="navTo('/pages/doctor/archives')">
 						<view class="left">
 							<view class="big">注册建档</view>
 							<view class="little">在线完成注册建档</view>
@@ -69,7 +80,7 @@
 						</view>
 						<image src="../../static/home/22.png" mode="aspectFit"></image>
 					</view>
-					<view class="item" @click="navTo('体检预约')">
+					<view class="item" @click="navTo('/pages/mine/check-appoint')">
 						<view class="left">
 							<view class="big">体检预约</view>
 							<view class="little">快速预约体检套餐</view>
@@ -80,7 +91,7 @@
 			</view>
 		</view>
 		<view class="wrap func-3">
-			<view class="title">
+			<view class="title linear-background">
 				<view class="content">特色服务</view>
 			</view>
 			<view class="list">
@@ -98,20 +109,19 @@
 				</view>
 			</view>
 		</view>
-		<view class="wrap func-4">
+		<view class="wrap func-4" @click="navTo('/pages/article/list')">
 			<view class="title">
 				<view class="left">
 					<view class="blue"></view>
 					<view class="text">健康咨询</view>
 				</view>
-				<view class="right" @click="navTo()">
+				<view class="right">
 					更多<image src="../../static/home/4.png" mode="aspectFit"></image>
 				</view>
 			</view>
-
 		</view>
 		<view class="wrap bottom-banner" v-for="item in bottomBanner" v-bind:key="item.id" :style="`background: url(${item.background});`">
-			<view class="mask" @click="navTo('科普')">
+			<view class="mask" @click="navTo('/pages/article/article')">
 				<image src="../../static/home/3.png" mode=""></image>
 				<view>
 					{{item.content}}
@@ -124,6 +134,7 @@
 				</view>
 			</view>
 		</view>
+		<view v-for="i in pages" :key='i.path' style="padding: 10px;" @click="navTo('/'+i.path)">{{i.path}}</view>
 	</view>
 </template>
 
@@ -131,6 +142,12 @@
 	export default {
 		data() {
 			return {
+				// 顶部轮播图
+				indicatorDots: true,
+				autoplay: true,
+				interval: 5000,
+				duration: 400,
+
 				bottomBanner: [{
 						id: 1,
 						background: '../../static/home/23.png',
@@ -145,29 +162,348 @@
 						content: '【科普】夏季来临，有哪些搭配的茶是清热去火气的',
 						doctorText: '戴医生 上海长江医院'
 					}
+				],
+				pages: [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+					{
+						"path": "pages/index/index",
+						"style": {
+							// #ifdef MP 
+							"navigationBarTitleText": "天心医疗",
+							// #endif 
+							"app-plus": {
+								"titleNView": {
+									"type": "transparent",
+									"searchInput": {
+										"backgroundColor": "rgba(231, 231, 231,.7)",
+										"borderRadius": "16px",
+										"placeholder": "找医生、找医院、查疾病",
+										"disabled": false,
+										"placeholderColor": "#606266"
+									},
+									"buttons": [{
+											"fontSrc": "/static/yticon.ttf",
+											"text": "\ue744",
+											"fontSize": "27",
+											"color": "#303133",
+											"background": "rgba(0,0,0,0)",
+											"redDot": true
+										},
+										{
+											"fontSrc": "/static/yticon.ttf",
+											"text": "\ue60d",
+											"fontSize": "26",
+											"color": "#303133",
+											"background": "rgba(0,0,0,0)"
+										}
+									]
+								}
+							}
+						}
+					},
+
+					{
+						"path": "pages/doctor/case",
+						"style": {
+							"enablePullDownRefresh": true
+						}
+					},
+					{
+						"path": "pages/article/article"
+					},
+					{
+						"path": "pages/doctor/see-the-doctor",
+						"style": {
+							// #ifdef MP 
+							"navigationBarTitleText": "网上看病",
+							// #endif 
+							"app-plus": {
+								"titleNView": {
+									"type": "transparent",
+									"backButton": {
+										"background": "rgba(0,0,0,0)"
+									},
+									"searchInput": {
+										"backgroundColor": "rgba(231, 231, 231,.7)",
+										"borderRadius": "16px",
+										"placeholder": "找医生、找医院、查疾病",
+										"disabled": true,
+										"placeholderColor": "#606266"
+									},
+									"buttons": [{
+											"fontSrc": "/static/iconfont.ttf",
+											"text": "\ue649",
+											"fontSize": "27",
+											"color": "#303133",
+											"background": "rgba(0,0,0,0)",
+											"float": "left"
+										},
+										{
+											"fontSrc": "/static/yticon.ttf",
+											"text": "\ue744",
+											"fontSize": "26",
+											"color": "#303133",
+											"background": "rgba(0,0,0,0)",
+											"redDot": true
+										}
+									]
+								}
+							}
+						}
+					},
+					{
+						"path": "pages/mall/mall",
+						"style": {
+							// #ifdef MP 
+							"navigationBarTitleText": "快速购药",
+							// #endif 
+
+
+							"app-plus": {
+								"titleNView": {
+									"type": "transparent",
+
+									"backButton": {
+										"background": "rgba(0,0,0,0)"
+									},
+									"searchInput": {
+										"backgroundColor": "rgba(231, 231, 231,.7)",
+										"borderRadius": "16px",
+										"placeholder": "药品名称和种类",
+										"disabled": true,
+										"placeholderColor": "#606266"
+									},
+									"buttons": [{
+											"fontSrc": "/static/yticon.ttf",
+											"text": "北京",
+											"select": true,
+											"fontSize": "16",
+											"color": "#303133",
+											"background": "rgba(0,0,0,0)",
+											"float": "left",
+											"width": "auto"
+										},
+										{
+											"fontSrc": "/static/yticon.ttf",
+											"text": "\ue744",
+											"fontSize": "26",
+											"color": "#303133",
+											"background": "rgba(0,0,0,0)",
+											"redDot": true
+										}
+									]
+								}
+							}
+						}
+					},
+					{
+						"path": "pages/mall/search",
+						"style": {
+							// #ifdef MP 
+							"navigationBarTitleText": "搜索",
+							// #endif 
+							"app-plus": {
+								"titleNView": {
+									"type": "default",
+									"backButton": {
+										"background": "rgba(0,0,0,0)"
+									},
+									"searchInput": {
+										"backgroundColor": "rgba(231, 231, 231,.7)",
+										"borderRadius": "16px",
+										"placeholder": "药品名称和种类",
+										"disabled": false,
+										"placeholderColor": "#606266"
+									},
+									"buttons": [{
+										"fontSrc": "/static/yticon.ttf",
+										"text": "搜索",
+										"fontSize": "14",
+										"color": "#303133",
+										"background": "rgba(0,0,0,0)"
+									}]
+								}
+							}
+						}
+
+					},
+					{
+						"path": "pages/index/online",
+						"style": {
+							// #ifdef MP 
+							"navigationBarTitleText": "在线医院",
+							// #endif 
+							"app-plus": {
+								"bounce": "none",
+								"titleNView": {
+									"type": "default",
+
+									"searchInput": {
+										"backgroundColor": "rgba(231, 231, 231,.7)",
+										"borderRadius": "16px",
+										"placeholder": "找医生、找医院、查疾病",
+										"disabled": false,
+										"placeholderColor": "#606266"
+									},
+									"buttons": [{
+											"fontSrc": "/static/yticon.ttf",
+											"text": "\ue744",
+											"fontSize": "27",
+											"color": "#303133",
+											"background": "rgba(0,0,0,0)",
+											"redDot": true
+										},
+										{
+											"fontSrc": "/static/yticon.ttf",
+											"text": "\ue60d",
+											"fontSize": "26",
+											"color": "#303133",
+											"background": "rgba(0,0,0,0)"
+										}
+									]
+								}
+							}
+						}
+					},
+					{
+						"path": "pages/index/mine",
+						"style": {
+							// #ifdef MP 
+							"navigationBarTitleText": "个人中心",
+							// #endif 
+							"app-plus": {
+								"bounce": "none",
+								"titleNView": {
+									"type": "transparent",
+									"buttons": [{
+										"fontSrc": "/static/yticon.ttf",
+										"text": "\ue744",
+										"fontSize": "27",
+										"color": "#303133",
+										"background": "rgba(0,0,0,0)",
+										"redDot": true
+									}]
+								}
+							}
+						}
+					},
+					{
+						"path": "pages/login/login",
+						"style": {
+							"navigationStyle": "custom"
+						}
+					}, {
+						"path": "pages/login/register",
+						"style": {
+							"navigationBarBackgroundColor": "white"
+						}
+					}
+
+					, {
+						"path": "pages/card/bind",
+						"style": {
+							"navigationBarTitleText": "绑定就诊卡"
+						}
+					}, {
+						"path": "pages/card/create",
+						"style": {}
+					}, {
+						"path": "pages/doctor/list",
+						"style": {}
+					}, {
+						"path": "pages/doctor/doctor",
+						"style": {}
+					}, {
+						"path": "pages/doctor/chat",
+						"style": {}
+					}, {
+						"path": "pages/mall/cart",
+						"style": {}
+					}, {
+						"path": "pages/doctor/archives",
+						"style": {}
+					}
+
+					, {
+						"path": "pages/message",
+						"style": {}
+					}, {
+						"path": "pages/mall/create-order",
+						"style": {}
+					}, {
+						"path": "pages/mine/address",
+						"style": {}
+					}, {
+						"path": "pages/mall/pay-result",
+						"style": {}
+					}, {
+						"path": "pages/mine/info",
+						"style": {
+							"navigationBarBackgroundColor": "white"
+						}
+					}, {
+						"path": "pages/mall/order",
+						"style": {}
+					}, {
+						"path": "pages/mall/order-list",
+						"style": {}
+					}, {
+						"path": "pages/mine/check-appoint",
+						"style": {}
+					}, {
+						"path": "pages/mall/product",
+						"style": {}
+					}, {
+						"path": "pages/article/list",
+						"style": {}
+					}
 				]
 			};
+		},
+		onLoad() {
+			let main = plus.android.runtimeMainActivity();
+			//为了防止快速点按返回键导致程序退出重写quit方法改为隐藏至后台  
+			plus.runtime.quit = function() {
+				main.moveTaskToBack(false);
+			};
+		},
+		methods: {
+			navTo(url) {
+				console.log(url);
+				uni.navigateTo({
+					url
+				})
+			},
+			switchTab(url) {
+				uni.switchTab({
+					url
+				})
+			}
 		}
 	}
 </script>
 
 <style lang="scss">
-	page{
+	page {
 		padding-bottom: 10px;
 	}
+
 	.nav-place {
-		background-color: #1D7FFD;
+		background-color: $base-color;
 	}
 
 	.place {
-		height: 70px;
-		background-color: #1D7FFD;
-		box-shadow: 0px 6px 20px 0px #1D7FFD;
+		// height: 70px;
+		height: calc(70px + 44px);
+		// #ifdef APP-PLUS
+		height: calc(70px + 44px + 44px);
+		// #endif
+		background-color: $base-color;
+		box-shadow: 0px 6px 20px 0px $base-color;
 	}
 
 	.search-wrap {
 		width: 100vw;
-		background-color: #1D7FFD;
+		background-color: $base-color;
 		height: 80px;
 		position: relative;
 
@@ -201,7 +537,7 @@
 			margin-left: 2%;
 			width: 96%;
 			height: 100px;
-			border-radius: 10px;
+			border-radius: 6px;
 
 		}
 	}
@@ -287,7 +623,7 @@
 			.blue {
 				height: 20px;
 				width: 4px;
-				background-color: #2483FD;
+				background-color: $base-color;
 				border-radius: 4px;
 			}
 
@@ -346,10 +682,10 @@
 		.title {
 			height: 50px;
 			width: 100%;
-			background-color: red;
+			// background-color: red;
 
 			background-size: 100%;
-			background: linear-gradient(90deg, rgba(48, 138, 252, 1), rgba(18, 116, 253, 1));
+			// background: linear-gradient(90deg, rgba(48, 138, 252, 1), rgba(18, 116, 253, 1));
 			color: white;
 
 			.content {
@@ -403,7 +739,7 @@
 				.blue {
 					height: 20px;
 					width: 4px;
-					background-color: #2483FD;
+					background-color: $base-color;
 					border-radius: 4px;
 				}
 
