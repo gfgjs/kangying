@@ -2,33 +2,27 @@
 	<view>
 
 		<view class="content">
-			<view class="row">
-				<view class="title">患者姓名</view>
-				<input class="little-title" placeholder="请输入" />
-			</view>
 
-			<view class="row">
+
+			<!-- <view class="row">
 				<view class="title">民族</view>
 				<picker mode="selector" :range="array">
 					<view class="little-title">本人<uni-icons type="arrowdown"></uni-icons>
 					</view>
 				</picker>
-			</view>
+			</view> -->
 
-			<view class="row">
+			<!-- <view class="row">
 				<view class="title">证件类型</view>
 				<picker mode="selector" :range="array">
 					<view class="little-title">本人<uni-icons type="arrowdown"></uni-icons>
 					</view>
 				</picker>
-			</view>
+			</view> -->
 
-			<view class="row">
-				<view class="title">证件号码</view>
-				<input class="little-title" placeholder="请输入" />
-			</view>
 
-			<view class="row">
+
+			<!-- 	<view class="row">
 				<view class="title">国籍</view>
 				<radio-group class="radio-group">
 					<label class="radio">
@@ -36,27 +30,40 @@
 					<label class="radio">
 						<radio value="r2" />外籍</label>
 				</radio-group>
-			</view>
+			</view> -->
 			<view class="row">
 				<view class="title">就诊人关系</view>
-				<picker mode="selector" :range="array">
-					<view class="little-title">本人<uni-icons type="arrowdown"></uni-icons>
+				<picker mode="selector" style="width: 50%;" :range="identity" @change="identityChange">
+					<view class="little-title" style="display: flex;width: 100%;">{{identity[currIdentity]}}
+						<uni-icons type="arrowdown"></uni-icons>
 					</view>
 				</picker>
 			</view>
-			
 			<view class="row">
+				<view class="title">患者姓名</view>
+				<input class="little-title" placeholder="请输入就诊人姓名" v-model="patientName" />
+			</view>
+			<view class="row">
+				<view class="title">身份证号</view>
+				<input class="little-title" placeholder="请输入就诊人身份证号" v-model="patientIdcard" />
+			</view>
+
+			<view class="row">
+				<view class="title">就诊卡号</view>
+				<input class="little-title" placeholder="请输入就诊卡号(选填)" v-model="patientCard" />
+			</view>
+			<!-- <view class="row">
 				<view class="title">就诊详细信息</view>
 				<input class="little-title" placeholder="选填" />
-			</view>
-			
+			</view> -->
+
 			<view class="row">
 				<view class="title">手机号</view>
-				<input class="little-title" placeholder="请输入" />
+				<input class="little-title" placeholder="请输入手机号" v-model="patientMobile" />
 			</view>
 
 
-			<view class="row">
+			<!-- <view class="row">
 				<view class="title">验证码</view>
 
 				<view class="left">
@@ -64,21 +71,21 @@
 
 					<view class="little-title get-code">获取验证码</view>
 				</view>
-			</view>
+			</view> -->
 
-			<view class="row little-title no-card">验证码收不到？</view>
+			<!-- <view class="row little-title no-card">验证码收不到？</view> -->
 			<view class="button" @click="submit">提交</view>
 		</view>
 
 		<uni-popup ref="popup" :maskClick="false">
 			<view class="popup">
 				<view class="title">请确定以下信息真实准确，信息填写错误将不能领卡取号，退号退费</view>
-				<view class="message">就诊人姓名：姓名</view>
-				<view class="message">就诊人姓名：姓名</view>
-				<view class="message">就诊人姓名：姓名</view>
+				<view class="message">就诊人姓名：{{patientName}}</view>
+				<view class="message">就诊人身份证：{{patientIdcard}}</view>
+				<view class="message">就诊人手机：{{patientMobile}}</view>
 				<view class="buttons">
 					<view class="button button-cancel" @click="cancel">取消</view>
-					<view class="button">确认</view>
+					<view class="button" @click="confirmSubmit">确认</view>
 				</view>
 			</view>
 		</uni-popup>
@@ -86,19 +93,70 @@
 </template>
 
 <script>
+	import {
+		request_patientCardAdd
+	} from '../../common/https.js'
 	export default {
 		data() {
 			return {
-				array: [1, 2, 3]
+				identity: ['本人', '父母', '配偶', '子女'],
+				currIdentity: 0,
+				identityText: '本人',
+				patientName: '',
+				patientIdcard: '',
+				patientCard: '',
+				patientMobile: ''
 			};
 		},
 		mounted() {},
+
 		methods: {
+			identityChange(e) {
+				this.currIdentity = e.detail.value
+				this.identityText = this.identity[e.detail.value]
+			},
 			cancel() {
 				this.$refs.popup.close()
 			},
 			submit() {
+				if (!this.patientName) {
+					this.$api.msg('请填写就诊人姓名')
+					return
+				}
+				if (!this.patientIdcard) {
+					this.$api.msg('请填写就诊人身份证')
+					return
+				}
+				if (!this.patientMobile) {
+					this.$api.msg('请填写就诊人电话')
+					return
+				}
 				this.$refs.popup.open()
+			},
+			confirmSubmit() {
+				request_patientCardAdd({
+					uni,
+					data: {
+						relation_ship: this.currIdentity,
+						p_name: this.patientName,
+						id_card: this.patientIdcard,
+						mobile: this.patientMobile,
+						p_card: this.patientCard
+					}
+				}).then(res => {
+					this.$refs.popup.close()
+					if (res.code === 0) {
+						this.$api.msg(res.data, 1500, true)
+						setTimeout(() => {
+							this.$pageTo({
+								url: '/pages/card/list'
+							})
+						}, 1500)
+					} else {
+						this.$api.msg(res.err)
+					}
+					console.log(res);
+				})
 			}
 		}
 	}
@@ -112,7 +170,8 @@
 
 	.radio-group {
 		font-size: 14px;
-		label{
+
+		label {
 			margin-right: 10px;
 		}
 	}
@@ -171,7 +230,7 @@
 
 		.button {
 			border-radius: 20px;
-			margin: 0 auto;
+			margin: 30px auto;
 		}
 	}
 

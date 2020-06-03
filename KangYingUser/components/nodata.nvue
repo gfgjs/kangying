@@ -144,6 +144,8 @@
 		/* #endif */
 		align-items: center;
 		justify-content: center;
+		min-height: 100%;
+		min-width: 100%;
 		padding: 100px 30px;
 		/* background-color: #f8f8f8; */
 	}

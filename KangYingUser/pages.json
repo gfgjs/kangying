@@ -277,7 +277,9 @@
 			}
 		}, {
 			"path": "pages/mall/order",
-			"style": {}
+			"style": {
+				"enablePullDownRefresh": true
+			}
 		}, {
 			"path": "pages/mall/order-list",
 			"style": {}
@@ -289,15 +291,26 @@
 			"style": {}
 		}, {
 			"path": "pages/article/list",
-			"style": {}
+			"style": {
+				"enablePullDownRefresh": true
+			}
 		}, {
 			"path": "pages/login/verify-code",
 			"style": {}
 		}, {
 			"path": "pages/login/setPassword",
 			"style": {}
+		}, {
+			"path": "pages/card/list",
+			"style": {
+				"enablePullDownRefresh": true
+			}
 		}
-	],
+	    ,{
+            "path" : "pages/card/card",
+            "style" : {}
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "天心医疗",

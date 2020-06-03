@@ -69,7 +69,7 @@
 							<view class="big">检查预约</view>
 							<view class="little">在线预约身体检查</view>
 						</view>
-						<image src="../../static/home/21.png" mode="aspectFit"></image>
+						<image src="../../static/home/20.png" mode="aspectFit"></image>
 					</view>
 				</view>
 				<view class="top">
@@ -78,14 +78,14 @@
 							<view class="big">电子病历</view>
 							<view class="little">查看个人电子病历</view>
 						</view>
-						<image src="../../static/home/22.png" mode="aspectFit"></image>
+						<image src="../../static/home/21.png" mode="aspectFit"></image>
 					</view>
 					<view class="item" @click="navTo('/pages/mine/check-appoint')">
 						<view class="left">
 							<view class="big">体检预约</view>
 							<view class="little">快速预约体检套餐</view>
 						</view>
-						<image src="../../static/home/21.png" mode="aspectFit"></image>
+						<image src="../../static/home/17.png" mode="aspectFit"></image>
 					</view>
 				</view>
 			</view>
@@ -120,14 +120,14 @@
 				</view>
 			</view>
 		</view>
-		<view class="wrap bottom-banner" v-for="item in bottomBanner" v-bind:key="item.id" :style="`background: url(${item.background});`">
-			<view class="mask" @click="navTo('/pages/article/article')">
+		<view class="wrap bottom-banner" v-for="item in articleList" v-bind:key="item.id" :style="`background: url(${item.article_thumb});`">
+			<view class="mask" @click="navToArticle('/pages/article/article',item.id)">
 				<image src="../../static/home/3.png" mode=""></image>
 				<view>
-					{{item.content}}
+					{{item.article_title}}
 				</view>
 				<view class="doctor">
-					<image :src="item.doctorImg"></image>
+					<image :src="item.header"></image>
 					<view class="">
 						{{item.doctorText}}
 					</view>
@@ -139,6 +139,10 @@
 </template>
 
 <script>
+	import {
+		request_articleList,
+		request_articleDetail
+	} from '../../common/https.js'
 	export default {
 		data() {
 			return {
@@ -148,21 +152,7 @@
 				interval: 5000,
 				duration: 400,
 
-				bottomBanner: [{
-						id: 1,
-						background: '../../static/home/23.png',
-						doctorImg: '../../static/home/15.png',
-						content: '【科普】有些隔夜饭菜不致癌？真正致癌的食物到底有哪些',
-						doctorText: '戴医生 上海长江医院'
-					},
-					{
-						id: 2,
-						background: '../../static/home/10.png',
-						doctorImg: '../../static/home/15.png',
-						content: '【科普】夏季来临，有哪些搭配的茶是清热去火气的',
-						doctorText: '戴医生 上海长江医院'
-					}
-				],
+				articleList: [],
 				pages: [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 					{
 						"path": "pages/index/index",
@@ -460,13 +450,26 @@
 			};
 		},
 		onLoad() {
+			// #ifdef APP-PLUS
 			let main = plus.android.runtimeMainActivity();
 			//为了防止快速点按返回键导致程序退出重写quit方法改为隐藏至后台  
 			plus.runtime.quit = function() {
 				main.moveTaskToBack(false);
 			};
+			// #endif
+			
+			request_articleList({uni,data:{page:1,page_size:2}}).then(res=>{
+				if(res.code===0){
+					this.articleList = res.data
+				}
+			})
 		},
 		methods: {
+			navToArticle(url,id){
+				this.$pageTo({
+					url:url+'?id='+id
+				})
+			},
 			navTo(url) {
 				console.log(url);
 				uni.navigateTo({

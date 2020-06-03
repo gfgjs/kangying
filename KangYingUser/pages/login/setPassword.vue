@@ -24,7 +24,7 @@
 		},
 		onShow() {
 			/* 如果已经有token了，则说明是后退到这个页面的，就直接reLaunch到主页 */
-			if ('token') {
+			if (0) {
 				uni.reLaunch({
 					url: '../index/index'
 				})
@@ -68,7 +68,20 @@
 				}).then(res => {
 					if (res.code === 0) {
 						this.$api.msg('注册成功！将转入注册前页面')
-
+						saveLoginMessage(uni, {
+							mobile: message.mobile,
+							password: this.password,
+							token: res.data
+						})
+						
+						let lastPage = this.$lastPage
+						let type = lastPage.navigateType
+						
+						if (type === '$switchTab') {
+							this['$switchTab'](lastPage)
+						} else if (type === '$pageTo') {
+							this['$pageTo'](lastPage)
+						}
 					} else if (res.err === '手机号已注册') {
 						this.$api.msg('手机号已注册，请直接登录')
 						setTimeout(() => {

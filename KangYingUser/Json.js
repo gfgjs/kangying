@@ -413,15 +413,15 @@ const orderList = [{
 ]
 const cateList = [{
 		id: 1,
-		name: '手机数码'
+		name: '儿童用药'
 	},
 	{
 		id: 2,
-		name: '礼品鲜花'
+		name: '糖尿病'
 	},
 	{
 		id: 3,
-		name: '男装女装'
+		name: '女性用药'
 	},
 	{
 		id: 4,
@@ -430,7 +430,7 @@ const cateList = [{
 	{
 		id: 5,
 		pid: 1,
-		name: '手机通讯'
+		name: '健康用品'
 	},
 	{
 		id: 6,
@@ -440,7 +440,7 @@ const cateList = [{
 	{
 		id: 8,
 		pid: 5,
-		name: '全面屏手机',
+		name: '母婴用品',
 		picture: '/static/temp/cate2.jpg'
 	},
 	{

@@ -13,9 +13,9 @@
 		<view class="common-place"></view>
 		<view class="common-place"></view>
 		<view class="common-place"></view>
-		
+
 		<view class="content">
-			
+
 			<mineCaseList v-if='currTab===0'></mineCaseList>
 			<noData v-if='currTab===1'></noData>
 		</view>
@@ -27,7 +27,8 @@
 	import noData from '../../components/nodata.nvue'
 	export default {
 		components: {
-			mineCaseList,noData
+			mineCaseList,
+			noData
 		},
 		data() {
 			return {
@@ -57,13 +58,14 @@
 	}
 
 	.header {
-		padding: 20px;
+		padding: 0 20px;
 		height: 50px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		position: fixed;
 		width: 100%;
+		left: 0;
 		z-index: 1;
 		background-color: white;
 

@@ -60,6 +60,10 @@
 		request_codeLogin,
 		request_login
 	} from '../../common/https.js'
+	import {
+		saveLoginMessage,
+		readLoginMessage
+	} from '../../common/util.js'
 	export default {
 		data() {
 			return {
@@ -76,44 +80,79 @@
 
 			};
 		},
+		onShow() {
+			const message = readLoginMessage(uni)
+			this.mobile = message.mobile
+			this.password = message.password
+		},
 		methods: {
 			loginByCode() {
-				if(!this.mobile){
+				if (!this.mobile) {
 					this.$api.msg('请输入正确的手机号')
 					return
 				}
-				if(!this.code){
+				if (!this.code) {
 					this.$api.msg('请输入验证码')
 					return
 				}
 				request_codeLogin({
 					uni,
-					data:{
-						sms_code:this.code,
-						mobile:this.mobile
+					data: {
+						sms_code: this.code,
+						mobile: this.mobile
 					}
-				}).then(res=>{
-					console.log(res)
+				}).then(res => {
+					if (res.code === 0) {
+						this.loginSuccess(res.data)
+					}else{
+						this.$api.msg(res.err)
+					}
 				})
 			},
-			loginByPass(){
-				if(!this.mobile){
+			loginByPass() {
+				if (!this.mobile) {
 					this.$api.msg('请输入正确的手机号')
 					return
 				}
-				if(!this.password){
+				if (!this.password) {
 					this.$api.msg('请输入密码')
 					return
 				}
 				request_login({
 					uni,
-					data:{
-						pass:this.password,
-						mobile:this.mobile
+					data: {
+						pass: this.password,
+						mobile: this.mobile
 					}
-				}).then(res=>{
-					console.log(res)
+				}).then(res => {
+					if (res.code === 0) {
+						this.loginSuccess(res.data)
+					}else{
+						this.$api.msg(res.err)
+					}
 				})
+			},
+			loginSuccess(token) {
+				this.$api.msg('登录成功')
+
+				saveLoginMessage(uni, {
+					mobile: this.mobile,
+					password: this.password,
+					token
+				})
+
+				let lastPage = this.$lastPage
+				let type = lastPage.navigateType
+
+				if (type === '$switchTab') {
+					this['$switchTab'](lastPage)
+				} else if (type === '$pageTo') {
+					this['$pageTo'](lastPage)
+				}else{
+					this.$switchTab({
+						url:'/pages/index/index'
+					})
+				}
 			},
 			changeShowPassword() {
 				this.showPassword = !this.showPassword
@@ -121,10 +160,10 @@
 			changeType(type) {
 				this.pageType = type
 			},
-			navToRegister(type){
+			navToRegister(type) {
 				// this.pageType = type
 				uni.navigateTo({
-					url:'./register'
+					url: './register'
 				})
 			},
 			getCode() {

@@ -1,17 +1,16 @@
 <template>
 	<view>
 		<view class="article">
-			<view class="title"> 吃对茄子是补品，吃错了是“砒霜”，2个错误吃法建议立马停止</view>
+			<view class="title">{{article.article_title}}</view>
 			<view class="row little-title">
-				<image src="../../static/home/15.png" mode=""></image>
-				<view>张伊利</view>
-				<view>05-22</view>
-				<view>13:57</view>
+				<!-- <image :src="article.article_thumb" mode=""></image> -->
+				<!-- <view>张伊利</view> -->
+				<view>{{formatDate(article.create_time)}}</view>
+				<view class="minute">{{formatMinute(article.create_time)}}</view>
 			</view>
-			<view>
-				<view>富文本</view>
-				夏季到了，很多蔬菜开始上市了，茄子就是5月餐桌上最为常见的食物，油焖茄子、凉拌茄子备受欢迎。不过茄子虽好，但是吃错了堪比“砒霜”，随时都会要命了。今天介绍几种茄子的错误吃法，很多人不明所以，反倒觉得口味比较独特，其实一直在伤害自己的身体，快来看看吧：
-			</view>
+			<rich-text id="article-content" :nodes='nodes'>
+				<!-- 富文本 -->
+			</rich-text>
 		</view>
 		<view class="common-place"></view>
 		<view class="common-place"></view>
@@ -44,66 +43,137 @@
 </template>
 
 <script>
+	import {
+		request_articleDetail
+	} from '../../common/https.js'
+	import htmlParser from '../../common/html-parser.js'
+	import {
+		formatDate,
+		formatMinute
+	} from '../../common/util.js'
+
+	const FAIL_CONTENT = '<p>获取信息失败</p>';
+	let count = 0
 	export default {
 		data() {
 			return {
-
+				formatMinute,
+				formatDate,
+				article: {},
+				nodes: []
 			};
+		},
+		onLoad(e) {
+			request_articleDetail({
+				uni,
+				data: {
+					id: e.id
+				}
+			}).then(res => {
+				if (res.code === 0) {
+					this.article = res.data
+					let nodes = htmlParser(res.data.article_content)
+					console.log(nodes);
+
+					this.nodes = this.parseImg(nodes)
+					console.log(count);
+					// document.getElementById('article-content').innerHTML = res.data.article_content
+					// document.querySelectorAll('#article-content img').forEach(item => {
+					// 	item.classList.add('rich-text-img-width')
+					// })
+				} else {
+					this.nodes = FAIL_CONTENT
+				}
+			})
+
+
+		},
+		methods: {
+			parseImg(nodes = []) {
+				return nodes.map(item => {
+					item.style = item.style || ''
+					if (item.name === 'img') {
+						console.log(item);
+						// item.attrs.style = item.style + ';max-width:100%;'
+						item.attrs.style = 'max-width:100%;'
+					}
+					item.children && item.children.length && (item.children = this.parseImg(item.children))
+					count++
+					return item
+				})
+			}
 		}
 	}
 </script>
 
 <style lang="scss">
-	page{
+	page {
 		// padding: 14px;
-		background:rgba(249,250,251,1);
+		background: rgba(249, 250, 251, 1);
 	}
-	.article{
+
+	.article {
 		padding: 14px;
 		background-color: white;
+
+		.title {
+			text-align: center;
+		}
 	}
-	.row{
-		
+
+	.row {
+
 		display: flex;
 		align-items: center;
-		image{
+		justify-content: center;
+
+		image {
 			width: 40px;
 			height: 40px;
 		}
+
 		padding: 20px 0;
-		view{
+
+		.minute {
 			margin-left: 10px;
 		}
 	}
-	.comment{
+
+	.comment {
 		background-color: white;
-		
+
 		width: 100%;
-		.item{
+
+		.item {
 			padding: 10px 20px;
 			width: 100%;
 			display: flex;
 			align-items: center;
-			image{
+
+			image {
 				width: 60px;
 				height: 60px;
 				margin-right: 10px;
 			}
-			.right{
+
+			.right {
 				width: 100%;
-				.name{
+
+				.name {
 					width: 100%;
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
 				}
-				.time{
+
+				.time {
 					margin-top: 10px;
 				}
 			}
 		}
 	}
-	.release{
+
+	.release {
 		width: 100%;
 		height: 50px;
 		padding: 0 20px;
@@ -113,14 +183,16 @@
 		justify-content: space-between;
 		position: fixed;
 		bottom: 0;
-		input{
+
+		input {
 			height: 40px;
-			background-color: rgba(239,239,239,1);
+			background-color: rgba(239, 239, 239, 1);
 			width: 65%;
 			border-radius: 4px;
 			padding: 0 20px;
 		}
-		.button{
+
+		.button {
 			width: 100px;
 			border-radius: 20px;
 		}

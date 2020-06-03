@@ -14,10 +14,10 @@
 				<view class="text">选择门诊</view>
 			</view>
 			<view class="list select">
-				<view class="item" v-for="i in 20" :key="i">
+				<view class="item" v-for="i in quickList" :key="i">
 					<image class="head" src="../../static/home/11.png" mode=""></image>
 					<view class="middle">
-						<view class="title">儿科</view>
+						<view class="title">{{i}}</view>
 						<view class="text">尿频、尿急、尿痛、尿结石以及尿道感染等泌尿</view>
 					</view>
 					<uni-icons type="arrowright" size="24"></uni-icons>

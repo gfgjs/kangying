@@ -3,7 +3,7 @@
 		request_sendReSms
 	} from './common/https.js'
 	// let STATUS = false
-	
+
 	export default {
 		globalData: {
 			verifyCodeCountDown: 0,
@@ -19,7 +19,7 @@
 			beforePage: '', // 登录或注册前的页面
 		},
 		onLaunch: function() {
-
+			// #ifdef APP-PLUS
 			let main = plus.android.runtimeMainActivity();
 			//重写toast方法如果内容为 ‘再按一次退出应用’ 就隐藏应用，其他正常toast  
 			plus.nativeUI.toast = (function(str) {
@@ -33,14 +33,15 @@
 					})
 				}
 			});
+			// #endif
 			console.log('App Launch')
 		},
 		onShow: function() {
-			
+
 			// setInterval(()=>{
 			// 	// #ifdef APP-PLUS
 			// 	var webView = this.$mp.page.$getAppWebview();  
-				
+
 			// 	// 修改buttons  
 			// 	// index: 按钮索引, style {WebviewTitleNViewButtonStyles }  
 			// 	webView.setTitleNViewButtonStyle(0, {  
@@ -67,6 +68,11 @@
 	input,
 	button {
 		box-sizing: border-box;
+	}
+	
+	// 富文本中的图片最大宽度，防止超出屏幕，需使用document加载此类名
+	.rich-text-img-width{
+		max-width: 100%;
 	}
 
 	.linear-background {
@@ -158,7 +164,7 @@
 	.button-cancel {
 		background: rgba(233, 234, 235, 1);
 		color: #7C7C7C;
-		box-shadow: 0px 0px 19px 1px #e7e7e7;
+		box-shadow: 0px 0px 19px 1px rgba(233, 234, 235, .4);
 	}
 
 	.button:active {

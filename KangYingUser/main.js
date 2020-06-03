@@ -52,6 +52,38 @@ Vue.prototype.$api = {
 	prePage
 };
 
+// 拦截路由跳转，所有跳转应使用此方法
+// 记录最后所在页面
+// 判断下个页面是否需要登录时
+
+const __updateLastPage= (e = {}) => {
+	console.log(e);
+	Vue.prototype.$lastPage = e
+}
+const __pageTo = (e = {}) => {
+	console.log(e)
+
+	// e.disrecord 默认false，为true则不记录，例如跳转到login页时
+	if (!e.disrecord) {
+		Vue.prototype.$lastPage = e
+	}
+	
+	e.navigateType = '$pageTo'
+	uni.navigateTo(e)
+}
+const __switchTab = (e = {}) => {
+	console.log(e);
+	if (!e.disrecord) {
+		Vue.prototype.$lastPage = e
+	}
+	e.navigateType = '$switchTab'
+	uni.switchTab(e)
+}
+Vue.prototype.$lastPage = {}
+Vue.prototype.$pageTo = __pageTo
+Vue.prototype.$switchTab = __switchTab
+Vue.prototype.$updateLastPage = __updateLastPage
+
 App.mpType = 'app'
 
 const app = new Vue({

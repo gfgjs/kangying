@@ -64,7 +64,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.wrap {
 		height: 100%;
 		background-color: white;
@@ -137,7 +137,7 @@
 						.dot {
 							width: 7px;
 							height: 7px;
-							background: rgba(25, 134, 253, 1);
+							background: $base-color;
 							border-radius: 50%;
 						}
 					}

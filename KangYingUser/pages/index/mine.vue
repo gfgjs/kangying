@@ -4,25 +4,42 @@
 		<view class="header linear-background">
 			<view class="head-wrap">
 				<image src="../../static/mine/0.png" mode=""></image>
-				<view>
+				<view v-if="isLogin">
 					<view class="name">用户名</view>
 					<view class="level">等级</view>
 				</view>
+				<view v-else @click="toLogin">点此登录</view>
 			</view>
 		</view>
 		<view class="footer">
 			<view class="recoder">
 				<view class="title">药品订单</view>
 				<view class="buttons">
-					<view class="item" v-for="i in menus" :key="i">
-						<image :src="`../../static/mine/${i.id}.png`" mode=""></image>
-						<view>{{i.name}}</view>
+					<view class="item" @click="pageTo('/pages/mall/cart')">
+						<image :src="`../../static/mine/1.png`" mode=""></image>
+						<view>购物车</view>
+					</view>
+					<view class="item" @click="pageTo('/pages/mall/order',0)">
+						<image :src="`../../static/mine/2.png`" mode=""></image>
+						<view>待收货</view>
+					</view>
+					<view class="item" @click="pageTo('/pages/mall/order',1)">
+						<image :src="`../../static/mine/3.png`" mode=""></image>
+						<view>待付款</view>
+					</view>
+					<view class="item" @click="pageTo('/pages/mall/order',2)">
+						<image :src="`../../static/mine/4.png`" mode=""></image>
+						<view>待评价</view>
+					</view>
+					<view class="item" @click="pageTo('/pages/mall/order',3)">
+						<image :src="`../../static/mine/5.png`" mode=""></image>
+						<view>退款/售后</view>
 					</view>
 				</view>
 			</view>
 			<view class="place"></view>
 			<view class="wrap img-menu">
-				<view class="item">
+				<view class="item" @click="pageTo('/pages/card/list')">
 					<view class="title">
 						就诊人管理
 						<uni-icons type="arrowright"></uni-icons>
@@ -31,10 +48,10 @@
 				</view>
 				<view class="item">
 					<view class="title">
-						就诊人管理
+						健康档案
 						<uni-icons type="arrowright"></uni-icons>
 					</view>
-					<view class="little-title">在线管理个人就诊信息</view>
+					<view class="little-title">个人健康档案管理</view>
 				</view>
 			</view>
 
@@ -88,6 +105,9 @@
 </template>
 
 <script>
+	import {
+		readLoginMessage
+	} from '../../common/util.js'
 	export default {
 		data() {
 			return {
@@ -111,8 +131,56 @@
 						id: 5,
 						name: '退款/售后'
 					}
-				]
+				],
+				isLogin: false
 			};
+		},
+		onShow() {
+			const message = readLoginMessage(uni)
+
+			if (message.token) {
+				this.isLogin = true
+			}
+		},
+		methods: {
+			pageTo(url, tab) {
+				if (!this.isLogin) {
+					uni.showModal({
+						content: "是否前往登录？",
+						success: (res) => {
+							if (res.confirm) {
+								this.toLogin()
+							} else if (res.cancel) {
+								// uni.showActionSheet({
+								//     itemList: ['A', 'B', 'C'],
+								//     success: function (res) {
+								//         console.log('选中了第' + (res.tapIndex + 1) + '个按钮');
+								//     },
+								//     fail: function (res) {
+								//         console.log(res.errMsg);
+								//     }
+								// });
+								// console.log('用户点击取消');
+							}
+						}
+					})
+				} else {
+					this.$pageTo({
+						url: url + '?tab=' + tab,
+					})
+				}
+
+			},
+			toLogin() {
+				this.$updateLastPage({
+					url: '/pages/index/mine',
+					navigateType: '$switchTab'
+				})
+				this.$pageTo({
+					url: '/pages/login/login',
+					disrecord: true
+				})
+			}
 		}
 	}
 </script>
@@ -263,7 +331,6 @@
 			top: 4vw;
 			background-color: white;
 			border-radius: 6px;
-			// height: 20vw;
 			box-shadow: 0px 2px 20px 0px rgba(21, 21, 21, 0.03);
 			padding-bottom: 15px;
 

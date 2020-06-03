@@ -3,10 +3,10 @@
 		<view class="header box-shadow">
 			<view class="tab" v-for="(item,index) in tabs" :key='item' @click="switchTab(index)">
 				<view class="">{{item}}</view>
-				<view class="bar linear-background" :style="currTab===index&&'opacity:1'"></view>
+				<view class="bar linear-background" :style="currTab==index&&'opacity:1'"></view>
 			</view>
 		</view>
-		<view class="content">
+		<view class="content" v-if="currTab==0">
 			<view class="content-item" v-for="i in 10" :key='i'>
 				<view class="top">
 					<image src="../../static/med.png"></image>
@@ -23,21 +23,35 @@
 				</view>
 			</view>
 		</view>
+		<view class="content" v-if="currTab==1">
+			<noData @retry='retry'></noData>
+		</view>
 	</view>
 </template>
 
 <script>
+	import noData from '../../components/nodata.nvue'
 	export default {
+		components:{
+			noData
+		},
 		data() {
 			return {
 				tabs: ['待收货', '待付款', '待评价', '售后/退款'],
 				currTab: 0
 			};
 		},
+		onLoad(e) {
+			console.log(e);
+			this.currTab = e.tab
+		},
 		mounted() {
-
+			
 		},
 		methods: {
+			retry(){
+				console.log('retry');
+			},
 			switchTab(index) {
 				this.currTab = index
 			}

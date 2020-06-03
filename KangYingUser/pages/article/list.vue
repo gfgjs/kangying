@@ -2,15 +2,15 @@
 	<view>
 		<view class="common-place"></view>
 		<view class="common-place"></view>
-		<view class="bottom-banner" v-for="item in bottomBanner" v-bind:key="item.id" 
-		:style="`background: url(${item.background});`">
-			<view class="mask" @click="navTo('/pages/article/article')">
+		<view class="wrap bottom-banner" v-for="item in articleList" v-bind:key="item.id"
+		 :style="`background: url(${item.article_thumb});`">
+			<view class="mask" @click="navToArticle('/pages/article/article',item.id)">
 				<image src="../../static/home/3.png" mode=""></image>
 				<view>
-					{{item.content}}
+					{{item.article_title}}
 				</view>
 				<view class="doctor">
-					<image :src="item.doctorImg"></image>
+					<image :src="item.header"></image>
 					<view class="">
 						{{item.doctorText}}
 					</view>
@@ -21,38 +21,57 @@
 </template>
 
 <script>
+	import {
+		request_articleList
+	} from '../../common/https.js'
 	export default {
 		data() {
 			return {
-				bottomBanner: [{
-						id: 1,
-						background: '../../static/home/23.png',
-						doctorImg: '../../static/home/15.png',
-						content: '【科普】有些隔夜饭菜不致癌？真正致癌的食物到底有哪些',
-						doctorText: '戴医生 上海长江医院'
-					},
-					{
-						id: 2,
-						background: '../../static/home/10.png',
-						doctorImg: '../../static/home/15.png',
-						content: '【科普】夏季来临，有哪些搭配的茶是清热去火气的',
-						doctorText: '戴医生 上海长江医院'
-					}
-				]
+				articleList: [],
+				page: 1,
 			};
 		},
-		methods:{
-			navTo(url){
-				uni.navigateTo({
-					url
+		onLoad() {
+			this.uploadData()
+		},
+		onReachBottom(e) {
+			this.uploadData()
+		},
+		onPullDownRefresh() {
+			this.page = 1
+			this.articleList = []
+			this.uploadData()
+		},
+		methods: {
+			uploadData() {
+				request_articleList({
+					uni,
+					data: {
+						page: this.page,
+						page_size: 10
+					}
+				}).then(res => {
+					uni.stopPullDownRefresh()
+					if (res.code === 0) {
+						if (res.data.length) {
+							this.articleList = this.articleList.concat(res.data)
+							this.page++
+						} else {
+							this.$api.msg('没有更多数据')
+						}
+					}
 				})
-			}
+			},
+			navToArticle(url, id) {
+				this.$pageTo({
+					url: url + '?id=' + id
+				})
+			},
 		}
 	}
 </script>
 
 <style lang="scss">
-	
 	.bottom-banner {
 		height: 42vw;
 		width: 94vw;
