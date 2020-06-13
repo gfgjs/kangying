@@ -32,6 +32,10 @@ export const request = (e = {}, api, method = 'POST') => {
 	})
 }
 
+// 获取最新版本
+export const request_version = e => {
+	return request(e, '/v1/p/version')
+}
 // 登录相关
 export const request_sendReSms = e => {
 	return request(e, '/v1/p/user/sendReSms')
@@ -48,6 +52,9 @@ export const request_codeLogin = e => {
 export const request_login = e => {
 	return request(e, '/v1/p/user/login')
 }
+export const request_userInfo = e => {
+	return request(e, '/v1/u/user/info')
+}
 // 文章
 export const request_articleList = e => {
 	return request(e, '/v1/p/article/list', 'GET')
@@ -62,4 +69,9 @@ export const request_patientList = e => {
 // 新建就诊卡
 export const request_patientCardAdd = e => {
 	return request(e, '/v1/u/patient_card/add', 'POST')
+}
+
+// 科室列表
+export const request_cates = e => {
+	return request(e, '/v1/p/doctor/cates', 'GET')
 }

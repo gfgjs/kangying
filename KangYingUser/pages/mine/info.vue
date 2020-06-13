@@ -12,14 +12,14 @@
 		<div class="row">
 			<div class="left">
 				<div>用户名称</div>
-				<input type="text" value="王大毛" disabled>
+				<input type="text" :value="userInfo.user_name" disabled>
 			</div>
 			<uni-icons type="arrowright"></uni-icons>
 		</div>
 		<div class="row">
 			<div class="left">
 				<div>绑定手机号</div>
-				<input type="text" value="18728282828" disabled>
+				<input type="text" :value="userInfo.mobile" disabled>
 			</div>
 			<uni-icons type="arrowright"></uni-icons>
 		</div>
@@ -41,16 +41,44 @@
 			</div>
 			<!-- <uni-icons type="arrowright"></uni-icons> -->
 		</div>
-		<div class="button">退出登录</div>
+		<div class="button" @click='exitLogin'>退出登录</div>
 	</view>
 </template>
 
 <script>
+	import {saveLoginMessage} from '../../common/util.js'
+	import {request_userInfo} from '../../common/https.js'
 	export default {
 		data() {
 			return {
-
+userInfo:''
 			};
+		},
+		onShow() {
+			request_userInfo({
+				uni,
+				data:{}
+			}).then(res=>{
+				if(res.code===0){
+					this.userInfo = res.data
+				}
+				console.log(res);
+			})
+		},
+		methods:{
+			exitLogin(){
+				uni.showModal({
+					content:'确认退出登录？',
+					success:(res)=> {
+						if(res.confirm){
+							saveLoginMessage(uni,{})
+							this.$switchTab({
+								url:'/pages/index/index'
+							})
+						}
+					}
+				})
+			}
 		}
 	}
 </script>
@@ -83,7 +111,7 @@
 		border-bottom: solid 1px rgba(251,251,251,1);
 	}
 	.row:active{
-		opacity: .2;
+		opacity: .8;
 	}
 	.button{
 		border-radius: 20px;

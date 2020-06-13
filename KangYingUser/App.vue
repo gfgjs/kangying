@@ -1,6 +1,7 @@
 <script>
 	import {
-		request_sendReSms
+		request_sendReSms,
+		request_version
 	} from './common/https.js'
 	// let STATUS = false
 
@@ -19,7 +20,11 @@
 			beforePage: '', // 登录或注册前的页面
 		},
 		onLaunch: function() {
+
 			// #ifdef APP-PLUS
+
+			this.updateApp()
+
 			let main = plus.android.runtimeMainActivity();
 			//重写toast方法如果内容为 ‘再按一次退出应用’ 就隐藏应用，其他正常toast  
 			plus.nativeUI.toast = (function(str) {
@@ -35,6 +40,40 @@
 			});
 			// #endif
 			console.log('App Launch')
+		},
+		methods: {
+			updateApp() {
+				uni.getSystemInfo({
+					success: (res) => {
+						if (res.platform == "android") {
+							request_version({
+								uni
+							}).then(res => {
+								if (res.code === 0) {
+									plus.runtime.getProperty(plus.runtime.appid, (inf) => {
+										if (res.data.version_code > inf.versionCode) {
+											uni.showModal({
+												title: '检测到有新版本，是否更新？',
+												content: res.data.version_desc,
+												success(modal) {
+													if (modal.confirm) {
+														// console.log(inf.versionCode);
+														plus.runtime.openURL(res.data.apk_link)
+														// plus.runtime.openURL('https://m.3mstv.com/kangying.apk')
+													}
+												}
+											})
+										}
+
+										// that.wgtVer = inf.version;
+										// that.version = plus.runtime.version;
+									})
+								}
+							})
+						}
+					}
+				})
+			}
 		},
 		onShow: function() {
 
@@ -69,9 +108,9 @@
 	button {
 		box-sizing: border-box;
 	}
-	
+
 	// 富文本中的图片最大宽度，防止超出屏幕，需使用document加载此类名
-	.rich-text-img-width{
+	.rich-text-img-width {
 		max-width: 100%;
 	}
 
@@ -125,7 +164,7 @@
 		content: '';
 		width: 4px;
 		height: 20px;
-		background-color: red;
+		// background-color: red;
 		position: absolute;
 		left: 0;
 		background: $base-color;

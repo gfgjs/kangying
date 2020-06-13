@@ -174,6 +174,9 @@
 						align-items: center;
 					}
 				}
+				.box-shadow {
+					box-shadow: 0 0 12px #efefef;
+				}
 
 				.buttons {
 					display: flex;

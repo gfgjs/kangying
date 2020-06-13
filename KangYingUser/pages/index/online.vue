@@ -1,22 +1,16 @@
 <template>
 	<view class="content">
 		<scroll-view scroll-y class="left-aside">
-			<view v-for="item in flist" :key="item.id" class="f-item b-b" :class="{active: item.id === currentId}" @click="tabtap(item)">
+			<view v-for="item in flist" :key="item.id" class="f-item b-b" :class="{active: item.id == currentId}" @click="tabtap(item)">
 				{{item.name}}
 			</view>
 		</scroll-view>
-		<scroll-view scroll-with-animation scroll-y class="right-aside" 
-		@scroll="asideScroll" :scroll-top="tabScrollTop"
-		@touchstart='tapScrollView'
-		>
+		<scroll-view scroll-with-animation scroll-y class="right-aside" @scroll="asideScroll" :scroll-top="tabScrollTop"
+		 @touchstart='tapScrollView'>
 			<view v-for="item in slist" :key="item.id" class="s-list" :id="'main-'+item.id">
 				<text class="s-item">{{item.name}}</text>
 				<view class="t-list">
-					<view @click="navToList(item.id, titem.id)" 
-					v-if="titem.pid === item.id" 
-					class="t-item" 
-					v-for="titem in tlist"
-					 :key="titem.id">
+					<view @click="navToList(item.id, titem.id)" v-if="titem.pid == item.id" class="t-item" v-for="titem in tlist" :key="titem.id">
 						<!-- <image :src="titem.picture"></image> -->
 						<text>{{titem.name}}</text>
 					</view>
@@ -31,6 +25,9 @@
 
 <script>
 	let isUserTap // 右侧scrollView的滚动是用户滑动还是js滚动（js控制滚动时不需要触发@scroll事件，否则会出现bug），由此变量控制
+	import {
+		request_cates
+	} from '../../common/https.js'
 	export default {
 		data() {
 			return {
@@ -46,20 +43,59 @@
 			this.loadData();
 		},
 		onShow() {
-			
+
 		},
 		methods: {
-			async loadData() {
-				let list = await this.$api.json('cateList');
-				list.forEach(item => {
-					if (!item.pid) {
-						this.flist.push(item); //pid为父级id, 没有pid或者pid=0是一级分类
-					} else if (!item.picture) {
-						this.slist.push(item); //没有图的是2级分类
+			loadData() {
+				request_cates({
+					uni
+				}).then(res => {
+					if (res.code === 0) {
+						this.currentId = res.data[0].value
+						let array = []
+						res.data.forEach(item => {
+							array.push({
+								id: item.value,
+								name: item.label
+							})
+							this.flist.push({
+								id: item.value,
+								name: item.label
+							});
+							this.slist.push({
+								id: item.value,
+								pid: item.value,
+								name: item.label
+							});
+						})
+						res.data.forEach(item => {
+							item.children.forEach(i => {
+								array.push({
+									pid: item.value,
+									id: i.value,
+									name: i.label
+								})
+								this.tlist.push({
+									pid: item.value,
+									id: i.value,
+									name: i.label
+								}); //3级分类
+							})
+						})
 					} else {
-						this.tlist.push(item); //3级分类
+						this.$api.msg(res.err)
 					}
 				})
+				// let list = await this.$api.json('cateList');
+				// list.forEach(item => {
+				// 	if (!item.pid) {
+				// 		this.flist.push(item); //pid为父级id, 没有pid或者pid=0是一级分类
+				// 	} else if (!item.picture) {
+				// 		this.slist.push(item); //没有图的是2级分类
+				// 	} else {
+				// 		this.tlist.push(item); //3级分类
+				// 	}
+				// })
 			},
 			//一级分类点击
 			tabtap(item) {
@@ -69,17 +105,18 @@
 
 				this.currentId = item.id;
 				let index = this.slist.findIndex(sitem => sitem.pid === item.id);
+
 				this.tabScrollTop = this.slist[index].top;
-				
+
 				isUserTap = false // 点击左侧父级按钮后
 			},
 			//右侧栏滚动
 			asideScroll(e) {
-				if(!isUserTap){
+				if (!isUserTap) {
 					// 非用户滑动
 					return
 				}
-				
+
 				if (!this.sizeCalcState) {
 					this.calcSize();
 				}
@@ -90,10 +127,9 @@
 				}
 			},
 			// 
-			tapScrollView(){
+			tapScrollView() {
 				// 用户触摸右侧后
 				isUserTap = true
-				console.log(22);
 			},
 			//计算右侧栏每个tab的高度等信息
 			calcSize() {
@@ -112,7 +148,7 @@
 			},
 			navToList(sid, tid) {
 				uni.navigateTo({
-					url: `/pages/mall/mall`
+					url: `/pages/doctor/list`
 				})
 			}
 		}
@@ -125,8 +161,8 @@
 		height: 100%;
 		background-color: #f8f8f8;
 	}
-	
-	.common-place{
+
+	.common-place {
 		height: 40vh;
 	}
 

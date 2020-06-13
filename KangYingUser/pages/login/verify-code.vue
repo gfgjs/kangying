@@ -25,6 +25,7 @@
 		request_sendLoginSms,
 		request_register
 	} from '../../common/https.js'
+	import {saveLoginMessage} from '../../common/util.js'
 	let timer
 	export default {
 		data() {
@@ -51,16 +52,30 @@
 						mobile: getApp().globalData.registerMessage.mobile
 					}
 				}).then(res => {
-					console.log(res)
 					if (res.code === 0) {
 						// 发送成功后 开始倒计时
 						this.countDown = 60
 						this.doCountDown()
+					} else if (res.err === '手机号已经注册') {
+						// this.$api.msg(res.err)
+						uni.showModal({
+							content: '手机号已经注册，是否前往登录？',
+							success(res) {
+								if (res.confirm) {
+									uni.navigateTo({
+										url: './login'
+									})
+								} else {
+									uni.navigateTo({
+										url: './register'
+									})
+								}
+							}
+						})
 					} else {
 						this.$api.msg(res.err)
 					}
 				})
-
 			}
 		},
 		beforeDestroy() {
@@ -86,19 +101,57 @@
 						title: '验证码有误'
 					})
 				} else {
-					uni.navigateTo({
-						url: './setPassword'
+					request_register({
+						uni,
+						data: {
+							user_name: this.userName,
+							gender: this.sex,
+							mobile: this.mobile,
+							id_card: this.idcard,
+							sms_code: this.inputs,
+							pass: this.password,
+						}
+					}).then(res => {
+						if (res.code === 0) {
+							this.$api.msg('注册成功！将转入注册前页面')
+							saveLoginMessage(uni, {
+								mobile: this.mobile,
+								password: this.password,
+								token: res.data
+							})
+							
+							let lastPage = this.$lastPage
+							let type = lastPage.navigateType
+							
+							if (type === '$switchTab') {
+								this['$switchTab'](lastPage)
+							} else if (type === '$pageTo') {
+								this['$pageTo'](lastPage)
+							}
+						} else if (res.err === '手机号已注册') {
+							this.$api.msg('手机号已注册，请直接登录')
+							setTimeout(() => {
+								uni.navigateTo({
+									url: './login'
+								})
+							}, 1500)
+						} else {
+							this.$api.msg(res.err)
+						}
+						console.log(res);
 					})
+					// uni.navigateTo({
+					// 	url: './setPassword'
+					// })
 				}
 			}
 		},
 		watch: {
 			time: function(e) {
-				console.log(e);
+				// console.log(e);
 			},
 			inputs: function(e) {
 				getApp().globalData.registerMessage.verifyCode = e
-				console.log(e)
 			}
 		}
 	}

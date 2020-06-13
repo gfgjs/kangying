@@ -5,8 +5,8 @@
 			<view class="head-wrap">
 				<image src="../../static/mine/0.png" mode=""></image>
 				<view v-if="isLogin">
-					<view class="name">用户名</view>
-					<view class="level">等级</view>
+					<view class="name">{{userInfo.user_name}}</view>
+					<!-- <view class="level">等级</view> -->
 				</view>
 				<view v-else @click="toLogin">点此登录</view>
 			</view>
@@ -80,7 +80,7 @@
 				<view class="row">
 					<view class="title">系统服务</view>
 					<view class="buttons">
-						<view class="item">
+						<view class="item" @click="pageTo('/pages/mine/info')">
 							<image src="../../static/mine/12.png" mode=""></image>
 							<view>账户设置</view>
 						</view>
@@ -107,7 +107,9 @@
 <script>
 	import {
 		readLoginMessage
+		
 	} from '../../common/util.js'
+	import {request_userInfo} from '../../common/https.js'
 	export default {
 		data() {
 			return {
@@ -132,7 +134,8 @@
 						name: '退款/售后'
 					}
 				],
-				isLogin: false
+				isLogin: false,
+				userInfo:{}
 			};
 		},
 		onShow() {
@@ -140,6 +143,17 @@
 
 			if (message.token) {
 				this.isLogin = true
+				request_userInfo({
+					uni,
+					data:{}
+				}).then(res=>{
+					if(res.code===0){
+						this.userInfo = res.data
+					}
+					console.log(res);
+				})
+			}else{
+				this.isLogin = false
 			}
 		},
 		methods: {

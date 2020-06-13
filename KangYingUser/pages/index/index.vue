@@ -26,7 +26,11 @@
 
 		<view class="wrap func-1">
 			<view class="top">
-				<view @click="navTo('/pages/doctor/see-the-doctor')">
+				<!-- <view @click="navTo('/pages/doctor/see-the-doctor')">
+					<image src="../../static/home/5.png" mode=""></image>
+					<view>网上看病</view>
+				</view> -->
+				<view @click="switchTab('/pages/index/online')">
 					<image src="../../static/home/5.png" mode=""></image>
 					<view>网上看病</view>
 				</view>
@@ -34,7 +38,7 @@
 					<image src="../../static/home/6.png" mode=""></image>
 					<view>线下就诊</view>
 				</view>
-				<view @click="switchTab('/pages/index/online')">
+				<view @click="navTo('/pages/mall/mall')">
 					<image src="../../static/home/7.png" mode=""></image>
 					<view>快速购药</view>
 				</view>
@@ -134,7 +138,7 @@
 				</view>
 			</view>
 		</view>
-		<view v-for="i in pages" :key='i.path' style="padding: 10px;" @click="navTo('/'+i.path)">{{i.path}}</view>
+		<!-- <view v-for="i in pages" :key='i.path' style="padding: 10px;" @click="navTo('/'+i.path)">{{i.path}}</view> -->
 	</view>
 </template>
 
@@ -458,6 +462,9 @@
 			};
 			// #endif
 			
+			
+		},
+		onShow() {
 			request_articleList({uni,data:{page:1,page_size:2}}).then(res=>{
 				if(res.code===0){
 					this.articleList = res.data

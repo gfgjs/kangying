@@ -7,17 +7,17 @@
 				<view class="text">快速匹配</view>
 			</view>
 			<view class="list quick">
-				<view v-for="item in quickList" :key="item">{{item}}</view>
+				<view v-for="item in quickList" :key="item">{{item.label}}</view>
 			</view>
 			<view class="title">
 				<view class="blue"></view>
 				<view class="text">选择门诊</view>
 			</view>
 			<view class="list select">
-				<view class="item" v-for="i in quickList" :key="i">
+				<view class="item" v-for="i in cates" :key="i">
 					<image class="head" src="../../static/home/11.png" mode=""></image>
 					<view class="middle">
-						<view class="title">{{i}}</view>
+						<view class="title">{{i.label}}</view>
 						<view class="text">尿频、尿急、尿痛、尿结石以及尿道感染等泌尿</view>
 					</view>
 					<uni-icons type="arrowright" size="24"></uni-icons>
@@ -28,11 +28,27 @@
 </template>
 
 <script>
+	import {request_cates} from '../../common/https.js'
 	export default {
 		data() {
 			return {
-				quickList:['流感','用药咨询','腰间盘突出','疫苗咨询','护肤','美容整形','慢性咽炎','风湿病炎症','宝宝健康','牙龈牙周炎','月经不调','感冒']
+				quickList:[],
+				cates:[]
 			};
+		},
+		onShow() {
+			request_cates({
+				uni
+			
+			}).then(res=>{
+				if(res.code===0){
+					this.quickList = res.data.splice(0,1)[0].children
+					this.cates = res.data
+				}else{
+					this.$api.msg(res.err)
+				}
+				console.log(res);
+			})
 		}
 	}
 </script>

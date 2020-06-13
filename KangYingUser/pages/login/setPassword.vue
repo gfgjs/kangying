@@ -15,6 +15,7 @@
 	import {
 		request_register
 	} from '../../common/https.js'
+	import {saveLoginMessage} from '../../common/util.js'
 	export default {
 		data() {
 			return {
