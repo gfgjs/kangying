@@ -1,5 +1,10 @@
 {
 	"pages": [{
+		"path": "pages/guide/guide",
+		"style": {
+			"navigationStyle":"custom"
+		}
+	}, {
 		"path": "pages/index/index",
 		"style": {
 			// #ifdef MP
@@ -44,43 +49,84 @@
 				}
 			}
 		}
-	}    ,{
-            "path" : "pages/mine/setting",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/mine/suggest",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/doctor/add-medicine",
-            "style" : {
-				"app-plus": {
-					"titleNView": {
-						"type": "default",
-						"buttons": [{
-							"text": "下一步",
-							"fontSize": "16",
-							"background": "rgba(0,0,0,0)"
-						}]
-					}
+	}, {
+		"path": "pages/mine/setting",
+		"style": {}
+	}, {
+		"path": "pages/mine/suggest",
+		"style": {}
+	}, {
+		"path": "pages/doctor/add-medicine",
+		"style": {
+			"app-plus": {
+				"titleNView": {
+					"type": "default",
+					"buttons": [{
+						"text": "下一步",
+						"fontSize": "16",
+						"background": "rgba(0,0,0,0)"
+					}]
 				}
 			}
-        }
-        ,{
-            "path" : "pages/doctor/pharmacist-order",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/doctor/test-order",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/doctor/drug-audit",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/doctor/prescription",
+		}
+	}, {
+		"path": "pages/doctor/pharmacist-order",
+		"style": {}
+	}, {
+		"path": "pages/doctor/test-order",
+		"style": {}
+	}, {
+		"path": "pages/doctor/drug-audit",
+		"style": {}
+	}, {
+		"path": "pages/doctor/prescription",
+		"style": {}
+	}, {
+		"path": "pages/doctor/set-price",
+		"style": {}
+	}, {
+		"path": "pages/doctor/image-exam",
+		"style": {}
+	}, {
+		"path": "pages/doctor/check-list",
+		"style": {}
+	}, {
+		"path": "pages/doctor/patient",
+		"style": {
+			// #ifdef MP
+			"navigationBarTitleText": "天心医疗",
+			// #endif 
+			"app-plus": {
+				"titleNView": {
+					"type": "transparent",
+					"buttons": [{
+						"fontSrc": "/static/yticon.ttf",
+						"text": "\ue744",
+						"fontSize": "27",
+						"color": "#303133",
+						"background": "rgba(0,0,0,0)",
+						"redDot": true
+					}]
+				}
+			}
+		}
+	}, {
+		"path": "pages/doctor/elec-case",
+		"style": {}
+	}, {
+		"path": "pages/doctor/auxiliary-list",
+		"style": {}
+	}, {
+		"path": "pages/doctor/register-role",
+		"style": {}
+	}, {
+		"path": "pages/doctor/doctor-room",
+		"style": {}
+	}, {
+		"path": "pages/doctor/consulting-desk",
+		"style": {}
+	}    ,{
+            "path" : "pages/login/register",
             "style" : {}
         }
     ],

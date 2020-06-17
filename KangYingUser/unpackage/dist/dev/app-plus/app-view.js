@@ -4885,7 +4885,12 @@ var render = function() {
             { staticClass: _vm._$g(2, "sc"), attrs: { _i: 2 } },
             [
               _c("v-uni-image", {
-                attrs: { src: _vm._$g(3, "a-src"), mode: "", _i: 3 }
+                attrs: { src: _vm._$g(3, "a-src"), mode: "", _i: 3 },
+                on: {
+                  click: function($event) {
+                    return _vm.$handleViewEvent($event)
+                  }
+                }
               }),
               _vm._$g(4, "i")
                 ? _c(
@@ -8683,23 +8688,18 @@ var render = function() {
         ],
         1
       ),
-      _vm._l(10, function(i, $10, $20, $30) {
-        return _c(
-          "v-uni-view",
-          { staticClass: _vm._$g("3-" + $30, "sc"), attrs: { _i: "3-" + $30 } },
-          [
-            _c(
-              "v-uni-view",
-              {
-                staticClass: _vm._$g("4-" + $30, "sc"),
-                attrs: { _i: "4-" + $30 }
-              },
-              [_vm._v("您好大夫，我这边胃痛比较严重")]
-            )
-          ],
-          1
-        )
-      }),
+      _c(
+        "v-uni-view",
+        { staticClass: _vm._$g(3, "sc"), attrs: { _i: 3 } },
+        [
+          _c(
+            "v-uni-view",
+            { staticClass: _vm._$g(4, "sc"), attrs: { _i: 4 } },
+            [_vm._v("您好大夫，我这边胃痛比较严重")]
+          )
+        ],
+        1
+      ),
       _c(
         "v-uni-view",
         { staticClass: _vm._$g(5, "sc"), attrs: { _i: 5 } },
@@ -8760,7 +8760,7 @@ var render = function() {
         1
       )
     ],
-    2
+    1
   )
 }
 var recyclableRender = false

@@ -88,9 +88,19 @@
             },
             "splashscreen" : {
                 "android" : {
-                    "hdpi" : "C:/Users/Maxir/Downloads/splash.png",
-                    "xhdpi" : "C:/Users/Maxir/Downloads/splash.png",
-                    "xxhdpi" : "C:/Users/Maxir/Downloads/splash.png"
+                    "hdpi" : "unpackage/res/splash.png",
+                    "xhdpi" : "unpackage/res/splash.png",
+                    "xxhdpi" : "unpackage/res/splash.png"
+                },
+                "ios" : {
+                    "iphone" : {
+                        "portrait-896h@3x" : "unpackage/res/splash.png",
+                        "landscape-896h@3x" : "unpackage/res/splash.png",
+                        "portrait-896h@2x" : "unpackage/res/splash.png",
+                        "landscape-896h@2x" : "unpackage/res/splash.png",
+                        "iphonex" : "unpackage/res/splash.png",
+                        "iphonexl" : ""
+                    }
                 }
             }
         },

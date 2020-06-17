@@ -3,7 +3,7 @@
 		<!-- <view class="nav-place linear-background"></view> -->
 		<view class="header linear-background">
 			<view class="head-wrap">
-				<image src="../../static/mine/0.png" mode=""></image>
+				<image src="../../static/mine/0.png" @click="changeAvatar" mode=""></image>
 				<view v-if="isLogin">
 					<view class="name">{{userInfo.user_name}}</view>
 					<!-- <view class="level">等级</view> -->
@@ -109,7 +109,7 @@
 		readLoginMessage
 		
 	} from '../../common/util.js'
-	import {request_userInfo} from '../../common/https.js'
+	import {request_userInfo,request_uploadImg} from '../../common/https.js'
 	export default {
 		data() {
 			return {
@@ -157,6 +157,11 @@
 			}
 		},
 		methods: {
+			changeAvatar(){
+				request_uploadImg({uni}).then(res=>{
+					console.log(res);
+				})
+			},
 			pageTo(url, tab) {
 				if (!this.isLogin) {
 					uni.showModal({

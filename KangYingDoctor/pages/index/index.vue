@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="header">
-			<image class="" src="../../static/index/top.png" mode=""></image>
+			<image class="" src="../../static/index/top.png" @click="toPage('../doctor/elec-case')" mode=""></image>
 		</view>
 		<view class="menus-box">
 			<view class="row-title">
@@ -14,29 +14,29 @@
 			<view class="row">
 				<view class="row-item">
 					<view class="number">0</view>
-					<view class="name">患者</view>
+					<view class="name">新患者</view>
 				</view>
 				<view class="row-item">
 					<view class="number">0</view>
-					<view class="name">患者</view>
+					<view class="name">问诊中</view>
 				</view>
 				<view class="row-item">
 					<view class="number">0</view>
-					<view class="name">患者</view>
+					<view class="name">已完结</view>
 				</view>
 			</view>
 			<view class="row">
 				<view class="row-item">
 					<view class="number">0</view>
-					<view class="name">患者</view>
+					<view class="name">医嘱处方</view>
 				</view>
 				<view class="row-item">
 					<view class="number">0</view>
-					<view class="name">患者</view>
+					<view class="name">体检预约</view>
 				</view>
-				<view class="row-item">
+				<view class="row-item" @click="toPage('/pages/doctor/doctor-room','all')">
 					<view class="number">0</view>
-					<view class="name">患者</view>
+					<view class="name">全部患者</view>
 				</view>
 			</view>
 		</view>
@@ -47,21 +47,21 @@
 		<view class="menus-box">
 			<view class="row-title">服务中心</view>
 			<view class="row" style="border: none;">
-				<view class="row-item">
+				<view class="row-item" @click="toPage('/pages/doctor/consulting-desk')">
 					<image src="../../static/index/1.png" mode=""></image>
-					<view class="name">患者</view>
+					<view class="name">服务台</view>
 				</view>
 				<view class="row-item">
 					<image src="../../static/index/2.png" mode=""></image>
-					<view class="name">患者</view>
+					<view class="name">体检管理</view>
 				</view>
 				<view class="row-item">
 					<image src="../../static/index/3.png" mode=""></image>
-					<view class="name">患者</view>
+					<view class="name">药房</view>
 				</view>
 				<view class="row-item">
 					<image src="../../static/index/4.png" mode=""></image>
-					<view class="name">患者</view>
+					<view class="name">随访计划</view>
 				</view>
 			</view>
 		</view>
@@ -80,7 +80,11 @@
 			}
 		},
 		methods: {
-
+			toPage(url) {
+				uni.navigateTo({
+					url
+				})
+			}
 		}
 	}
 </script>
@@ -121,21 +125,22 @@
 				flex-direction: column;
 				align-items: center;
 				padding: 20px 0;
-				image{
+
+				image {
 					width: 24px;
 					height: 26px;
 				}
 
 				.number {
-					font-size: 24px;
+					font-size: 22px;
 				}
 
 				.name {
 					color: #494949;
-					font-size: 16px;
+					font-size: 14px;
 					margin-top: 6px;
 				}
-				
+
 			}
 		}
 

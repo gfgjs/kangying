@@ -1,20 +1,19 @@
 <script>
-export default {
-	onLaunch: function() {
-		console.log('App Launch');
-	},
-	onShow: function() {
-		console.log('App Show');
-	},
-	onHide: function() {
-		console.log('App Hide');
-	}
-};
+	export default {
+		onLaunch: function() {
+			console.log('App Launch');
+		},
+		onShow: function() {
+			console.log('App Show');
+		},
+		onHide: function() {
+			console.log('App Hide');
+		}
+	};
 </script>
 
 <style lang="scss">
-
-/* 每个页面公共css */
+	/* 每个页面公共css */
 	*,
 	page,
 	view,
@@ -98,6 +97,25 @@ export default {
 	.little-title {
 		font-size: 13px;
 		color: #5D5D5D;
+	}
+
+	.border-bottom {
+		border-bottom: 1px solid #F8F5F5;
+	}
+
+	/* 过渡 */
+	.slide-fade-enter-active {
+		transition: all .1s ease;
+	}
+
+	.slide-fade-leave-active {
+		transition: all .1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+	}
+
+	.slide-fade-enter,
+	.slide-fade-leave-to {
+		transform: translateX(-10px);
+		opacity: 0;
 	}
 
 	.button {

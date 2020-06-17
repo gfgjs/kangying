@@ -7,7 +7,7 @@
 				填写
 			</view>
 		</view>
-		<view class="row user-row" v-for="i in 10">
+		<view class="row user-row">
 			<view class="message user-message">
 				您好大夫，我这边胃痛比较严重
 			</view>

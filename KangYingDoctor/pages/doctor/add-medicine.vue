@@ -8,10 +8,7 @@
 			</view>
 		</view>
 		<scroll-view scroll-y="true" class="scroll-left">
-			<view v-for="(item,index) in firstList" 
-			:key="index" class="item " 
-			:class="currIndex==index&&'item-checked'"
-			 @click="clickFirst(item,index)">
+			<view v-for="(item,index) in firstList" :key="index" class="item " :class="currIndex==index&&'item-checked'" @click="clickFirst(item,index)">
 				<view class="text">圣诞节案例三等奖可撒旦</view>
 			</view>
 		</scroll-view>
@@ -28,12 +25,9 @@
 						</view>
 						<uni-icons type="plus-filled" size="24" class="icon"></uni-icons>
 					</view>
-					
 				</uni-collapse-item>
-				
 			</uni-collapse>
 		</scroll-view>
-
 	</view>
 </template>
 
@@ -41,23 +35,26 @@
 	export default {
 		data() {
 			return {
-				firstList:[1,2,3,4,5,6,1,5,6],
-				currIndex:0
+				firstList: [1, 2, 3, 4, 5, 6, 1, 5, 6],
+				currIndex: 0
 			};
 		},
-		methods:{
-			clickFirst(item,index){
+		methods: {
+			clickFirst(item, index) {
 				this.currIndex = index
 			}
 		}
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.search-box {
 		position: fixed;
 		width: 100%;
-		padding: 18px 20px;
+		padding: 0 20px;
+		height: 80px;
+		display: flex;
+		align-items: center;
 		background-color: $base-color;
 		box-shadow: 0px 8px 21px 0px rgba(94, 182, 170, 0.2);
 		z-index: 1;
@@ -138,41 +135,48 @@
 
 		.item {
 			border-bottom: 1px solid #F8F8F8;
-			
-			
-			.item-content{
-				padding: 10px 10px ;
+
+
+			.item-content {
+				padding: 10px 10px;
 				font-size: 14px;
 				height: 70px;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
 				border-bottom: 1px solid #e5e5e5;
-				.left{
-					display: flex;flex-direction: column;
+
+				.left {
+					display: flex;
+					flex-direction: column;
 					justify-content: space-around;
 					height: 100%;
-					.name{
+
+					.name {
 						width: 55vw;
 						white-space: nowrap;
 						overflow: hidden;
 						text-overflow: ellipsis;
 					}
-					.bottom-row{
+
+					.bottom-row {
 						display: flex;
 						justify-content: space-between;
 					}
 				}
-				.icon{
-					color: $base-color!important;
+
+				.icon {
+					color: $base-color !important;
 				}
-				
-						
+
+
 			}
-			.item-content:first-of-type{
+
+			.item-content:first-of-type {
 				border-top: 1px solid #e5e5e5;
 			}
-			.item-content:last-of-type{
+
+			.item-content:last-of-type {
 				border: none;
 			}
 		}
