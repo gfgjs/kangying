@@ -1,0 +1,136 @@
+import Vue from 'vue'
+import store from './store'
+import App from './App'
+import JMessage from './common/jmessage-wxapplet-sdk-1.4.3.min.js'
+// import Json from './Json' //测试用数据
+
+const jim = new JMessage({
+	// debug : true
+});
+Vue.prototype.$jim = jim
+
+const msg = (title, duration = 1500, mask = false, icon = 'none') => {
+	//统一提示方便全局修改
+	if (Boolean(title) === false) {
+		return;
+	}
+	uni.showToast({
+		title,
+		duration,
+		mask,
+		icon
+	});
+}
+
+const json = type => {
+	//模拟异步请求数据
+	return new Promise(resolve => {
+		setTimeout(() => {
+			resolve(Json[type]);
+		}, 500)
+	})
+}
+
+const prePage = () => {
+	let pages = getCurrentPages();
+	let prePage = pages[pages.length - 2];
+	// #ifdef H5
+	return prePage;
+	// #endif
+	return prePage.$vm;
+}
+
+Vue.config.productionTip = false
+Vue.prototype.$fire = new Vue();
+Vue.prototype.$store = store;
+Vue.prototype.$api = {
+	msg,
+	json,
+	prePage
+};
+
+// 拦截路由跳转，所有跳转应使用此方法
+// 记录最后所在页面
+// 判断下个页面是否需要登录时
+
+let lastPage = null
+const __pageTo = (e = {}) => {
+
+	/* 
+	 e = {
+		 needLogin: true，需要登录
+		 needCurrentPage: true, 需要保持当前页面，否则登录后跳转到传入的url
+	 }
+	 */
+
+	if (lastPage) {
+		if (lastPage.isTabBar) {
+			uni.switchTab({
+				url: lastPage.path
+			})
+		} else {
+			let str = ''
+			for (let i in lastPage.options) {
+				str += (i + '=' + lastPage.options[i] + '&')
+			}
+			uni.navigateTo({
+				url: lastPage.path + (str ? ('?' + str) : '')
+			})
+		}
+		lastPage = null
+		return
+	}
+
+	if (e.needLogin && !Vue.prototype.$store.state.hasLogin) {
+		if (!e.url || e.needCurrentPage) {
+			var pages = getCurrentPages();
+			var page = pages[pages.length - 1]
+			// 接受自定义的lastPage，用于登录后无缝跳转到登录前要去的页面
+			lastPage = e.lastPage || {
+				path: page.__page__.path,
+				options: page.__page__.options,
+				isTabBar: page.__page__.meta.isTabBar
+			}
+		} else {
+			lastPage = {
+				path: e.url,
+				options: e.options || {}
+			}
+		}
+		if(e.noTipModal){
+			uni.navigateTo({
+				url: '/pages/login/login'
+			})
+		}else{
+			uni.showModal({
+				content: "是否前往登录？",
+				success: (res) => {
+					if (res.confirm) {
+						uni.navigateTo({
+							url: '/pages/login/login'
+						})
+					}else{
+						lastPage = null
+					}
+				}
+			})
+		}
+	} else {
+		let str = ''
+		for (let i in (e.options || {})) {
+			str += (i + '=' + e.options[i] + '&')
+		}
+		uni.navigateTo({
+			url: e.url + (str ? ('?' + str.slice(0, str.length - 1)) : '')
+		})
+	}
+}
+Vue.prototype.$pageTo = __pageTo
+
+App.mpType = 'app'
+
+const app = new Vue({
+	...App
+})
+
+app.$mount()
