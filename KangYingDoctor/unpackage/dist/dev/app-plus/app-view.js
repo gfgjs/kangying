@@ -9475,6 +9475,14 @@ var render = function() {
                   _c("v-uni-input", {
                     staticClass: _vm._$g(15, "sc"),
                     attrs: { placeholder: "输入想说的话", _i: 15 },
+                    on: {
+                      focus: function($event) {
+                        return _vm.$handleViewEvent($event)
+                      },
+                      blur: function($event) {
+                        return _vm.$handleViewEvent($event)
+                      }
+                    },
                     model: {
                       value: _vm._$g(15, "v-model"),
                       callback: function($$v) {

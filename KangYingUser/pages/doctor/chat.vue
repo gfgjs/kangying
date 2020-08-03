@@ -29,7 +29,7 @@
 			<view class="little">
 				<!-- <uni-icons type="mic" class="icon" size="24"></uni-icons> -->
 				<view class="input-box">
-					<input class="input" placeholder="输入想说的话" v-model="messageInput"></input>
+					<input class="input" @focus="messageInputFocus" @blur="messageInputBlur" placeholder="输入想说的话" v-model="messageInput"></input>
 				</view>
 				<uni-icons type="list" @click="moreHandle" class="icon" size="24"></uni-icons>
 				<view v-if="messageInput" @touchend.prevent="sendMessage" class="button">
@@ -118,6 +118,22 @@
 			}, 600)
 		},
 		methods: {
+			messageInputFocus(){
+				setTimeout(() => {
+					uni.pageScrollTo({
+						scrollTop: 9999,
+						duration: 200
+					})
+				}, 100)
+			},
+			messageInputBlur(){
+				setTimeout(() => {
+					uni.pageScrollTo({
+						scrollTop: 9999,
+						duration: 100
+					})
+				}, 200)
+			},
 			moreHandle() {
 				this.$refs.moreHandle.open()
 			},
