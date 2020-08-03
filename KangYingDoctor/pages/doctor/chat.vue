@@ -87,6 +87,12 @@
 			jimMsgs(e) {
 				// console.log(e);
 				this.messageList = this.jimMsgs[this.targetUser]
+				setTimeout(() => {
+					uni.pageScrollTo({
+						scrollTop: 9999,
+						duration: 200
+					})
+				}, 100)
 			},
 			jimHasLogin(e) {
 				if (e) {
@@ -100,16 +106,16 @@
 			}
 		},
 		onLoad(e) {
-			this.targetUser = e.t || e.im_username,
-				// this.messageList = this.jimMsgs[e.t]
-				// this.myImId = 'u_'+this.userInfo.mobile
-				console.log(this.jimMsgs);
+			this.targetUser = e.t || e.im_username
+			// this.messageList = this.jimMsgs[e.t]
+			// this.myImId = 'u_'+this.userInfo.mobile
+			console.log(this.jimMsgs);
 			setTimeout(() => {
 				uni.pageScrollTo({
 					scrollTop: 9999,
 					duration: 200
 				})
-			}, 100)
+			}, 600)
 		},
 		methods: {
 			moreHandle() {
