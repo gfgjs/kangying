@@ -8243,7 +8243,10 @@ var render = function() {
         "v-uni-view",
         { staticClass: _vm._$g(1, "sc"), attrs: { _i: 1 } },
         [
-          _c("v-uni-image", { attrs: { src: _vm._$g(2, "a-src"), _i: 2 } }),
+          _c("v-uni-image", {
+            staticStyle: { "margin-left": "10px" },
+            attrs: { src: _vm._$g(2, "a-src"), _i: 2 }
+          }),
           _c(
             "v-uni-view",
             { staticClass: _vm._$g(3, "sc"), attrs: { _i: 3 } },

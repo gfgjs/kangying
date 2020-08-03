@@ -44,8 +44,9 @@
 			<view class="row">
 				<view class="title">用法用量</view>
 				<view class="little-title">
-					<view class="row">每日<input type="text" placeholder="1">次</view>
-					 <view class="row">每次<input type="text" placeholder="1包"></view>
+					<input type="text" value="" placeholder="请填写用法用量"/>
+					<!-- <view class="row">每日<input type="text" placeholder="1">次</view> -->
+					 <!-- <view class="row">每次<input type="text" placeholder="1包"></view> -->
 				</view>
 			</view>
 			<view class="row">
@@ -112,10 +113,12 @@
 				margin-right: 20px;
 			}
 			input{
-				width: 2.4rem;
+				// width: 2.4rem;
+				height: 40px;
+				width: 100%;
 				background-color: #F5F5F5;
 				padding-left: 4px;
-				border-radius: 4px;
+				border-radius: 2px;
 			}
 			.other{
 				width: 100%;

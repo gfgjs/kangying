@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="header linear-background">
-			<image src="../../static/home/15.png"></image>
+			<image :src="info.avatar" style="margin-left: 10px;"></image>
 			<view class="message">
 				<view class="row name">
 					<view class="title">{{info.user_name}}</view>
@@ -100,7 +100,6 @@
 				
 				payResult:false,
 				order_no:''
-				
 			}
 		},
 		onLoad(e) {
@@ -121,16 +120,15 @@
 			if(this.patientCard){
 				this.$refs.payType.open()
 			}
-			if(this.payResult){
-				console.log(this.order_no);
-				this.$pageTo({
-					url:'/pages/doctor/chat',
-					options:{
-						im_username:this.info.im_username,
-						order_no:this.order_no
-					}
-				})
-			}
+			// if(this.payResult){
+			// 	this.$pageTo({
+			// 		url:'/pages/doctor/chat',
+			// 		options:{
+			// 			im_username:this.info.im_username,
+			// 			order_no:this.order_no
+			// 		}
+			// 	})
+			// }
 		},
 		computed:{
 			...mapGetters(['hasLogin'])
@@ -156,7 +154,7 @@
 							orderInfo: res.data.orderInfo,
 							success: (res) =>{
 								
-								// this.payResult = true
+								this.payResult = true
 								
 								// 跳转聊天窗口
 								this.$pageTo({
