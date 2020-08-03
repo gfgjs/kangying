@@ -182,7 +182,7 @@
 						this.$pageTo({
 							url:'/pages/doctor/chat',
 							options:{
-								im_username:this.info.im_username,
+								im_username:im_username||this.info.im_username,
 								order_no:this.order_no
 							}
 						})
@@ -204,7 +204,13 @@
 					}
 				}else{
 					this.$pageTo({
-						needLogin: true
+						// url:'/pages/doctor/chat',
+						needLogin:true,
+						lastPage:{back:true}
+						// options:{
+						// 	im_username:im_username||this.info.im_username,
+						// 	order_no:this.order_no
+						// }
 					})
 				}
 			}

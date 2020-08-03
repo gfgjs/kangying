@@ -259,7 +259,17 @@
 			}
 		}, {
 			"path": "pages/doctor/chat",
-			"style": {}
+			"style": {
+				"app-plus": {
+					"titleNView": {
+						"type": "default",
+						"backButton": {
+							"background": "rgba(0,0,0,0)"
+						}
+					},
+					"softinputMode":"adjustResize"
+				}
+			}
 		}, {
 			"path": "pages/mall/cart",
 			"style": {}

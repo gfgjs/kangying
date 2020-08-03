@@ -151,7 +151,7 @@
 				})
 				// 手机号登录后获取用户信息
 				getApp().login().then(()=>{
-					this.$pageTo()
+					this.$pageTo({delta:1})
 				})
 			},
 			changeShowPassword() {

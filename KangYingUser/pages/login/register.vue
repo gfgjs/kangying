@@ -214,20 +214,14 @@
 
 						// 手机号注册后获取用户信息
 						getApp().login().then(e => {
-							this.$pageTo()
+							this.$pageTo({delta:2})
 						})
 					} else if (res.err === '手机号已注册') {
 						uni.showModal({
 							content: '手机号已经注册，是否前往登录？',
 							success(res) {
 								if (res.confirm) {
-									uni.navigateTo({
-										url: './login'
-									})
-								} else {
-									uni.navigateTo({
-										url: './register'
-									})
+									uni.navigateBack()
 								}
 							}
 						})
@@ -256,14 +250,8 @@
 								content: '手机号已经注册，是否前往登录？',
 								success(res) {
 									if (res.confirm) {
-										uni.navigateTo({
-											url: './login'
-										})
-									} else {
-										uni.navigateTo({
-											url: './register'
-										})
-									}
+										uni.navigateBack()
+									} 
 								}
 							})
 						} else {

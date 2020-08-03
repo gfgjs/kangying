@@ -84,6 +84,7 @@
 				}
 			},
 			jump() {
+				clearTimeout(timer)
 				uni.switchTab({
 					url: '/pages/index/index'
 				})

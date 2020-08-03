@@ -54,7 +54,8 @@ Vue.prototype.$api = {
 // 判断下个页面是否需要登录时
 
 let lastPage = null
-const __pageTo = (e = {}) => {
+const __pageTo = (e) => {
+	e = e || {}
 
 	/* 
 	 e = {
@@ -64,7 +65,11 @@ const __pageTo = (e = {}) => {
 	 */
 
 	if (lastPage) {
-		if (lastPage.isTabBar) {
+		if (lastPage.back) {
+			uni.navigateBack({
+				delta: e.delta
+			})
+		} else if (lastPage.isTabBar) {
 			uni.switchTab({
 				url: lastPage.path
 			})
@@ -74,7 +79,7 @@ const __pageTo = (e = {}) => {
 				str += (i + '=' + lastPage.options[i] + '&')
 			}
 			uni.navigateTo({
-				url: lastPage.path + (str ? ('?' + str) : '')
+				url: lastPage.path + (str ? ('?' + str.slice(0, str.length - 1)) : '')
 			})
 		}
 		lastPage = null
@@ -84,24 +89,34 @@ const __pageTo = (e = {}) => {
 	if (e.needLogin && !Vue.prototype.$store.state.hasLogin) {
 		if (!e.url || e.needCurrentPage) {
 			var pages = getCurrentPages();
-			var page = pages[pages.length - 1]
+			var page = pages[pages.length - 1].__page__
 			// 接受自定义的lastPage，用于登录后无缝跳转到登录前要去的页面
-			lastPage = e.lastPage || {
-				path: page.__page__.path,
-				options: page.__page__.options,
-				isTabBar: page.__page__.meta.isTabBar
+			let p
+			if (page) {
+				p = {
+					path: page.path,
+					options: page.options,
+					isTabBar: page.meta.isTabBar
+				}
+			} else {
+				p = {
+					isTabBar: true,
+					path: '/pages/index/index'
+				}
 			}
+			lastPage = e.lastPage || p
 		} else {
 			lastPage = {
 				path: e.url,
 				options: e.options || {}
 			}
 		}
-		if(e.noTipModal){
+
+		if (e.noTipModal) {
 			uni.navigateTo({
 				url: '/pages/login/login'
 			})
-		}else{
+		} else {
 			uni.showModal({
 				content: "是否前往登录？",
 				success: (res) => {
@@ -109,19 +124,23 @@ const __pageTo = (e = {}) => {
 						uni.navigateTo({
 							url: '/pages/login/login'
 						})
-					}else{
+					} else {
 						lastPage = null
 					}
 				}
 			})
 		}
-	} else {
+	} else if (e && e.url) {
 		let str = ''
 		for (let i in (e.options || {})) {
 			str += (i + '=' + e.options[i] + '&')
 		}
 		uni.navigateTo({
 			url: e.url + (str ? ('?' + str.slice(0, str.length - 1)) : '')
+		})
+	} else {
+		uni.switchTab({
+			url: '/pages/index/index'
 		})
 	}
 }

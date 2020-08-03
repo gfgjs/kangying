@@ -1,10 +1,11 @@
 <!-- 聊天页 -->
 <template>
 	<view id="chat">
+		<view class="common-place"></view>
 		<view class="row doctor-row">
 			<view class="message doctor-message">
-				请填写您的检查信息以及预约检查的相关时
-				间,方便医生为您安排下一步治疗
+				<!-- 请填写您的检查信息以及预约检查的相关时间，方便医生为您安排下一步治疗 -->
+				欢迎使用天心医疗在线问诊服务
 			</view>
 		</view>
 
@@ -24,12 +25,11 @@
 		</view>
 		<!-- <view class="row time-row">22:33</view> -->
 		<view id="bottom-place"></view>
-
 		<view class="bottom-handle">
 			<view class="little">
 				<!-- <uni-icons type="mic" class="icon" size="24"></uni-icons> -->
 				<view class="input-box">
-					<input class="input" placeholder="输入想说的话" :adjust-position="true" v-model="messageInput"></input>
+					<input class="input" placeholder="输入想说的话" v-model="messageInput"></input>
 				</view>
 				<uni-icons type="list" @click="moreHandle" class="icon" size="24"></uni-icons>
 				<view v-if="messageInput" @touchend.prevent="sendMessage" class="button">
@@ -112,7 +112,7 @@
 			}, 100)
 		},
 		methods: {
-			moreHandle(){
+			moreHandle() {
 				this.$refs.moreHandle.open()
 			},
 			viewImage(urls) {
@@ -164,7 +164,6 @@
 							},
 							'image': tempFilePaths //设置图片参数
 						}).onSuccess((data, msg) => {
-							console.log(msg);
 							setTimeout(() => {
 								uni.pageScrollTo({
 									scrollTop: 9999,
@@ -242,12 +241,11 @@
 <style lang="scss">
 	page {
 		background-color: #fbfdfe;
-		// overflow-y: scroll;
-		padding-bottom: 100px;
+		height: 100%;
 	}
 
 	.row {
-		margin: 20px 0;
+		margin-bottom: 20px;
 		padding: 0 20px;
 		width: 100%;
 		display: flex;
@@ -298,6 +296,7 @@
 			box-shadow: 0px 0px 4px 1px rgba(11, 125, 255, 0.24);
 			border-radius: 12px 3px 12px 3px;
 			color: white;
+
 			.image-tips {
 				color: white;
 				display: flex;
@@ -310,7 +309,9 @@
 		width: 100%;
 		position: fixed;
 		bottom: 0;
+		left: 0;
 		padding: 0 10px;
+		height: 50px;
 		// background-color: yellow;
 		background-color: white;
 		box-shadow: 0 0 12px #efefef;
@@ -354,25 +355,30 @@
 			}
 		}
 	}
+
+	#bottom-place {
+		height: 60px;
+	}
+
 	.more-handle {
 		background-color: white;
 		position: fixed;
 		bottom: 0;
 		left: 0;
 		width: 100vw;
-	
+
 		.row {
 			padding: 20px;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 			width: 100%;
-	
+
 			.left {
 				display: flex;
 				align-items: center;
 				font-size: 16px;
-	
+
 				image {
 					width: 31px;
 					height: 31px;
