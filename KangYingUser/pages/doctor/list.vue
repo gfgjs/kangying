@@ -235,7 +235,7 @@
 			}
 			.tags{
 				display: flex;
-				justify-content: start;
+				justify-content: flex-start;
 				view{
 					font-size: 14px;
 					margin-right: 6px;

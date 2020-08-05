@@ -99,7 +99,8 @@
 				doctor_id:null,
 				
 				payResult:false,
-				order_no:''
+				order_no:'',//生成的订单号
+				record_id:'',//生成的病历id
 			}
 		},
 		onLoad(e) {
@@ -147,7 +148,10 @@
 					if(res.code===0){
 						this.patientCard = null
 						const on = res.data.order_no
+						const ri = res.data.record_id
 						this.order_no = on
+						this.record_id = ri
+						console.log('病例id：',ri);
 						
 						uni.requestPayment({
 							provider: res.data.provider,
@@ -161,7 +165,8 @@
 									url:'/pages/doctor/chat',
 									options:{
 										im_username:this.info.im_username,
-										order_no:on
+										// order_no:on,
+										record_id:ri
 									}
 								})
 							},
@@ -181,7 +186,8 @@
 							url:'/pages/doctor/chat',
 							options:{
 								im_username:im_username||this.info.im_username,
-								order_no:this.order_no
+								// order_no:this.order_no,
+								record_id:this.record_id
 							}
 						})
 					}else{

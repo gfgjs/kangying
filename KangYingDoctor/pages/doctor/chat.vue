@@ -118,6 +118,12 @@
 			}, 600)
 		},
 		methods: {
+			moreClick(target){
+				this.$pageTo({
+					url:'/pages/doctor/elec-case',
+					options:{uuid:'000001'}
+				})
+			},
 			messageInputFocus(){
 				setTimeout(() => {
 					uni.pageScrollTo({

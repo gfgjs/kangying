@@ -108,7 +108,7 @@
 					uni,
 					url: '/pages/doctor/chat',
 					options:{
-						t:t.username
+						im_username:t.username
 					}
 				})
 			},

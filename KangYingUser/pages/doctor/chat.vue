@@ -40,7 +40,7 @@
 		</view>
 		<uni-popup ref="moreHandle">
 			<radio-group class="more-handle">
-				<label class="row" for="pay-ali" @click="moreClikc(1)">
+				<label class="row" for="pay-ali" @click="moreClick(1)">
 					<view class="left">
 						<!-- <image src="../../static/imgs/alipay.png" mode=""></image> -->
 						<view>查看病例</view>
@@ -48,7 +48,7 @@
 					<uni-icons type="arrowright"></uni-icons>
 					<!-- <radio  checked=""  id="pay-ali"></radio> -->
 				</label>
-				<label class="row" for="pay-wx" @click="moreClikc(2)">
+				<label class="row" for="pay-wx" @click="moreClick(2)">
 					<view class="left">
 						<!-- <image src="../../static/imgs/weixin.png" mode=""></image> -->
 						<view>电子处方</view>
@@ -76,7 +76,8 @@
 				imageList: {},
 				targetInfo: {
 					headImage: ''
-				}
+				},
+				record_id:'',
 			};
 		},
 		watch: {
@@ -106,10 +107,11 @@
 			}
 		},
 		onLoad(e) {
-			this.targetUser = e.t || e.im_username
+			this.targetUser = e.im_username || 'd_18510467185'
+			this.record_id = e.record_id || 34
 			// this.messageList = this.jimMsgs[e.t]
 			// this.myImId = 'u_'+this.userInfo.mobile
-			console.log(this.jimMsgs);
+			// console.log(this.jimMsgs);
 			setTimeout(() => {
 				uni.pageScrollTo({
 					scrollTop: 9999,
@@ -118,6 +120,12 @@
 			}, 600)
 		},
 		methods: {
+			moreClick(target){
+				this.$pageTo({
+					url:'/pages/doctor/elec-case',
+					options:{uuid:'000001'}
+				})
+			},
 			messageInputFocus(){
 				setTimeout(() => {
 					uni.pageScrollTo({
@@ -182,7 +190,7 @@
 						this.$jim.sendSinglePic({
 							'target_username': this.targetUser,
 							'extras': {
-								uuid: 100
+								record_id: this.record_id
 							},
 							'image': tempFilePaths //设置图片参数
 						}).onSuccess((data, msg) => {
@@ -196,7 +204,6 @@
 								from_username: data.target_username,
 								msgs: msg.content
 							})
-							//TODO
 						}).onFail(function(data) {
 							//TODO
 						});
@@ -204,9 +211,6 @@
 				})
 			},
 			jimfun() {
-				// this.$jim.getConversation().onSuccess(e => {
-				// 	this.chatList = e.conversations
-				// })
 				this.$jim.onSyncConversation(data => {
 					data.forEach(item => {
 						this.UPDATE_JIMMSGS({
@@ -219,14 +223,14 @@
 				})
 			},
 			emoji() {
-				this.$jim.loginOut()
+				// this.$jim.loginOut()
 			},
 			sendMessage() {
 				this.$jim.sendSingleMsg({
 					'target_username': this.targetUser,
 					'content': this.messageInput,
 					'extras': {
-						uuid: 100
+						record_id: this.record_id
 					}
 				}).onSuccess((data, msg) => {
 					setTimeout(() => {
@@ -240,13 +244,6 @@
 						msgs: msg.content
 					})
 					this.messageInput = ''
-					//data.code 返回码
-					//data.message 描述
-					//data.msg_id 发送成功后的消息 id
-					//data.ctime_ms 消息生成时间,毫秒
-					//data.appkey 用户所属 appkey
-					//data.target_username 用户名
-					//msg.content 发送成功消息体,见下面消息体详情
 				}).onFail(function(data) {
 					//data.code 返回码
 					//data.message 描述
