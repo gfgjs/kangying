@@ -14,7 +14,7 @@
 			</view>
 		</view>
 		<view class="content " v-if="1">
-			<view class="row row-title">
+			<view class="row row-title" v-if="0">
 				<view class="left">
 					就诊人信息：张**
 					<uni-icons type="arrowdown"></uni-icons>
@@ -30,18 +30,19 @@
 				</view>
 				<view class="right box-shadow">
 					<view class="row title">{{formatDate(item.create_time)}} {{item.dept}}</view>
-					<view class="row little-title">诊断：</view>
+					<view class="row little-title">诊断：{{item.diagnosis|| '暂无诊断信息'}}</view>
 					<view class="row little-title">
 						检查报告：
 						<view class="buttons">
-							<view class="button">血常规报告</view>
-							<view class="button">尿常规报告</view>
+							<view class="no-data" style="padding: 0 20px;">暂无数据</view>
+							<!-- <view class="button">血常规报告</view> -->
+							<!-- <view class="button">尿常规报告</view> -->
 						</view>
 					</view>
 					<view class="row little-title">
 						电子处方：
 						<view class="buttons">
-							<view class="button">血常规报告</view>
+							<view class="button" @click="viewMed()">查看</view>
 						</view>
 					</view>
 					<view class="row little-title">
@@ -66,10 +67,16 @@
 				formatMinute
 			};
 		},
+		
 		props: ['list'],
 		mounted() {
 			console.log(222);
 			console.log(this.list);
+		},
+		methods:{
+			viewMed(){
+				this.$api.msg('暂不可查看')
+			}
 		}
 	}
 </script>

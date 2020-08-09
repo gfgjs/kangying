@@ -81,6 +81,11 @@
 		beforeDestroy() {
 			clearInterval(timer)
 		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		methods: {
 			doCountDown() {
 				clearInterval(timer)

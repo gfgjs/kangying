@@ -63,6 +63,11 @@
 				nodes: []
 			};
 		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		onLoad(e) {
 			request_articleDetail({
 				uni,

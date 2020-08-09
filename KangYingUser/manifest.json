@@ -114,7 +114,8 @@
                         "iphonex" : "unpackage/res/splash.png",
                         "iphonexl" : ""
                     }
-                }
+                },
+                "iosStyle" : "default"
             }
         },
         "nativePlugins" : {}

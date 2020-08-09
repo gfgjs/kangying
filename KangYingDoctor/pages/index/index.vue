@@ -47,7 +47,7 @@
 		<view class="menus-box">
 			<view class="row-title">服务中心</view>
 			<view class="row" style="border: none;">
-				<view class="row-item" @click="toPage('/pages/doctor/consulting-desk')">
+				<view class="row-item" @click="switchTab('/pages/index/patient')">
 					<image src="../../static/index/1.png" mode=""></image>
 					<view class="name">服务台</view>
 				</view>
@@ -122,6 +122,11 @@
 			}
 		},
 		methods: {
+			switchTab(url){
+				uni.switchTab({
+					url
+				})
+			},
 			changeWordStatus(e){
 				request_changeWorkStatus({uni,data:{work_status:e.detail.value*1}})
 			},

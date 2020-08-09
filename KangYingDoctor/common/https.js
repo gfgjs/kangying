@@ -8,18 +8,20 @@ export const test = () => {
 
 let __token = ''
 
-export const request = (e = {}, api, method) => {
+export const request = (e = {}, api, method ,contentType) => {
 	method = method || 'POST'
+	contentType = contentType || 'application/x-www-form-urlencoded'
+	
 	let uni = e.uni
-
+	
 	if (!__token) {
 		__token = uni.getStorageSync('LOGIN_MESSAGE').token
 	}
-
+	
 	if (e.token) {
 		__token = e.token
 	}
-
+	
 	uni.showLoading()
 	return uni.request({
 		method,
@@ -27,7 +29,7 @@ export const request = (e = {}, api, method) => {
 		data: e.data || {},
 		header: {
 			'Authorization': __token,
-			'Content-Type': 'application/x-www-form-urlencoded' //自定义请求头信息
+			'Content-Type': contentType //自定义请求头信息
 		}
 	}).then(res => {
 		uni.hideLoading()
@@ -37,8 +39,12 @@ export const request = (e = {}, api, method) => {
 		// 遇到错误码，重新登录
 		// 可以使用getApp()和uni
 		return res
+	}).catch(e=>{
+		console.log('---api---:',HOST+api,';','---err---:',e);
+		return e
 	})
 }
+
 // 清除token
 export const request_clearToken = () => {
 	__token = ''
@@ -163,4 +169,30 @@ export const request_patientData = e => {
 
 export const request_recordList = e => {
 	return request(e, '/v1/d/recordList', 'GET')
+}
+// 医生修改病例
+export const request_recordUp = e => {
+	return request(e, '/v1/d/record/up', 'POST', 'application/json')
+}
+// 医生更新病例状态
+export const request_recordNotice = e => {
+	return request(e, '/v1/d/record/notice', 'POST')
+}
+
+// 药品相关
+// 购药首页搜索关键词
+export const request_medHeaderData = e => {
+	return request(e, '/v1/p/medicine/headerData', 'GET')
+}
+export const request_medCates = e => {
+	return request(e, '/v1/p/medicine/cate', 'GET')
+}
+export const request_medList = e => {
+	return request(e, '/v1/p/medicine/list', 'GET')
+}
+export const request_medInfo = e => {
+	return request(e, '/v1/p/medicine/info', 'GET')
+}
+export const request_searchHot = e => {
+	return request(e, '/v1/p/search/hot', 'GET')
 }

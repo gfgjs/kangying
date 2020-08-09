@@ -115,6 +115,11 @@
 		beforeDestroy() {
 			clearInterval(timer)
 		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		methods: {
 			submitLogin() {
 				if (!this.userName) {

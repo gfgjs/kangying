@@ -42,6 +42,9 @@ const store = new Vuex.Store({
 				obj[e.from_username] = arr
 				state.jimMsgs = {...obj}
 			}
+		},
+		CLEAR_JIMMSGS(state,e){
+			state.jimMsgs = {}
 		}
 	},
 	actions: {
@@ -63,7 +66,9 @@ const store = new Vuex.Store({
 		UPDATE_JIMMSGS(store, e) {
 			store.commit('UPDATE_JIMMSGS', e)
 		},
-
+		CLEAR_JIMMSGS(store, e) {
+			store.commit('CLEAR_JIMMSGS', e)
+		}
 	},
 	getters: {
 		hasLogin(state) {

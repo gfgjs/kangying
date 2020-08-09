@@ -20,6 +20,7 @@
 
 <script>
 	import {mapGetters} from 'vuex'
+	import {request_recordList} from '../../common/https.js'
 	export default {
 		data() {
 			return {
@@ -45,9 +46,14 @@
 			...mapGetters(['jimMsgs','jimHasLogin'])
 		},
 		methods: {
+			getList(){
+				request_recordList({
+					uni
+				})
+			},
 			toChat(item){
 				uni.navigateTo({
-					url:'/pages/doctor/chat?t='+item.username
+					url:'/pages/doctor/chat?im_username='+item.username
 				})
 			},
 			jimfun(){

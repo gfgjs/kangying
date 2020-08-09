@@ -40,6 +40,11 @@
 			this.password = reMessage.password
 			this.confirmPassword = reMessage.confirmPassword
 		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		methods: {
 			submit() {
 				if (!this.password) {

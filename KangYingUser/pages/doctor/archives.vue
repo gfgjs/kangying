@@ -20,7 +20,7 @@
 			</view>
 			<view class="row">
 				<view class="title">出生日期</view>
-				<picker mode="date" :range="array">
+				<picker mode="date">
 					<view class="little-title">2013-12-12<uni-icons type="arrowdown"></uni-icons>
 					</view>
 				</picker>
@@ -64,7 +64,12 @@
 			return {
 
 			};
-		}
+		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 	}
 </script>
 

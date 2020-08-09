@@ -10,7 +10,12 @@
 			return {
 				
 			};
-		}
+		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 	}
 </script>
 

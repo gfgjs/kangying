@@ -41,6 +41,9 @@
 			this.page = 1
 			this.articleList = []
 			this.uploadData()
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
 		},
 		methods: {
 			uploadData() {

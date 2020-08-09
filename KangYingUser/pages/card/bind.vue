@@ -83,6 +83,11 @@
 			};
 		},
 		mounted() {},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		methods: {
 			cancel() {
 				this.$refs.popup.close()

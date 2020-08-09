@@ -5,7 +5,7 @@
 			<view class="head-wrap" @click="clickHead">
 				<image :src="userInfo.avatar" v-if="hasLogin" mode=""></image>
 				<image src="../../static/mine/0.png" v-else mode=""></image>
-				
+
 				<view v-if="hasLogin">
 					<view class="name">{{userInfo.user_name}}</view>
 					<!-- <view class="level">等级</view> -->
@@ -150,12 +150,17 @@
 		},
 		onNavigationBarButtonTap(e) {
 			this.$pageTo({
-				needLogin:true,
+				needLogin: true,
 				url: '/pages/doctor/chat-list'
 			})
 		},
 		onShow() {
-			
+
+		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
 		},
 		methods: {
 			changeAvatar() {
@@ -168,16 +173,18 @@
 			pageTo(url, tab) {
 				this.$pageTo({
 					url: url,
-					options:{tab},
-					needLogin:true
+					options: {
+						tab
+					},
+					needLogin: true
 				})
 
 			},
 			clickHead() {
 				this.$pageTo({
 					url: '/pages/mine/info',
-					needLogin:true,
-					noTipModal:true
+					needLogin: true,
+					noTipModal: true
 				})
 			},
 			...mapActions(['LOGIN', 'LOGOUT'])
@@ -218,7 +225,7 @@
 				height: 70px;
 				width: 70px;
 				border-radius: 50%;
-				border:3px solid white;
+				border: 3px solid white;
 			}
 		}
 	}

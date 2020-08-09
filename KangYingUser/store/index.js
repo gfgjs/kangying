@@ -40,9 +40,11 @@ const store = new Vuex.Store({
 				let arr = obj[e.from_username] || []
 				arr = arr.concat(e.msgs || e.messages)
 				obj[e.from_username] = arr
-				state.jimMsgs = { ...obj
-				}
+				state.jimMsgs = {...obj}
 			}
+		},
+		CLEAR_JIMMSGS(state,e){
+			state.jimMsgs = {}
 		}
 	},
 	actions: {
@@ -64,7 +66,9 @@ const store = new Vuex.Store({
 		UPDATE_JIMMSGS(store, e) {
 			store.commit('UPDATE_JIMMSGS', e)
 		},
-
+		CLEAR_JIMMSGS(store,e){
+			store.commit('CLEAR_JIMMSGS', e)
+		}
 	},
 	getters: {
 		hasLogin(state) {

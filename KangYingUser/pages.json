@@ -267,7 +267,7 @@
 							"background": "rgba(0,0,0,0)"
 						}
 					},
-					"softinputMode":"adjustResize"
+					"softinputMode": "adjustResize"
 				}
 			}
 		}, {
@@ -359,29 +359,26 @@
 		}, {
 			"path": "pages/mine/edit-address",
 			"style": {}
+		}, {
+			"path": "pages/mall/order-details",
+			"style": {}
+		}, {
+			"path": "pages/mine/check-details",
+			"style": {}
+		}, {
+			"path": "pages/mine/create-check-order",
+			"style": {}
+		}, {
+			"path": "pages/mine/feedback",
+			"style": {}
 		}
-	    ,{
-            "path" : "pages/mall/order-details",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/mine/check-details",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/mine/create-check-order",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/mine/feedback",
-            "style" : {}
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "天心医疗",
 		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"backgroundColor": "#F8F8F8",
+		"enablePullDownRefresh": true
 	},
 	"tabBar": {
 		"color": "#C2CAD5",

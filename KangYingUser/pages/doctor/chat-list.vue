@@ -7,16 +7,29 @@
 			</view>
 		</view>
 		<view class="header-place"></view>
-		<view class="item-content" v-for="i in chatList" :key='i.username' @click="toChat(i)">
-			<image :src="i.headImage" mode=""></image>
+		<view v-if="0">
+			<view class="item-content" v-for="i in chatList" :key='i.username' @click="toChat(i)">
+				<image :src="i.headImage" mode=""></image>
+				<view class="right">
+					<view class="name">{{i.nickName}}</view>
+					<view class="text" v-if="i.lastMessage&&i.lastMessage.msg_type==='image'">{{i.lastMessage.from_name}}：[图片]</view>
+					<view class="text" v-else-if="i.lastMessage">{{(i.lastMessage.from_name||'我')+'：'+i.lastMessage.msg_body.text}}</view>
+					<view class="text" v-else>暂无最新消息</view>
+				</view>
+			</view>
+			<view class="no-data" v-if="!chatList.length">暂无数据</view>
+		</view>
+		
+		<view class="item-content" v-for="(item,index) in list" :key='index' @click="toChat(item)">
+			<image :src="item.d_avatar" mode=""></image>
 			<view class="right">
-				<view class="name">{{i.nickName}}</view>
-				<view class="text" v-if="i.lastMessage&&i.lastMessage.msg_type==='image'">{{i.lastMessage.from_name}}：[图片]</view>
-				<view class="text" v-else-if="i.lastMessage">{{(i.lastMessage.from_name||'我')+'：'+i.lastMessage.msg_body.text}}</view>
-				<view class="text" v-else>暂无最新消息</view>
+				<view class="name">{{item.d_name}}</view>
+				<view class="text">病例id：{{item.id}}</view>
 			</view>
 		</view>
 		<view class="no-data" v-if="!chatList.length">暂无数据</view>
+		
+		
 		<!-- <view class="row-title">测试用</view>
 		<view class="item-content" v-for="i in testList" :key='i.username+1' @click="toChat(i)">
 			<image src="../../static/home/1.png" mode=""></image>
@@ -33,13 +46,15 @@
 		mapGetters,
 		mapActions
 	} from 'vuex'
+	import {request_recordList} from '../../common/https.js'
 	export default {
 		data() {
 			return {
 				currIndex: 0,
 				tabs: ['当前对话', '历史对话'],
 				chatList: [],
-				testList: []
+				testList: [],
+				list:[]
 			};
 		},
 		watch: {
@@ -56,6 +71,18 @@
 			if (this.jimHasLogin) {				
 				this.jimfun()
 			}
+			request_recordList({
+				uni
+			}).then(res=>{
+				if(res.code === 0){
+					this.list = res.data
+				}
+			})
+		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
 		},
 		methods: {
 			getHeadImage() {
@@ -108,7 +135,10 @@
 					uni,
 					url: '/pages/doctor/chat',
 					options:{
-						im_username:t.username
+						im_username:t.d_im_name,
+						record_id:t.id,
+						d_avatar:t.d_avatar,
+						d_name:t.d_name
 					}
 				})
 			},

@@ -58,6 +58,11 @@
 				})
 			}
 		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		methods: {
 			loadData() {
 				request_cates({

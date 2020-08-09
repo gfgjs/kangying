@@ -50,6 +50,11 @@
 				console.log(res);
 			})
 		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		methods:{
 			toDoctorList(item){
 				this.$pageTo({

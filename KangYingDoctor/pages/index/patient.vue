@@ -2,18 +2,20 @@
 	<view>
 		<view class="row-title">患者信息</view>
 		<view class="place"></view>
-		<view v-for="(item,index) in list" :key="index" class="item">
-			<view class="image"></view>
+		<view v-for="(item,index) in list" :key="index" class="item" @click="toChat(item)">
+			<view class="image">
+				<image :src="item.user_info.avatar" mode=""></image>
+			</view>
 			<view class="center">
 				<view class="name">
 					{{item.p_name}}
 				</view>
 				<view class="bottom">
-					女 丨 27岁 丨胃酸胃痛胃胀
+					{{item.user_info.gender}} 丨 病例id：{{item.id}} 丨{{item.diagnosis||'无诊断信息'}}
 				</view>
 			</view>
 			<view class="right">
-				患者复检
+				<!-- 患者复检 -->
 			</view>
 		</view>
 		<view class="no-data" v-if="!list.length">暂无数据</view>
@@ -28,10 +30,25 @@
 				list:[]
 			};
 		},
-		onLoad() {
-			request_recordList({uni}).then(res=>{
+		onShow() {
+			request_recordList({uni,data:{page_size:1000}}).then(res=>{
 				this.list = res.data||[]
 			})
+		},
+		methods:{
+			toChat(item){
+				this.$pageTo({
+					url:'/pages/doctor/chat',
+					options:{
+						record_id:item.id,
+						im_username:item.user_info.im_username,
+						p_im_name:item.user_info.im_username,
+						p_avatar:item.user_info.avatar,
+						p_gender:item.user_info.gender,
+						...item
+					}
+				})
+			}
 		}
 	}
 </script>
@@ -67,6 +84,11 @@
 			background-color: $base-color;
 			border-radius: 50%;
 			margin-right: 10px;
+			overflow: hidden;
+			image{
+				width: 100%;
+				height: 100%;
+			}
 		}
 		.center{
 			width: calc(100% - 130px);

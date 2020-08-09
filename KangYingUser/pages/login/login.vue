@@ -94,6 +94,11 @@
 			this.mobile = message.mobile
 			this.password = message.password
 		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		methods: {
 			loginByCode() {
 				if (!this.mobile) {

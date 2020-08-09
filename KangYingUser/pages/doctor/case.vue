@@ -26,7 +26,9 @@
 <script>
 	import mineCaseList from '../../components/mine-case-list.vue'
 	import noData from '../../components/nodata.nvue'
-	import {request_recordList} from '../../common/https.js'
+	import {
+		request_recordList
+	} from '../../common/https.js'
 	export default {
 		components: {
 			mineCaseList,
@@ -36,16 +38,27 @@
 			return {
 				tabs: ['我的病历', '我的挂号', '电子处方', '检查报告'],
 				currTab: 0,
-				caseList:[]
+				caseList: []
 			};
 		},
+		onPullDownRefresh() {
+			this.refresh()
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		onLoad(e) {
-			this.switchTab(e.tab)
-			request_recordList({uni}).then(res=>{
-				this.caseList = res.data
-			})
+			this.switchTab(e.tab || 0)
+			this.refresh()
 		},
 		methods: {
+			refresh() {
+				request_recordList({
+					uni
+				}).then(res => {
+					this.caseList = res.data
+				})
+			},
 			switchTab(index) {
 				this.currTab = index
 			}

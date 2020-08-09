@@ -22,7 +22,8 @@ export const request = (e = {}, api, method ,contentType) => {
 		__token = e.token
 	}
 	
-	uni.showLoading()
+	// uni.showLoading()
+	uni.startPullDownRefresh()
 	return uni.request({
 		method,
 		url: HOST + api,
@@ -32,7 +33,8 @@ export const request = (e = {}, api, method ,contentType) => {
 			'Content-Type': contentType //自定义请求头信息
 		}
 	}).then(res => {
-		uni.hideLoading()
+		// uni.hideLoading()
+		uni.stopPullDownRefresh()
 		res = res[1].data
 		return res
 	}).then(res => {

@@ -18,7 +18,8 @@
 
 	export default {
 		globalData: {
-			regMessage: {}
+			regMessage: {},
+			tempMedicineList:{}, // 医生开出药方时的临时存储
 		},
 		data() {
 			return {
@@ -121,6 +122,9 @@
 					});
 
 					console.log('极光im登录成功', e);
+					
+					// 重新登录jim时可能会造成消息重复，先清除store中的所有消息
+					this.CLEAR_JIMMSGS()
 
 					// 获取消息漫游
 					this.$jim.onSyncConversation(data => {
@@ -134,6 +138,7 @@
 						})
 					})
 
+					// 实时接收消息
 					this.$jim.onMsgReceive((data) => {
 						const msg = {
 							from_username: data.messages[0].from_username,
@@ -158,7 +163,7 @@
 				this.JIMLOGOUT()
 			},
 
-			...mapActions(['LOGIN', 'LOGOUT', 'UPDATE_JIMMSGS', 'JIMLOGOUT', 'JIMLOGIN'])
+			...mapActions(['LOGIN', 'LOGOUT', 'UPDATE_JIMMSGS', 'JIMLOGOUT', 'JIMLOGIN','CLEAR_JIMMSGS'])
 		}
 	};
 </script>

@@ -27,15 +27,15 @@
 				password: '',
 				confirmPassword: ''
 			},
-			tempOrderGoods:[],// 在购物车点击结算时，临时保存商品信息
-			tempOrderAddress:null, // 选择地址时用到 {}
+			tempOrderGoods: [], // 在购物车点击结算时，临时保存商品信息
+			tempOrderAddress: null, // 选择地址时用到 {}
 		},
 		computed: {
-			...mapGetters(['hasLogin', 'userInfo', 'jimMsgs','jimHasLogin'])
+			...mapGetters(['hasLogin', 'userInfo', 'jimMsgs', 'jimHasLogin'])
 		},
-		data(){
+		data() {
 			return {
-				hasHide:false
+				hasHide: false
 			}
 		},
 		watch: {
@@ -60,10 +60,10 @@
 			this.login()
 
 			//#ifdef APP-PLUS
-			plus.push.addEventListener( 'click', e=>{
-				setTimeout(()=>{
+			plus.push.addEventListener('click', e => {
+				setTimeout(() => {
 					uni.navigateTo({
-						url:'/pages/doctor/chat-list'
+						url: '/pages/doctor/chat-list'
 					})
 				})
 			})
@@ -157,14 +157,17 @@
 					// jim断线监听
 					this.$jim.onDisconnect(() => {
 						this.JIMLOGOUT()
-						setTimeout(()=>{
+						setTimeout(() => {
 							this.jimInit()
-						},3000)
+						}, 3000)
 						console.log('JIMLOGOUT，断网等情况:', this.$jim.isInit());
 					});
 
 					console.log('极光im登录成功', e);
-
+					
+					// 先清除store中的所有消息
+					this.CLEAR_JIMMSGS()
+					
 					// 获取消息漫游
 					this.$jim.onSyncConversation(data => {
 						data.forEach(item => {
@@ -183,13 +186,13 @@
 							msgs: data.messages[0].content
 						}
 						this.UPDATE_JIMMSGS(msg)
-						
+
 						//#ifdef APP-PLUS
 						// if (this.hasHide) {
-							plus.push.createMessage(msg.msgs.from_name + '：' + msg.msgs.msg_body.text)
+						plus.push.createMessage(msg.msgs.from_name + '：' + msg.msgs.msg_body.text)
 						// }
 						//#endif
-						
+
 						console.log('接受到的：', data);
 					});
 				}).onFail(e => {
@@ -240,16 +243,16 @@
 					}
 				})
 			},
-			...mapActions(['LOGIN', 'LOGOUT', 'JIMLOGIN', 'JIMLOGOUT', 'UPDATE_IMASSAGELIST', 'UPDATE_JIMMSGS'])
+			...mapActions(['LOGIN', 'LOGOUT', 'JIMLOGIN', 'JIMLOGOUT', 'UPDATE_IMASSAGELIST', 'UPDATE_JIMMSGS', 'CLEAR_JIMMSGS'])
 		},
 		onShow: function() {
 
 			this.hasHide = false
-			
-			if(this.hasLogin && !this.jimHasLogin){
+
+			if (this.hasLogin && !this.jimHasLogin) {
 				this.jimInit()
 			}
-			
+
 			// setInterval(()=>{
 			// 	// #ifdef APP-PLUS
 			// 	var webView = this.$mp.page.$getAppWebview();  

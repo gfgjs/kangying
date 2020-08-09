@@ -9,8 +9,10 @@
 			</view>
 		</view>
 
-		<view class="row " v-for="(item,index) in jimMsgs[targetUser]" :key='index' :class="item.from_id === targetUser?'doctor-row':'user-row'">
-			<image v-if="item.from_id === targetUser" src="../../static/home/15.png" mode=""></image>
+		<view class="row " v-for="(item,index) in jimMsgs[targetUser]" :key='index' 
+		v-if="item.msg_body.extras.record_id== targetInfo.record_id"
+		:class="item.from_id === targetUser?'doctor-row':'user-row'">
+			<image class="head-image" v-if="item.from_id === targetUser" :src="targetInfo.d_avatar" mode=""></image>
 			<view class="message" v-if="item.msg_type==='text'">
 				{{item.msg_body[item.msg_type]}}
 			</view>
@@ -22,6 +24,8 @@
 				<image v-if="imageList[item.msg_body.media_id]" :src="imageList[item.msg_body.media_id]" @error='imageLoadError($event,item.msg_body.media_id)'
 				 @click="viewImage([imageList[item.msg_body.media_id]])" mode=""></image>
 			</view>
+			
+			<image class="head-image" v-if="item.from_id !== targetInfo.p_im_name" :src="targetInfo.p_avatar" mode=""></image>
 		</view>
 		<!-- <view class="row time-row">22:33</view> -->
 		<view id="bottom-place"></view>
@@ -40,18 +44,26 @@
 		</view>
 		<uni-popup ref="moreHandle">
 			<radio-group class="more-handle">
-				<label class="row" for="pay-ali" @click="moreClikc(1)">
+				<label class="row" for="pay-ali" @click="moreClick('/pages/doctor/elec-case')">
 					<view class="left">
 						<!-- <image src="../../static/imgs/alipay.png" mode=""></image> -->
-						<view>查看病例</view>
+						<view>填写病例</view>
 					</view>
 					<uni-icons type="arrowright"></uni-icons>
 					<!-- <radio  checked=""  id="pay-ali"></radio> -->
 				</label>
-				<label class="row" for="pay-wx" @click="moreClikc(2)">
+				<label class="row" for="pay-wx" @click="moreClick('/pages/doctor/prescription')">
 					<view class="left">
 						<!-- <image src="../../static/imgs/weixin.png" mode=""></image> -->
-						<view>电子处方</view>
+						<view>开电子处方</view>
+					</view>
+					<uni-icons type="arrowright"></uni-icons>
+					<!-- <radio id="pay-wx"></radio> -->
+				</label>
+				<label class="row" for="pay-wx" @click="finishChat">
+					<view class="left">
+						<!-- <image src="../../static/imgs/weixin.png" mode=""></image> -->
+						<view>结束问诊</view>
 					</view>
 					<uni-icons type="arrowright"></uni-icons>
 					<!-- <radio id="pay-wx"></radio> -->
@@ -66,17 +78,16 @@
 		mapActions,
 		mapGetters
 	} from 'vuex'
+	import {request_recordNotice}from '../../common/https.js'
 	export default {
 		data() {
 			return {
 				messageInput: '',
 				targetUser: '',
 				messageList: [],
-				myImId: '',
 				imageList: {},
-				targetInfo: {
-					headImage: ''
-				}
+				targetInfo: {},
+				record_id:'',
 			};
 		},
 		watch: {
@@ -106,10 +117,14 @@
 			}
 		},
 		onLoad(e) {
-			this.targetUser = e.t || e.im_username
-			// this.messageList = this.jimMsgs[e.t]
-			// this.myImId = 'u_'+this.userInfo.mobile
-			console.log(this.jimMsgs);
+			this.targetUser = e.im_username
+			this.record_id = e.record_id
+			this.targetInfo = e
+			
+			uni.setNavigationBarTitle({
+			　　title:e.d_name
+			})
+			
 			setTimeout(() => {
 				uni.pageScrollTo({
 					scrollTop: 9999,
@@ -118,10 +133,32 @@
 			}, 600)
 		},
 		methods: {
-			moreClick(target){
+			finishChat(){
+				this.$refs.moreHandle.close()
+				uni.showModal({
+					title:'提示',
+					content:'确定要结束问诊吗？',
+					success:e=>{
+						if(e.confirm){
+							this.changeRecordStatus(2)
+						}
+					}
+				})
+			},
+			changeRecordStatus(status){
+				request_recordNotice({
+					uni,
+					data:{
+						record_id:this.record_id,
+						status
+					}
+				})
+			},
+			moreClick(url){
+				this.$refs.moreHandle.close()
 				this.$pageTo({
-					url:'/pages/doctor/elec-case',
-					options:{uuid:'000001'}
+					url,
+					options:this.targetInfo
 				})
 			},
 			messageInputFocus(){
@@ -188,7 +225,7 @@
 						this.$jim.sendSinglePic({
 							'target_username': this.targetUser,
 							'extras': {
-								uuid: 100
+								record_id: this.record_id
 							},
 							'image': tempFilePaths //设置图片参数
 						}).onSuccess((data, msg) => {
@@ -202,7 +239,6 @@
 								from_username: data.target_username,
 								msgs: msg.content
 							})
-							//TODO
 						}).onFail(function(data) {
 							//TODO
 						});
@@ -210,9 +246,6 @@
 				})
 			},
 			jimfun() {
-				// this.$jim.getConversation().onSuccess(e => {
-				// 	this.chatList = e.conversations
-				// })
 				this.$jim.onSyncConversation(data => {
 					data.forEach(item => {
 						this.UPDATE_JIMMSGS({
@@ -225,16 +258,21 @@
 				})
 			},
 			emoji() {
-				this.$jim.loginOut()
+				// this.$jim.loginOut()
 			},
 			sendMessage() {
 				this.$jim.sendSingleMsg({
 					'target_username': this.targetUser,
 					'content': this.messageInput,
 					'extras': {
-						uuid: 100
+						record_id: this.record_id
 					}
 				}).onSuccess((data, msg) => {
+					// 医生首次向患者发送消息时，改变status为3
+					if(this.targetInfo.status == 1){
+						this.changeRecordStatus(3)
+					}
+					
 					setTimeout(() => {
 						uni.pageScrollTo({
 							scrollTop: 9999,
@@ -246,13 +284,6 @@
 						msgs: msg.content
 					})
 					this.messageInput = ''
-					//data.code 返回码
-					//data.message 描述
-					//data.msg_id 发送成功后的消息 id
-					//data.ctime_ms 消息生成时间,毫秒
-					//data.appkey 用户所属 appkey
-					//data.target_username 用户名
-					//msg.content 发送成功消息体,见下面消息体详情
 				}).onFail(function(data) {
 					//data.code 返回码
 					//data.message 描述
@@ -291,6 +322,9 @@
 			height: 50px;
 			margin-right: 10px;
 		}
+		.head-image{
+			border-radius: 50%;
+		}
 	}
 
 	.time-row {
@@ -324,6 +358,7 @@
 			box-shadow: 0px 0px 4px 1px rgba(11, 125, 255, 0.24);
 			border-radius: 12px 3px 12px 3px;
 			color: white;
+			margin-right: 10px;
 
 			.image-tips {
 				color: white;

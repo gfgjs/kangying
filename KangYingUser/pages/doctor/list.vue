@@ -105,6 +105,12 @@
 				this.deptIndex = deptIndex
 			})
 		},
+		onPullDownRefresh() {
+			this.refresh()
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		onReachBottom(){
 			this.search()
 		},
@@ -231,6 +237,7 @@
 			image{
 				width: 60px;height: 60px;
 				margin-top: 10px;
+				border-radius: 50%;
 				
 			}
 			.tags{

@@ -9,8 +9,10 @@
 			</view>
 		</view>
 
-		<view class="row " v-for="(item,index) in jimMsgs[targetUser]" :key='index' :class="item.from_id === targetUser?'doctor-row':'user-row'">
-			<image v-if="item.from_id === targetUser" src="../../static/home/15.png" mode=""></image>
+		<view class="row " v-for="(item,index) in jimMsgs[targetUser]" :key='index' 
+		v-if="item.msg_body.extras.record_id== targetInfo.record_id"
+		:class="item.from_id === targetUser?'doctor-row':'user-row'">
+			<image v-if="item.from_id === targetUser" :src="targetInfo.d_avatar" mode=""></image>
 			<view class="message" v-if="item.msg_type==='text'">
 				{{item.msg_body[item.msg_type]}}
 			</view>
@@ -72,11 +74,8 @@
 				messageInput: '',
 				targetUser: '',
 				messageList: [],
-				myImId: '',
 				imageList: {},
-				targetInfo: {
-					headImage: ''
-				},
+				targetInfo: {},
 				record_id:'',
 			};
 		},
@@ -109,15 +108,23 @@
 		onLoad(e) {
 			this.targetUser = e.im_username || 'd_18510467185'
 			this.record_id = e.record_id || 34
-			// this.messageList = this.jimMsgs[e.t]
-			// this.myImId = 'u_'+this.userInfo.mobile
-			// console.log(this.jimMsgs);
+			this.targetInfo = e
+			
+			uni.setNavigationBarTitle({
+			　　title:e.d_name
+			})
+			
 			setTimeout(() => {
 				uni.pageScrollTo({
 					scrollTop: 9999,
 					duration: 200
 				})
 			}, 600)
+		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
 		},
 		methods: {
 			moreClick(target){

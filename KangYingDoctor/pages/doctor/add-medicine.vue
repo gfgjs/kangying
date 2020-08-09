@@ -3,45 +3,142 @@
 		<view class="search-box">
 			<view class="input-box">
 				<uni-icons type="search" size="22" color="#C9C9C9"></uni-icons>
-				<input type="text" value="" placeholder="搜索药品" />
-				<uni-icons type="mic-filled" size="22" color="#C9C9C9"></uni-icons>
+				<input type="text" value="" placeholder="搜索药品" v-model="searchText" />
+				<!-- <uni-icons type="mic-filled" size="22" color="#C9C9C9"></uni-icons> -->
 			</view>
 		</view>
 		<scroll-view scroll-y="true" class="scroll-left">
 			<view v-for="(item,index) in firstList" :key="index" class="item " :class="currIndex==index&&'item-checked'" @click="clickFirst(item,index)">
-				<view class="text">圣诞节案例三等奖可撒旦</view>
+				<view class="text">{{item.cate_name}}</view>
 			</view>
 		</scroll-view>
 		<scroll-view scroll-y="true" class="scroll-right">
-			<uni-collapse accordion="true">
-				<uni-collapse-item title="标题文字" :showAnimation="true" class="item" v-for="i in 20" :key='i'>
-					<view class="item-content" v-for="i in 4" :key='i'>
-						<view class="left">
-							<view class="name">少时诵诗书是所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所所</view>
-							<view class="bottom-row">
-								<view class="norm">规格：30片/瓶</view>
-								<view class="little-title">查看说明</view>
-							</view>
-						</view>
-						<uni-icons type="plus-filled" size="24" class="icon"></uni-icons>
+			<view class="item-content" v-for="(item,index) in secondList" :key="'med_'+index">
+				<view class="left">
+					<view class="name">{{item.m_name}}</view>
+					<view class="bottom-row">
+						<view class="norm">规格：{{item.spec}}</view>
+						<view class="little-title" @click="previewImage([item.instructions])">查看说明</view>
 					</view>
-				</uni-collapse-item>
-			</uni-collapse>
+				</view>
+				<uni-icons type="plus-filled" size="24" class="icon" @click="addMedToTemp(item)"></uni-icons>
+			</view>
+			<view class="no-data" v-if="!secondList.length">暂无数据</view>
 		</scroll-view>
+		<transition name="slide-fade">
+			<view class="search-list" v-if="searchText">
+				<view class="item-content" v-for="(item,index) in searchList" :key="'search_'+index">
+					<view class="left">
+						<view class="name">{{item.m_name}}</view>
+						<view class="bottom-row">
+							<view class="norm">规格：{{item.spec}}</view>
+							<view class="little-title" @click="previewImage([item.instructions])">查看说明</view>
+						</view>
+					</view>
+					<uni-icons type="plus-filled" size="24" class="icon" @click="addMedToTemp(item)"></uni-icons>
+				</view>
+			</view>
+		</transition>
 	</view>
 </template>
 
 <script>
+	import {
+		request_medCates,
+		request_medList
+	} from '../../common/https.js'
 	export default {
 		data() {
 			return {
-				firstList: [1, 2, 3, 4, 5, 6, 1, 5, 6],
-				currIndex: 0
+				firstList: [],
+				secondList: [],
+				currIndex: 0,
+				searchText: '',
+				record_id: '',
+				searchList: []
 			};
+		},
+		onLoad(e) {
+			this.record_id = e.record_id
+			request_medCates({
+				uni
+			}).then(res => {
+				if(res.code === 0){
+					this.firstList = res.data
+					this.clickFirst(res.data[0], 0)
+				}
+			})
+		},
+		watch: {
+			searchText() {
+				this.search()
+			}
+		},
+		onBackPress() {
+			if (this.searchText) {
+				this.searchText = ''
+				return true
+			}
+		},
+		onNavigationBarButtonTap(e) {
+			console.log(e);
+			if(e.index === 0){
+				this.searchText = ''
+				uni.navigateBack()
+			}
 		},
 		methods: {
 			clickFirst(item, index) {
 				this.currIndex = index
+				request_medList({
+					uni,
+					data: {
+						keyword: '',
+						m_cate: item.id,
+						page: 1,
+						page_size: 100
+					}
+				}).then(res => {
+					if(res.code === 0){
+						this.secondList = res.data
+					}
+				})
+			},
+			addMedToTemp(item) {
+				let obj = getApp().globalData.tempMedicineList[this.record_id]
+				obj = obj || {} // 一个病历（record_id）的药品清单
+				let med = obj[item.id] // 清单中某种药品
+				if (med) {
+					med.number = med.number + 1 // 存在则+1
+				} else {
+					med = item
+					med.number = 1
+				}
+				med.guide = med.guide || ''
+				obj[item.id] = med
+
+				getApp().globalData.tempMedicineList[this.record_id] = obj
+				this.$api.msg('添加成功！', 1000)
+			},
+			previewImage(urls) {
+				uni.previewImage({
+					urls
+				})
+			},
+			search() {
+				request_medList({
+					uni,
+					data: {
+						keyword: this.searchText,
+						// m_cate: item.id,
+						page: 1,
+						page_size: 100
+					}
+				}).then(res => {
+					if(res.code === 0){
+						this.searchList = res.data
+					}
+				})
 			}
 		}
 	}
@@ -133,53 +230,88 @@
 		width: 70%;
 		float: right;
 
-		.item {
-			border-bottom: 1px solid #F8F8F8;
 
+		.item-content {
+			padding: 10px 10px;
+			font-size: 14px;
+			height: 70px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			border-bottom: 1px solid #e5e5e5;
 
-			.item-content {
-				padding: 10px 10px;
-				font-size: 14px;
-				height: 70px;
+			.left {
 				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				border-bottom: 1px solid #e5e5e5;
+				flex-direction: column;
+				justify-content: space-around;
+				height: 100%;
 
-				.left {
+				.name {
+					width: 55vw;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
+
+				.bottom-row {
 					display: flex;
-					flex-direction: column;
-					justify-content: space-around;
-					height: 100%;
-
-					.name {
-						width: 55vw;
-						white-space: nowrap;
-						overflow: hidden;
-						text-overflow: ellipsis;
-					}
-
-					.bottom-row {
-						display: flex;
-						justify-content: space-between;
-					}
+					justify-content: space-between;
 				}
-
-				.icon {
-					color: $base-color !important;
-				}
-
-
 			}
 
-			.item-content:first-of-type {
-				border-top: 1px solid #e5e5e5;
-			}
-
-			.item-content:last-of-type {
-				border: none;
+			.icon {
+				color: $base-color !important;
 			}
 		}
 
+		.item-content:first-of-type {
+			border-top: 1px solid #e5e5e5;
+		}
+
+		.item-content:last-of-type {
+			// border: none;
+		}
+	}
+
+	.search-list {
+		height: calc(100vh - 80px);
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		background-color: white;
+		padding-top: 55px;
+
+		.item-content {
+			padding: 10px 10px;
+			font-size: 14px;
+			height: 70px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			border-bottom: 1px solid #e5e5e5;
+
+			.left {
+				display: flex;
+				flex-direction: column;
+				justify-content: space-around;
+				height: 100%;
+
+				.name {
+					width: 55vw;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
+
+				.bottom-row {
+					display: flex;
+					justify-content: space-between;
+				}
+			}
+
+			.icon {
+				color: $base-color !important;
+			}
+		}
 	}
 </style>

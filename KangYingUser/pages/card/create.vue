@@ -109,7 +109,11 @@
 			};
 		},
 		mounted() {},
-
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		methods: {
 			identityChange(e) {
 				this.currIdentity = e.detail.value
@@ -149,7 +153,7 @@
 						this.$api.msg(res.data, 1500, true)
 						setTimeout(() => {
 							uni.navigateBack({
-								
+
 							})
 						}, 1000)
 					} else {

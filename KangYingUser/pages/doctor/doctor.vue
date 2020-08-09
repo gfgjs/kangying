@@ -131,6 +131,11 @@
 			// 	})
 			// }
 		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		computed:{
 			...mapGetters(['hasLogin'])
 		},
@@ -166,7 +171,9 @@
 									options:{
 										im_username:this.info.im_username,
 										// order_no:on,
-										record_id:ri
+										record_id:ri,
+										d_name:this.info.user_name,
+										d_avatar:this.info.d_avatar
 									}
 								})
 							},

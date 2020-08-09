@@ -181,8 +181,6 @@
 				main.moveTaskToBack(false);
 			};
 			// #endif
-			
-			
 		},
 		onShow() {
 			request_articleList({uni,data:{page:1,page_size:2}}).then(res=>{
@@ -190,6 +188,11 @@
 					this.articleList = res.data
 				}
 			})
+		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
 		},
 		methods: {
 			navToArticle(url,id){

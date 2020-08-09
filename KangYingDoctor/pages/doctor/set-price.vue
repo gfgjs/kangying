@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="page">
 		<view class="row border-bottom">
 			<view class="title">初诊价格:</view>
 			<view class="little-title">12元</view>
@@ -31,7 +31,7 @@
 </script>
 
 <style lang="scss" scoped>
-	page{
+	page,.page{
 		padding: 0 20px;
 	}
 	.border-bottom{
