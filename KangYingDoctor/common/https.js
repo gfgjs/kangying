@@ -179,6 +179,11 @@ export const request_recordNotice = e => {
 	return request(e, '/v1/d/record/notice', 'POST')
 }
 
+// 医生更新病例状态
+export const request_pexamOrders = e => {
+	return request(e, '/v1/d/pexamOrders', 'GET')
+}
+
 // 药品相关
 // 购药首页搜索关键词
 export const request_medHeaderData = e => {

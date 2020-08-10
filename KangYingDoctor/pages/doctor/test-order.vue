@@ -6,44 +6,81 @@
 			</view>
 		</view>
 		<view class="header-place"></view>
-		<view class="order-item">
-			<view class="row time title"><text>承德隆化镇医院：孕前检查套餐</text> <text class="right-text">待使用</text></view>
+		<view class="order-item" v-for="(item,index) in list" :key="index">
+			<view class="row time title"><text>{{item.PExamInfo.main_title}}</text> <text class="right-text">待使用</text></view>
 			<view class="row">
 				<image src="../../static/index/top.png" mode=""></image>
 				<view class="right">
-					<view class="text-row" style="color: #000000;">1张丨总价：¥188.00</view>
-					<view class="text-row">有限期限：2020年05月31日</view>
+					<view class="text-row" style="color: #000000;">1张丨总价：¥{{item.pay_money}}</view>
+					<view class="text-row">预约日期：{{formatDate(item.appoint_time)}}</view>
 				</view>
 			</view>
 			<view class="row buttons">
-				<view class="button button-cancel">联系用户</view>
-				<view class="button">预约时间</view>
+				<view class="button" @click="phoneTo(item)">联系用户</view>
+				<!-- <view class="button">预约时间</view> -->
 			</view>
 		</view>
-		
+		<view class="no-data" v-if="!list.length">暂无数据</view>
+
 	</view>
 </template>
 
 <script>
+	import {
+		request_pexamOrders
+	} from '../../common/https.js'
+	import {
+		formatDate,
+		formatMinute
+	} from '../../common/util.js'
 	export default {
 		data() {
 			return {
 				currIndex: 0,
-				tabs: ['全部订单', '待使用', '退款/售后']
+				tabs: ['全部订单', '待使用'],
+				formatDate,
+				formatMinute,
+				list: []
 			};
 		},
+		onShow() {
+			this.clickTab({},0)
+		},
 		methods: {
-			clickTab() {
-
+			clickTab(item, index) {
+				this.currIndex = index
+				request_pexamOrders({
+					uni,
+					data:{
+						status: index
+					}
+				}).then(res => {
+					this.list = res.data || []
+				})
+			},
+			phoneTo(item) {
+				uni.makePhoneCall({
+					// 手机号
+					phoneNumber: item.user_mobile,
+					// 成功回调
+					success: (res) => {
+						console.log('调用成功!')
+					},
+					// 失败回调
+					fail: (res) => {
+						console.log('调用失败!')
+					}
+				})
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	page{
+	page {
 		background-color: $base-background-color;
 	}
+
 	.header-place {
 		height: 64px;
 	}
@@ -53,6 +90,7 @@
 		width: 100%;
 		padding: 10px 0;
 		height: 64px;
+		z-index: 1;
 		background-color: $base-color;
 
 		.buttons-box {
@@ -98,33 +136,39 @@
 		background-color: white;
 		border-radius: 4px;
 		margin: 10px auto;
-		box-shadow:0px 8px 21px 0px rgba(94,182,170,0.04);
-		
-		.row{
+		box-shadow: 0px 8px 21px 0px rgba(94, 182, 170, 0.04);
+
+		.row {
 			display: flex;
-			
+
 			align-items: center;
-			image{
+
+			image {
 				height: 70px;
 				width: 70px;
 				border-radius: 6px;
 			}
-			.right{
+
+			.right {
 				margin-left: 10px;
-				.text-row{
+
+				.text-row {
 					margin: 10px 0;
 				}
 			}
 		}
-		.buttons{
+
+		.buttons {
 			padding: 10px 0;
 			display: flex;
 			justify-content: flex-end;
-			.button{
+
+			.button {
 				width: 100px;
 				margin-left: 15px;
 			}
 		}
+
 		.title {
 			font-size: 14px;
 			color: #000000;
@@ -134,6 +178,7 @@
 		.time {
 			height: 54px;
 			justify-content: space-between;
+
 			.right-text {
 				color: $base-color;
 

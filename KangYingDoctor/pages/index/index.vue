@@ -51,7 +51,7 @@
 					<image src="../../static/index/1.png" mode=""></image>
 					<view class="name">服务台</view>
 				</view>
-				<view class="row-item">
+				<view class="row-item" @click="toPage('/pages/doctor/test-order')">
 					<image src="../../static/index/2.png" mode=""></image>
 					<view class="name">体检管理</view>
 				</view>

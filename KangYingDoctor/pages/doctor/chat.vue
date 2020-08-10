@@ -140,6 +140,7 @@
 					content:'确定要结束问诊吗？',
 					success:e=>{
 						if(e.confirm){
+							this.sendMessage('问诊已结束，感谢您的使用！')
 							this.changeRecordStatus(2)
 						}
 					}
@@ -260,10 +261,10 @@
 			emoji() {
 				// this.$jim.loginOut()
 			},
-			sendMessage() {
+			sendMessage(text) {
 				this.$jim.sendSingleMsg({
 					'target_username': this.targetUser,
-					'content': this.messageInput,
+					'content': text||this.messageInput,
 					'extras': {
 						record_id: this.record_id
 					}

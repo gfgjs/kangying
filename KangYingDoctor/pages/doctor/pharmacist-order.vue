@@ -10,8 +10,8 @@
 			</view>
 		</view>
 		<view class="header-place"></view>
-		<view class="order-item">
-			<view class="item-row border-bottom title">2020-05-25  14:29</view>
+		<view class="order-item" v-for="(item,index) in list" :key="index">
+			<view class="item-row border-bottom title">{{formatDate(item.appoint_time)+' '+formatMinute(item.appoint_time)}}</view>
 			<view class="item-row border-bottom">
 				<view class="title">处方编号</view>
 				<view class="right">1470215</view>
@@ -35,12 +35,24 @@
 </template>
 
 <script>
+	import {request_pexamOrders} from '../../common/https.js'
+	import {formatDate,formatMinute} from '../../common/util.js'
 	export default {
 		data() {
 			return {
 				currIndex:0,
-				tabs:[1,2]
+				tabs:[1,2],
+				list:[],
+				formatDate,formatMinute
 			};
+		},
+		onShow() {
+			request_pexamOrders({
+				uni,
+				status:0
+			}).then(res=>{
+				this.list = res.data
+			})
 		},
 		methods:{
 			clickTab(item,index){
