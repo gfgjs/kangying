@@ -84,14 +84,14 @@
 					<image src="../../static/imgs/alipay.png" mode=""></image>
 					<view>支付宝支付</view>
 				</view>
-				<radio checked="" id="pay-ali"></radio>
+				<radio checked="" id="pay-ali" :disabled="info.status != 0"></radio>
 			</label>
 			<label class="row" for="pay-wx" @click="payType=2">
 				<view class="left">
 					<image src="../../static/imgs/weixin.png" mode=""></image>
 					<view>微信支付</view>
 				</view>
-				<radio id="pay-wx"></radio>
+				<radio id="pay-wx" :disabled="info.status != 0"></radio>
 			</label>
 		</radio-group>
 
@@ -109,8 +109,11 @@
 				<view>总金额</view>
 				<view class="price">￥{{info.total_price}}</view>
 			</view>
-			<view class="button" @click="orderSubmit">
+			<view class="button" v-if="info.status == 0" @click="orderSubmit">
 				立即支付
+			</view>
+			<view class="button" v-if="info.status == 2" @click="orderConfirm(info)">
+				确认收货
 			</view>
 		</view>
 	</view>
@@ -123,7 +126,8 @@
 		request_orderSubmit,
 		request_getFreight,
 		request_orderPay,
-		request_orderInfo
+		request_orderInfo,
+		request_orderConfirm
 	} from '../../common/https.js'
 	import {
 		formatDate,
@@ -197,6 +201,32 @@
 			// }
 		},
 		methods: {
+			orderConfirm(item) {
+				uni.showModal({
+					title: '提示',
+					content: '确认完成此订单吗？',
+					success: e => {
+						if (e.confirm) {
+							request_orderConfirm({
+								uni,
+								data: {
+									order_id: item.id
+								}
+							}).then(res => {
+								if (res.code === 0) {
+									this.$api.msg(res.data)
+									setTimeout(()=>{
+										uni.navigateBack()
+									},1000)
+									// this.list.splice(index, 1)
+								} else {
+									this.$api.msg(res.err)
+								}
+							})
+						}
+					}
+				})
+			},
 			orderSubmit() {
 				request_orderPay({
 					uni,

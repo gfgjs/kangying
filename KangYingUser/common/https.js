@@ -141,6 +141,10 @@ export const request_orderInfo = e => {
 export const request_orderCancel = e => {
 	return request(e, '/v1/u/medicine/orderCancel','GET')
 }
+// 用户确认收货
+export const request_orderConfirm = e => {
+	return request(e, '/v1/u/medicine/orderConfirm','POST')
+}
 
 // 支付订单
 export const request_orderPay = e => {

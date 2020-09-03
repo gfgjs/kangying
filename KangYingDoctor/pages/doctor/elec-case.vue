@@ -78,7 +78,7 @@
 					data:{
 						p_narrate:this.p_narrate,//（主诉 文本）、
 						diagnosis:this.diagnosis,//（诊断结果 文本）、
-						record_id:this.info.record_id * 1,//（病历ID）、
+						record_id:this.info.record_id,//（病历ID）、
 						goods:[],//（开的药 数组）、
 						exams:[],//（暂时先为空数组）
 					}
@@ -86,9 +86,7 @@
 					if(res.code === 0){
 						this.$api.msg(res.data)
 						setTimeout(()=>{
-							uni.navigateBack({
-								
-							})
+							uni.navigateBack()
 						},1000)
 					}else{
 						this.$api.msg(res.err)

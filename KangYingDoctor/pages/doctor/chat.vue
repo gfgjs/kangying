@@ -12,7 +12,7 @@
 		<view class="row " v-for="(item,index) in jimMsgs[targetUser]" :key='index' 
 		v-if="item.msg_body.extras.record_id== targetInfo.record_id"
 		:class="item.from_id === targetUser?'doctor-row':'user-row'">
-			<image class="head-image" v-if="item.from_id === targetUser" :src="targetInfo.d_avatar" mode=""></image>
+			<image class="head-image" v-if="item.from_id === targetUser" :src="targetInfo.p_avatar" mode=""></image>
 			<view class="message" v-if="item.msg_type==='text'">
 				{{item.msg_body[item.msg_type]}}
 			</view>
@@ -25,7 +25,7 @@
 				 @click="viewImage([imageList[item.msg_body.media_id]])" mode=""></image>
 			</view>
 			
-			<image class="head-image" v-if="item.from_id !== targetInfo.p_im_name" :src="targetInfo.p_avatar" mode=""></image>
+			<image class="head-image" v-if="item.from_id !== targetInfo.p_im_name" :src="targetInfo.d_avatar" mode=""></image>
 		</view>
 		<!-- <view class="row time-row">22:33</view> -->
 		<view id="bottom-place"></view>

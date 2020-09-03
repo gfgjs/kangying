@@ -71,7 +71,7 @@
 					<!-- <uni-icons type="plus-filled" size="24" class="icon" @click="addMedToTemp(item)"></uni-icons> -->
 				</view>
 			</scroll-view>
-			<uni-icons type="close" color="white"></uni-icons>
+			<!-- <uni-icons type="close" color="white"></uni-icons> -->
 		</uni-popup>
 	</view>
 

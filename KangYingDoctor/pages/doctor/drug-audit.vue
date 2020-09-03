@@ -98,7 +98,7 @@
 			})
 		},
 		onShow() {
-			// window.ddd = this.$refs
+			this.refresh()
 		},
 		onBackPress() {
 			if (this.$refs.viewPanel && this.$refs.viewPanel.showPopup) {

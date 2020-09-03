@@ -42,13 +42,13 @@
 		</view>
 		<uni-popup ref="moreHandle">
 			<view class="more-handle">
-				<view class="row" for="pay-ali" @click="$pageTo({url:'/pages/doctor/case?tab=0'})">
+				<view class="row" for="pay-ali" @click="moreClick('/pages/doctor/case?tab=0')">
 					<view class="left">
 						查看病例
 					</view>
 					<uni-icons type="arrowright"></uni-icons>
 				</view>
-				<view class="row" for="pay-wx" @click="$pageTo({url:'/pages/doctor/case?tab=2'})">
+				<view class="row" for="pay-wx" @click="moreClick('/pages/doctor/case?tab=2')">
 					<view class="left">
 						电子处方
 					</view>
@@ -125,11 +125,9 @@
 		methods: {
 			moreClick(target) {
 				this.$pageTo({
-					url: '/pages/doctor/elec-case',
-					options: {
-						uuid: '000001'
-					}
+					url: target
 				})
+				this.$refs.moreHandle.close()
 			},
 			messageInputFocus() {
 				setTimeout(() => {

@@ -92,7 +92,7 @@
 						this.currExpress = 0
 					}
 					this.expressList.forEach((item,index)=>{
-						if(item.id == this.info.express_company){
+						if(item.express_name == this.info.express_company){
 							this.currExpress = index
 							this.info.express = item.id
 						}

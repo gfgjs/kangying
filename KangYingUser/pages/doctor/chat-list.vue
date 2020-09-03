@@ -1,12 +1,12 @@
 <!-- 咨询服务台 -->
 <template>
 	<view>
-		<view class="header">
+		<!-- <view class="header">
 			<view class="buttons-box">
 				<view class="item" v-for="(item,index) in tabs" :key="item" @click="clickTab(item,index)" :class="index==currIndex&&'item-checked'">{{item}}</view>
 			</view>
-		</view>
-		<view class="header-place"></view>
+		</view> -->
+		<!-- <view class="header-place"></view> -->
 		<view v-if="0">
 			<view class="item-content" v-for="i in chatList" :key='i.username' @click="toChat(i)">
 				<image :src="i.headImage" mode=""></image>

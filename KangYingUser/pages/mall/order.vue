@@ -22,8 +22,8 @@
 					<view class="button" @click.stop="toPay(item)">去付款</view>
 				</view>
 				<view class="buttons" v-if="currTab==2">
-					<view class="button button-cancel">申请售后</view>
-					<view class="button">确认收货</view>
+					<view @click.stop class="button button-cancel">申请售后</view>
+					<view @click.stop="orderConfirm(item,index)" class="button">确认收货</view>
 				</view>
 			</view>
 		</view>
@@ -58,7 +58,8 @@
 	import {
 		request_orderList,
 		request_orderCancel,
-		request_orderPay
+		request_orderPay,
+		request_orderConfirm
 	} from '../../common/https.js'
 	export default {
 		components: {
@@ -74,14 +75,32 @@
 		},
 		onLoad(e) {
 			this.currTab = e.tab || 0
-			this.getList()
+			this.getList(e.tab)
 		},
 		watch: {
-			currTab(e) {
-				this.getList(e)
-			}
+			// currTab(e) {
+			// 	this.getList(e)
+			// }
 		},
 		methods: {
+			orderConfirm(item){
+				uni.showModal({
+					title:'提示',
+					content:'确认完成此订单吗？',
+					success:e=>{
+						if(e.confirm){
+							request_orderConfirm({uni,data:{order_id:item.id}}).then(res=>{
+								if(res.code === 0){
+									this.$api.msg(res.data)
+									this.list.splice(index, 1)
+								}else{
+									this.$api.msg(res.msg)
+								}
+							})
+						}
+					}
+				})
+			},
 			viewDetail(item, index) {
 				this.$pageTo({
 					url: '/pages/mall/order-details',
@@ -156,14 +175,21 @@
 					if (res.code === 0) {
 						this.list = res.data || []
 					}
-					console.log(res);
+					// console.log(res);
 				})
 			},
 			retry() {
-				console.log('retry');
+				// console.log('retry');
+				this.getList(this.currTab)
 			},
 			switchTab(index) {
-				this.currTab = index
+				// this.currTab = index
+				this.$pageTo({
+					url:'/pages/mall/order',
+					options:{
+						tab:index
+					}
+				})
 			}
 		}
 	}
