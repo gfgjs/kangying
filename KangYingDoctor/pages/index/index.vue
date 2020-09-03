@@ -27,11 +27,11 @@
 			</view>
 			<view class="row">
 				<view class="row-item">
-					<view class="number">{{patientCount.wait_check_medicine}}</view>
+					<view class="number" @click="toPage('/pages/doctor/pharmacist-order')">{{patientCount.wait_check_medicine}}</view>
 					<view class="name">医嘱处方</view>
 				</view>
 				<view class="row-item">
-					<view class="number">{{patientCount.test}}</view>
+					<view class="number" @click="toPage('/pages/doctor/test-order')">{{patientCount.test}}</view>
 					<view class="name">体检预约</view>
 				</view>
 				<view class="row-item" @click="toPage('/pages/doctor/doctor-room','all')">
@@ -47,7 +47,7 @@
 		<view class="menus-box">
 			<view class="row-title">服务中心</view>
 			<view class="row" style="border: none;">
-				<view class="row-item" @click="switchTab('/pages/index/patient')">
+				<view class="row-item" @click="$api.msg('暂未开放')">
 					<image src="../../static/index/1.png" mode=""></image>
 					<view class="name">服务台</view>
 				</view>
@@ -55,12 +55,12 @@
 					<image src="../../static/index/2.png" mode=""></image>
 					<view class="name">体检管理</view>
 				</view>
-				<view class="row-item">
+				<view class="row-item" @click="toPage('/pages/doctor/drug-audit')">
 					<image src="../../static/index/3.png" mode=""></image>
 					<view class="name">药房</view>
 				</view>
-				<view class="row-item">
-					<image src="../../static/index/4.png" mode=""></image>
+				<view class="row-item"  @click="$api.msg('暂未开放')">
+					<image src="../../static/index/4.png"></image>
 					<view class="name">随访计划</view>
 				</view>
 			</view>

@@ -3,7 +3,8 @@
 		request_sendReSms,
 		request_userInfo,
 		request_version,
-		request_imInit
+		request_imInit,
+		request_clearToken
 	} from './common/https.js'
 	import {
 		saveLoginMessage,
@@ -125,6 +126,7 @@
 			// 退出登录
 			logout() {
 				saveLoginMessage(uni, {})
+				request_clearToken()
 				this.LOGOUT()
 				uni.switchTab({
 					url: '/pages/index/index'

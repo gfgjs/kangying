@@ -42,12 +42,12 @@
 			// this.uploadData()
 		},
 		onPullDownRefresh() {
-			this.page = 1
-			this.list = []
-			this.uploadData()
-			setTimeout(() => {
-				uni.stopPullDownRefresh()
-			}, 500)
+			// this.page = 1
+			// this.list = []
+			// this.uploadData()
+			// setTimeout(() => {
+			// 	uni.stopPullDownRefresh()
+			// }, 500)
 		},
 		onBackPress(options) {
 			if (options.from === 'navigateBack') {
@@ -72,6 +72,7 @@
 				}
 			},
 			uploadData() {
+				this.list = []
 				request_patientList({
 					uni,
 					data: {

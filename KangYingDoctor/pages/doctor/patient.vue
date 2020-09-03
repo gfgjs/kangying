@@ -1,69 +1,101 @@
 <template>
 	<view>
-		<view class="header">
+		<view class="header" v-if="recordInfo.user_info">
 			<view class="nav-place"></view>
 			<view class="message">
-				<image src="../../static/doctor/patient-header.png" mode=""></image>
+				<image :src="recordInfo.user_info.avatar" mode=""></image>
 				<view class="middle">
-					<view class="title">张白银</view>
-					<view class="little-title">女丨24岁丨急性肠胃炎</view>
+					<view class="title">{{recordInfo.user_info.user_name}}</view>
+					<view class="little-title">{{recordInfo.user_info.gender}}</view>
 				</view>
-				<view class="set-tag">设置标签</view>
+				<!-- <view class="set-tag">设置标签</view> -->
 			</view>
 		</view>
-		<view class="message-box">
+		<view class="message-box" v-if="recordInfo.patientInfo">
 			<view class="row-title">
 				<view>患者资料</view>
-				<view class="right">全部资料
+				<!-- <view class="right">全部资料
 					<uni-icons type="arrowdown"></uni-icons>
-				</view>
+				</view> -->
 			</view>
 			<view class="row">
 				<view class="dot"></view>
-				<view class="text-row">电话：18789878887</view>
+				<view class="text-row">患者姓名：{{recordInfo.patientInfo.p_name}} | {{recordInfo.gender}} | {{recordInfo.age}}岁</view>
 			</view>
 			<view class="row">
 				<view class="dot"></view>
-				<view class="text-row">疾病分类：肠胃不适</view>
+				<view class="text-row">电话：{{recordInfo.patientInfo.mobile}}</view>
 			</view>
 			<view class="row">
+				<view class="dot"></view>
+				<view class="text-row">疾病分类：{{recordInfo.now_record.diagnosis||'暂无'}}</view>
+			</view>
+			<!-- <view class="row">
 				<view class="dot"></view>
 				<view class="text-row">住址：北京市海淀区和祥胡同16号</view>
-			</view>
+			</view> -->
 		</view>
-		<view class="message-box case-box" >
+		<view class="message-box case-box" v-if="recordInfo.record_list">
 			<view class="row-title">
 				<view>电子病历</view>
-				<view class="right">全部档案
+				<!-- <view class="right">全部档案
 					<uni-icons type="arrowdown"></uni-icons>
-				</view>
+				</view> -->
 			</view>
-			<view class="case" v-for="i in 3" :key='i'>
-				<view class="row time">2020.05.23  14:00</view>
+			<view class="case" v-for="item in recordInfo.record_list" :key='item.id'>
+				<view class="row time">{{formatDate(item.create_time)}} {{formatMinute(item.create_time)}}</view>
 				<view class="row">
 					<view class="dot"></view>
-					<view class="text-row">电话：18789878887</view>
+					<view class="text-row">诊断医生：{{item.d_name}}</view>
 				</view>
 				<view class="row">
 					<view class="dot"></view>
-					<view class="text-row">疾病分类：肠胃不适</view>
+					<view class="text-row">诊断结果：{{item.diagnosis || '暂无'}}</view>
 				</view>
 				<view class="row">
 					<view class="dot"></view>
-					<view class="text-row">住址：北京市海淀区和祥胡同16号</view>
+					<view class="text-row">就诊科室：{{item.dept}}</view>
 				</view>
 			</view>
 		</view>
-		<view class="button chat-button">患者交流</view>
+		<view class="button chat-button" @click="toChat">患者交流</view>
 	</view>
 </template>
 
 <script>
+	import {
+		request_recordInfo
+	} from '../../common/https.js'
+	import {
+		formatDate,
+		formatMinute
+	} from '../../common/util.js'
 	export default {
 		data() {
 			return {
-
+				recordInfo: {},
+				formatDate,
+				formatMinute
 			};
+		},
+		onLoad(e) {
+			request_recordInfo({
+				uni,
+				data: {
+					id: e.record_id
+				}
+			}).then(res => {
+				if (res.code === 0) {
+					this.recordInfo = res.data
+				}
+			})
+		},
+		methods: {
+			toChat() {
+				uni.navigateBack({
+
+				})
+			}
 		}
 	}
 </script>
@@ -75,7 +107,7 @@
 
 	.header {
 		width: 100%;
-		height: 200px;
+		height: 140px;
 		background: url(../../static/doctor/patient-header.png) no-repeat;
 		background-size: 100% 100%;
 		display: flex;
@@ -139,13 +171,14 @@
 				font-size: 14px;
 			}
 		}
-	
-		.row{
+
+		.row {
 			display: flex;
 			align-items: center;
 			height: 44px;
 			padding: 0 20px;
-			.dot{
+
+			.dot {
 				width: 8px;
 				height: 8px;
 				border-radius: 50%;
@@ -153,31 +186,35 @@
 				margin-right: 10px;
 				margin-top: 2px;
 			}
-			.text-row{
+
+			.text-row {
 				font-size: 14px;
 				color: #2E2E2E;
-				
+
 			}
 		}
-	
-		.case{
+
+		.case {
 			width: 92%;
-			background-color: 	#F8F8F8;
+			background-color: #F8F8F8;
 			margin: 0 auto 20px;
-			.time{
+
+			.time {
 				font-size: 14px;
 				color: #2d2d2d;
 			}
 		}
-	
+
 	}
-	.chat-button{
+
+	.chat-button {
 		position: fixed;
 		bottom: 0;
 		width: 100%;
 		height: 54px;
 	}
-	.case-box{
+
+	.case-box {
 		margin-bottom: 64px;
 	}
 </style>

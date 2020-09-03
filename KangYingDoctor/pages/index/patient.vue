@@ -11,7 +11,7 @@
 					{{item.p_name}}
 				</view>
 				<view class="bottom">
-					{{item.user_info.gender}} 丨 病例id：{{item.id}} 丨{{item.diagnosis||'无诊断信息'}}
+					{{item.user_info.gender}} 丨 年龄：{{item.Age}}丨{{item.diagnosis||'无诊断信息'}}
 				</view>
 			</view>
 			<view class="right">
@@ -31,7 +31,7 @@
 			};
 		},
 		onShow() {
-			request_recordList({uni,data:{page_size:1000}}).then(res=>{
+			request_recordList({uni,data:{status:2}}).then(res=>{
 				this.list = res.data||[]
 			})
 		},

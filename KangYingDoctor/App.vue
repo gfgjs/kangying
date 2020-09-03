@@ -9,7 +9,8 @@
 	} from '@/common/util.js'
 	import {
 		request_userInfo,
-		request_imInit,request_clearToken
+		request_imInit,
+		request_clearToken
 	} from '@/common/https.js'
 
 	import JMessage from './common/jmessage-wxapplet-sdk-1.4.3.min.js'
@@ -186,6 +187,17 @@
 		padding: 30px;
 		font-size: 14px;
 		color: #cccccc;
+	}
+	
+	// radio选中的颜色
+	.uni-radio-input-checked {
+		background-color: $base-color !important;
+		border-color: $base-color !important;
+	}
+	
+	.uni-switch-input-checked {
+		background-color: $base-color !important;
+		border-color: $base-color !important;
 	}
 
 	// 富文本中的图片最大宽度，防止超出屏幕，需使用document加载此类名

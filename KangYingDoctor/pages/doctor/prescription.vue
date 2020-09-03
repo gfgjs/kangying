@@ -26,7 +26,7 @@
 		<view class="row-title row">选择药品</view>
 		<view class="medicine" v-for="(item,index) in medList" :key="index">
 			<view class="row med-title">
-				<view class="title">药品 {{index}}</view>
+				<view class="title">药品 {{index +1}}</view>
 				<view class="little-title">{{item.m_name}}</view>
 			</view>
 			<view class="row">
@@ -48,7 +48,7 @@
 			<view class="row">
 				<view class="title">服用说明</view>
 				<view class="little-title">
-					<input type="text" v-model="item.guide" placeholder="请填写服用说明" />
+					<input type="text" :disabled="medHasBeen" v-model="item.guide" placeholder="请填写服用说明" />
 					<!-- <view class="row">每日<input type="text" placeholder="1">次</view> -->
 					<!-- <view class="row">每次<input type="text" placeholder="1包"></view> -->
 				</view>
@@ -59,26 +59,31 @@
 			</view> -->
 		</view>
 
-		<view class="buttons">
+		<view class="buttons" v-if="!medHasBeen">
 			<view class="button" @click="addMed">
-				添加西药<uni-icons type="plusempty" color="white" size="20"></uni-icons>
+				添加西药
 			</view>
-			
+
 			<view class="button" @click="submit">
-				提交药方<uni-icons type="checkmarkempty" color="white" size="20"></uni-icons>
+				提交药方
 			</view>
 		</view>
 	</view>
 </template>
 <!-- 开药方 -->
 <script>
-	import {request_recordUp} from '../../common/https.js'
+	import {
+		request_recordUp,
+		request_recordInfo
+	} from '../../common/https.js'
 	export default {
 		data() {
 			return {
 				info: {},
 				record_id: '',
-				medList: {}
+				medList: {},
+
+				medHasBeen: false
 			};
 		},
 		onLoad(e) {
@@ -87,36 +92,72 @@
 			this.record_id = e.record_id
 		},
 		onShow() {
-			this.medList = {...(getApp().globalData.tempMedicineList[this.record_id]||{})}
+			this.medList = { ...(getApp().globalData.tempMedicineList[this.record_id] || {})
+			}
+
+			request_recordInfo({
+				uni,
+				data: {
+					id: this.record_id
+				}
+			}).then(res => {
+				if (res.code === 0) {
+					if(res.data.now_record.goods){
+						this.medHasBeen = true
+						const array = JSON.parse(res.data.now_record.goods)
+						this.medList = array.map(item=>{
+							let newObj = item.GoodsInfo
+							newObj.number = item.GoodsNumber
+							newObj.guide = item.Guide
+							return newObj
+						})
+						
+						console.log(JSON.parse(res.data.now_record.goods));
+					}
+				}
+				console.log(res.data);
+			})
 		},
 		methods: {
-			submit(){
+			submit() {
 				let array = []
-				for(let i in this.medList){
+				for (let i in this.medList) {
 					array.push(this.medList[i])
 				}
-				
+				if(this.medHasBeen){
+					this.$api.msg('不能修改药方')
+					return
+				}
+				// if(!array.length){
+
+				// 	return
+				// }
+
 				request_recordUp({
 					uni,
-					data:{
-						record_id:this.info.record_id * 1,//（病历ID）、
-						goods:array,//（开的药 数组
+					data: {
+						record_id: this.info.record_id * 1, //（病历ID）、
+						goods: array, //（开的药 数组
 					}
-				}).then(res=>{
-					if(res.code===0){
+				}).then(res => {
+					if (res.code === 0) {
 						this.$api.msg(res.data)
-						setTimeout(()=>{
-							array.forEach(item=>{
+						setTimeout(() => {
+							array.forEach(item => {
 								getApp().globalData.tempMedicineList[this.record_id] = {}
 							})
 							uni.navigateBack()
-						},1000)
-					}else{
+						}, 1000)
+					} else {
 						this.$api.msg(res.err)
 					}
 				})
 			},
 			addMed(item) {
+				if(this.medHasBeen){
+					this.$api.msg('不能修改药方')
+					return
+				}
 				this.$pageTo({
 					url: '/pages/doctor/add-medicine',
 					options: {
@@ -124,33 +165,39 @@
 					}
 				})
 			},
-			medPlus(item){
-				if(item.number+1>item.stock){
+			medPlus(item) {
+				if(this.medHasBeen){
+					return
+				}
+				if (item.number + 1 > item.stock) {
 					this.$api.msg('此药品已无库存')
-				}else{
+				} else {
 					item.number = item.number + 1
-					this.updateMed(item,'number',item.number)
+					this.updateMed(item, 'number', item.number)
 				}
 			},
-			medMinus(item){
-				if(item.number<=1){
+			medMinus(item) {
+				if(this.medHasBeen){
+					return
+				}
+				if (item.number <= 1) {
 					uni.showModal({
-						title:'提示',
-						content:'是否要从清单中删除此药品？',
-						success:e=>{
-							if(e.confirm){
+						title: '提示',
+						content: '是否要从清单中删除此药品？',
+						success: e => {
+							if (e.confirm) {
 								this.deleteMed(item)
 							}
 						}
 					})
-				}else{
+				} else {
 					item.number = item.number - 1
-					this.updateMed(item,'number',item.number)
+					this.updateMed(item, 'number', item.number)
 				}
 			},
-			deleteMed(item){
-				this.$delete(this.medList,item.id)
-				
+			deleteMed(item) {
+				this.$delete(this.medList, item.id)
+
 				// 一个病历（record_id）的药品清单
 				let obj = getApp().globalData.tempMedicineList[this.record_id]
 				delete obj[item.id]
@@ -158,7 +205,7 @@
 			},
 			updateMed(item, key, value) {
 				item[key] = value
-				this.$set(this.medList, item.id, {...item})
+				this.$set(this.medList, item.id, { ...item})
 
 				// 一个病历（record_id）的药品清单
 				let obj = getApp().globalData.tempMedicineList[this.record_id]
@@ -170,7 +217,8 @@
 </script>
 
 <style lang="scss" scoped>
-	page,.page {
+	page,
+	.page {
 		padding: 0 20px;
 	}
 
@@ -210,8 +258,8 @@
 			display: flex;
 			align-items: center;
 			width: 100%;
-			
-			.icon-button{
+
+			.icon-button {
 				padding: 6px;
 			}
 
@@ -251,14 +299,15 @@
 		}
 	}
 
-	.buttons{
+	.buttons {
 		display: flex;
+
 		.button {
 			display: flex;
 			align-items: center;
 			margin: 30px auto 50px;
 			font-size: 16px;
-		
+
 			.uni-icons {
 				margin-top: 2px;
 			}

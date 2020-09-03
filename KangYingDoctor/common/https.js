@@ -178,11 +178,44 @@ export const request_recordUp = e => {
 export const request_recordNotice = e => {
 	return request(e, '/v1/d/record/notice', 'POST')
 }
+// 医生获取病例信息
+export const request_recordInfo = e => {
+	return request(e, '/v1/d/record/info', 'GET')
+}
 
-// 医生更新病例状态
+// 医生获取体检订单列表
 export const request_pexamOrders = e => {
 	return request(e, '/v1/d/pexamOrders', 'GET')
 }
+// 医生获取药方订单列表
+export const request_checkOrders = e => {
+	return request(e, '/v1/d/checkOrders', 'GET')
+}
+// 医生审核药方订单
+export const request_checkOrder = e => {
+	return request(e, '/v1/d/checkOrder', 'POST')
+}
+// 医生审核待发货订单
+export const request_getWaitSendOrder = e => {
+	return request(e, '/v1/d/getWaitSendOrder', 'GET')
+}
+// 医生审核已发货订单
+export const request_getOverOrder = e => {
+	return request(e, '/v1/d/getOverOrder', 'GET')
+}
+// 医生发货
+export const request_sendMedicineOrder = e => {
+	return request(e, '/v1/d/sendMedicineOrder', 'POST')
+}
+// 获取物流公司列表
+export const request_expressList = e => {
+	return request(e, '/v1/p/express/list', 'GET')
+}
+// 获取物流公司列表
+export const request_balance = e => {
+	return request(e, '/v1/d/doctor/balance', 'GET')
+}
+
 
 // 药品相关
 // 购药首页搜索关键词

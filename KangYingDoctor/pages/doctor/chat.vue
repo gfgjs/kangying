@@ -33,42 +33,48 @@
 			<view class="little">
 				<!-- <uni-icons type="mic" class="icon" size="24"></uni-icons> -->
 				<view class="input-box">
-					<input class="input" @focus="messageInputFocus" @blur="messageInputBlur" placeholder="输入想说的话" v-model="messageInput"></input>
+					<textarea class="input" 
+					@focus="messageInputFocus" 
+					@blur="messageInputBlur" 
+					placeholder="输入想说的话" 
+					auto-height
+					fixed
+					v-model="messageInput"></textarea>
 				</view>
-				<uni-icons type="list" @click="moreHandle" class="icon" size="24"></uni-icons>
-				<view v-if="messageInput" @touchend.prevent="sendMessage" class="button">
+				<uni-icons type="camera" class="icon" size="28" @click="sendMore"></uni-icons>
+				<view v-if="messageInput" @touchend.prevent="sendMessage()" class="button">
 					<text>发送</text>
 				</view>
-				<uni-icons v-else type="plusempty" class="icon" size="28" @click="sendMore"></uni-icons>
+				<uni-icons v-else type="plus" @click="moreHandle" class="icon" size="28"></uni-icons>
 			</view>
 		</view>
 		<uni-popup ref="moreHandle">
-			<radio-group class="more-handle">
-				<label class="row" for="pay-ali" @click="moreClick('/pages/doctor/elec-case')">
+			<view class="more-handle">
+				<view class="row" @click="moreClick('/pages/doctor/elec-case')">
 					<view class="left">
-						<!-- <image src="../../static/imgs/alipay.png" mode=""></image> -->
-						<view>填写病例</view>
+						填写病例
 					</view>
 					<uni-icons type="arrowright"></uni-icons>
-					<!-- <radio  checked=""  id="pay-ali"></radio> -->
-				</label>
-				<label class="row" for="pay-wx" @click="moreClick('/pages/doctor/prescription')">
+				</view>
+				<view class="row" @click="moreClick('/pages/doctor/prescription')">
 					<view class="left">
-						<!-- <image src="../../static/imgs/weixin.png" mode=""></image> -->
-						<view>开电子处方</view>
+						开电子处方
 					</view>
 					<uni-icons type="arrowright"></uni-icons>
-					<!-- <radio id="pay-wx"></radio> -->
-				</label>
-				<label class="row" for="pay-wx" @click="finishChat">
+				</view>
+				<view class="row" @click="moreClick('/pages/doctor/patient')">
 					<view class="left">
-						<!-- <image src="../../static/imgs/weixin.png" mode=""></image> -->
-						<view>结束问诊</view>
+						查看患者
 					</view>
 					<uni-icons type="arrowright"></uni-icons>
-					<!-- <radio id="pay-wx"></radio> -->
-				</label>
-			</radio-group>
+				</view>
+				<view class="row" @click="finishChat">
+					<view class="left">
+						结束问诊
+					</view>
+					<uni-icons type="arrowright"></uni-icons>
+				</view>
+			</view>
 		</uni-popup>
 	</view>
 </template>
@@ -152,6 +158,10 @@
 					data:{
 						record_id:this.record_id,
 						status
+					}
+				}).then(res=>{
+					if(res.code === 0){
+						this.targetInfo.status = res.data
 					}
 				})
 			},
@@ -375,30 +385,30 @@
 		bottom: 0;
 		left: 0;
 		padding: 0 10px;
-		height: 50px;
-		// background-color: yellow;
 		background-color: white;
 		box-shadow: 0 0 12px #efefef;
 
 		.little {
+			width: 100%;
 			display: flex;
 			justify-content: space-between;
-			width: 100%;
 			align-items: center;
-
+			min-height: 50px;
+			padding: 5px 0;
+			
 			.input-box {
+				flex: 1;
 				background-color: white;
 				width: 82%;
 				border-radius: 2px;
-
+				margin-right: 14px;
+			
 				.input {
+					box-sizing: content-box;
+					padding: 5px 0 5px 10px;
 					width: 100%;
-					height: 50px;
-					border-radius: 6px;
 					background-color: #F6F6F6;
-					border: 7px solid white;
-					padding: 6px 10px 6px 10px;
-					font-size: 16px;
+					font-size: 18px;
 				}
 			}
 
@@ -407,15 +417,10 @@
 				padding: 0 4px;
 				width: 3rem;
 				transition: all 1s linear;
-
-				.icon {
-					width: auto;
-					color: white !important;
-				}
 			}
 
 			.icon {
-				width: 60px;
+				width: 40px;
 			}
 		}
 	}

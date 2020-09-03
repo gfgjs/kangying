@@ -19,7 +19,15 @@
 			</view>
 			<view class="no-data" v-if="!chatList.length">暂无数据</view>
 		</view>
-		
+
+		<view class="row-title" style="display: flex;justify-content: space-between;">筛选就诊卡
+			<picker class="left" :range="cardListNames" @change="cardChange">
+				<view>{{currentCard.p_name || '全部'}}
+					<uni-icons type="arrowdown"></uni-icons>
+				</view>
+			</picker>
+
+		</view>
 		<view class="item-content" v-for="(item,index) in list" :key='index' @click="toChat(item)">
 			<image :src="item.d_avatar" mode=""></image>
 			<view class="right">
@@ -27,9 +35,9 @@
 				<view class="text">病例id：{{item.id}}</view>
 			</view>
 		</view>
-		<view class="no-data" v-if="!chatList.length">暂无数据</view>
-		
-		
+		<view class="no-data" v-if="!list.length">暂无数据</view>
+
+
 		<!-- <view class="row-title">测试用</view>
 		<view class="item-content" v-for="i in testList" :key='i.username+1' @click="toChat(i)">
 			<image src="../../static/home/1.png" mode=""></image>
@@ -46,7 +54,10 @@
 		mapGetters,
 		mapActions
 	} from 'vuex'
-	import {request_recordList} from '../../common/https.js'
+	import {
+		request_recordList,
+		request_patientList
+	} from '../../common/https.js'
 	export default {
 		data() {
 			return {
@@ -54,28 +65,38 @@
 				tabs: ['当前对话', '历史对话'],
 				chatList: [],
 				testList: [],
-				list:[]
+				list: [],
+				cardList: [],
+				cardListNames: [],
+				currentCard: {},
+				caseList: []
 			};
 		},
 		watch: {
 			jimHasLogin(e) {
-				if(e){
+				if (e) {
 					this.jimfun()
 				}
 			},
-			jimMsgs(){
+			jimMsgs() {
 				this.showNewMsg()
 			}
 		},
-		onShow() {
-			if (this.jimHasLogin) {				
+		onLoad() {
+			if (this.jimHasLogin) {
 				this.jimfun()
 			}
-			request_recordList({
+		
+			request_patientList({
 				uni
-			}).then(res=>{
-				if(res.code === 0){
-					this.list = res.data
+			}).then(res => {
+				if (res.code === 0) {
+					this.cardListNames = res.data.map(item => {
+						return item.p_name
+					})
+					this.cardList = res.data
+					// this.currentCard = this.cardList[0]
+					this.getRecordList()
 				}
 			})
 		},
@@ -85,8 +106,24 @@
 			}, 500)
 		},
 		methods: {
+			cardChange(e){
+				this.currentCard = this.cardList[e.detail.value]
+				this.getRecordList()
+			},
+			getRecordList(){
+				request_recordList({
+					uni,
+					data: {
+						card_id: this.currentCard.id
+					}
+				}).then(res => {
+					if (res.code === 0) {
+						this.list = res.data
+					}
+				})
+			},
 			getHeadImage() {
-				this.chatList.map((item,index)=>{
+				this.chatList.map((item, index) => {
 					this.$jim.getResource({
 						media_id: item.avatar
 					}).onSuccess(e => {
@@ -96,16 +133,16 @@
 					})
 				})
 			},
-			jimfun(){
+			jimfun() {
 				this.$jim.getConversation().onSuccess(e => {
 					this.chatList = e.conversations
 					this.showNewMsg()
 				})
 				this.$jim.onSyncConversation(data => {
-					data.forEach(item=>{
+					data.forEach(item => {
 						this.UPDATE_JIMMSGS({
 							from_username: item.from_username,
-							msgs: item.msgs.map(i=>{
+							msgs: item.msgs.map(i => {
 								return i.content
 							})
 						})
@@ -113,17 +150,17 @@
 				})
 			},
 			// 在消息列表上显示最新消息
-			showNewMsg(){
-				const array = this.chatList.map(item=>{
+			showNewMsg() {
+				const array = this.chatList.map(item => {
 					const m = this.jimMsgs[item.username]
-					if(m){
+					if (m) {
 						const l = m.length
-						item.lastMessage = m[l-1]
+						item.lastMessage = m[l - 1]
 					}
 					return item
 				})
 				this.chatList = array.reverse()
-				setTimeout(()=>{
+				setTimeout(() => {
 					this.getHeadImage()
 				})
 			},
@@ -134,18 +171,18 @@
 				this.$pageTo({
 					uni,
 					url: '/pages/doctor/chat',
-					options:{
-						im_username:t.d_im_name,
-						record_id:t.id,
-						d_avatar:t.d_avatar,
-						d_name:t.d_name
+					options: {
+						im_username: t.d_im_name,
+						record_id: t.id,
+						d_avatar: t.d_avatar,
+						d_name: t.d_name
 					}
 				})
 			},
 			...mapActions(['UPDATE_JIMMSGS'])
 		},
 		computed: {
-			...mapGetters(['jimHasLogin','jimMsgs'])
+			...mapGetters(['jimHasLogin', 'jimMsgs'])
 		}
 	}
 </script>

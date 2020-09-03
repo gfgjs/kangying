@@ -22,8 +22,8 @@ export const request = (e = {}, api, method ,contentType) => {
 		__token = e.token
 	}
 	
-	// uni.showLoading()
-	uni.startPullDownRefresh()
+	uni.showLoading()
+	// uni.startPullDownRefresh()
 	return uni.request({
 		method,
 		url: HOST + api,
@@ -33,8 +33,8 @@ export const request = (e = {}, api, method ,contentType) => {
 			'Content-Type': contentType //自定义请求头信息
 		}
 	}).then(res => {
-		// uni.hideLoading()
-		uni.stopPullDownRefresh()
+		uni.hideLoading()
+		// uni.stopPullDownRefresh()
 		res = res[1].data
 		return res
 	}).then(res => {
@@ -46,7 +46,10 @@ export const request = (e = {}, api, method ,contentType) => {
 		return e
 	})
 }
-
+// 清除token
+export const request_clearToken = () => {
+	__token = ''
+}
 // 获取最新版本
 export const request_version = e => {
 	return request(e, '/v1/p/version')
@@ -150,6 +153,10 @@ export const request_recordAdd = e => {
 // 获取病例
 export const request_recordList = e => {
 	return request(e, '/v1/u/record/list')
+}
+// 获取我的电子药方
+export const request_prescriptionList = e => {
+	return request(e, '/v1/u/prescription/list')
 }
 
 

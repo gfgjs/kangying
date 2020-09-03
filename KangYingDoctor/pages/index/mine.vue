@@ -2,7 +2,7 @@
 	<view>
 		<view class="header-box linear-background">
 			<view class="row">
-				<image src="../../static/index/top.png" mode=""></image>
+				<image :src="userInfo.avatar" mode=""></image>
 				<view class="right">
 					<view class="top">
 						<view class="title">{{userInfo.user_name}}</view>
@@ -65,31 +65,42 @@
 </template>
 
 <script>
-	import {mapActions,mapGetters} from 'vuex'
+	import {
+		mapActions,
+		mapGetters
+	} from 'vuex'
+	import {
+		request_balance
+	} from '../../common/https.js'
 	export default {
 		data() {
 			return {
 
 			};
 		},
-		computed:{
+		computed: {
 			...mapGetters(['userInfo'])
 		},
 		onShow() {
-			 uni.getSystemInfo({  
-			        success:function(e){  
-						console.log(e)
-			        }  
-			    }) 
-		},
-		onNavigationBarButtonTap(e) {
-			this.$pageTo({
-				url: '/pages/doctor/consulting-desk'
+			uni.getSystemInfo({
+				success: function(e) {
+					console.log(e)
+				}
+			})
+			request_balance({uni}).then(res=>{
+				console.log(res);
 			})
 		},
-		methods:{
-			pageTo(url){
-				this.$pageTo({url})
+		onNavigationBarButtonTap(e) {
+			uni.switchTab({
+				url: '/pages/doctor/patient'
+			})
+		},
+		methods: {
+			pageTo(url) {
+				this.$pageTo({
+					url
+				})
 			},
 			setTitleNViewStyle(index, show, text) {
 				let pages = getCurrentPages();
@@ -120,7 +131,7 @@
 					}
 				}
 				// #endif  
-			
+
 				// #ifdef H5  
 				if (show) {
 					if (index === 0) {
@@ -149,7 +160,7 @@
 		padding-top: 44px;
 		padding-bottom: 10px;
 		/* #ifdef APP-PLUS */
-			padding-top: calc(var(--status-bar-height) + 43px);
+		padding-top: calc(var(--status-bar-height) + 43px);
 		/* #endif */
 
 		image {
@@ -204,19 +215,22 @@
 					margin-top: 10px;
 				}
 			}
-		}	
+		}
 	}
+
 	.menus-box {
-		
-		.menus{
+
+		.menus {
 			display: flex;
 			padding: 10px 20px;
-			.menu{
+
+			.menu {
 				image {
 					width: 30px;
 					height: 30px;
 					margin-bottom: 10px;
 				}
+
 				color: #838F8D;
 				font-size: 15px;
 				display: flex;

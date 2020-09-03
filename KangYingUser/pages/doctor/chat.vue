@@ -9,9 +9,8 @@
 			</view>
 		</view>
 
-		<view class="row " v-for="(item,index) in jimMsgs[targetUser]" :key='index' 
-		v-if="item.msg_body.extras.record_id== targetInfo.record_id"
-		:class="item.from_id === targetUser?'doctor-row':'user-row'">
+		<view class="row " v-for="(item,index) in jimMsgs[targetUser]" :key='index' v-if="item.msg_body.extras.record_id== targetInfo.record_id"
+		 :class="item.from_id === targetUser?'doctor-row':'user-row'">
 			<image v-if="item.from_id === targetUser" :src="targetInfo.d_avatar" mode=""></image>
 			<view class="message" v-if="item.msg_type==='text'">
 				{{item.msg_body[item.msg_type]}}
@@ -31,34 +30,31 @@
 			<view class="little">
 				<!-- <uni-icons type="mic" class="icon" size="24"></uni-icons> -->
 				<view class="input-box">
-					<input class="input" @focus="messageInputFocus" @blur="messageInputBlur" placeholder="输入想说的话" v-model="messageInput"></input>
+					<textarea class="input" @focus="messageInputFocus" @blur="messageInputBlur" placeholder="输入想说的话" auto-height fixed
+					 v-model="messageInput"></textarea>
 				</view>
-				<uni-icons type="list" @click="moreHandle" class="icon" size="24"></uni-icons>
+				<uni-icons type="camera" class="icon" size="28" @click="sendMore"></uni-icons>
 				<view v-if="messageInput" @touchend.prevent="sendMessage" class="button">
 					<text>发送</text>
 				</view>
-				<uni-icons v-else type="plusempty" class="icon" size="28" @click="sendMore"></uni-icons>
+				<uni-icons v-else type="plus" @click="moreHandle" class="icon" size="28"></uni-icons>
 			</view>
 		</view>
 		<uni-popup ref="moreHandle">
-			<radio-group class="more-handle">
-				<label class="row" for="pay-ali" @click="moreClick(1)">
+			<view class="more-handle">
+				<view class="row" for="pay-ali" @click="$pageTo({url:'/pages/doctor/case?tab=0'})">
 					<view class="left">
-						<!-- <image src="../../static/imgs/alipay.png" mode=""></image> -->
-						<view>查看病例</view>
+						查看病例
 					</view>
 					<uni-icons type="arrowright"></uni-icons>
-					<!-- <radio  checked=""  id="pay-ali"></radio> -->
-				</label>
-				<label class="row" for="pay-wx" @click="moreClick(2)">
+				</view>
+				<view class="row" for="pay-wx" @click="$pageTo({url:'/pages/doctor/case?tab=2'})">
 					<view class="left">
-						<!-- <image src="../../static/imgs/weixin.png" mode=""></image> -->
-						<view>电子处方</view>
+						电子处方
 					</view>
 					<uni-icons type="arrowright"></uni-icons>
-					<!-- <radio id="pay-wx"></radio> -->
-				</label>
-			</radio-group>
+				</view>
+			</view>
 		</uni-popup>
 	</view>
 </template>
@@ -76,7 +72,7 @@
 				messageList: [],
 				imageList: {},
 				targetInfo: {},
-				record_id:'',
+				record_id: '',
 			};
 		},
 		watch: {
@@ -106,14 +102,14 @@
 			}
 		},
 		onLoad(e) {
-			this.targetUser = e.im_username || 'd_18510467185'
-			this.record_id = e.record_id || 34
+			this.targetUser = e.im_username
+			this.record_id = e.record_id
 			this.targetInfo = e
-			
+
 			uni.setNavigationBarTitle({
-			　　title:e.d_name
+				title: e.d_name
 			})
-			
+
 			setTimeout(() => {
 				uni.pageScrollTo({
 					scrollTop: 9999,
@@ -127,13 +123,15 @@
 			}, 500)
 		},
 		methods: {
-			moreClick(target){
+			moreClick(target) {
 				this.$pageTo({
-					url:'/pages/doctor/elec-case',
-					options:{uuid:'000001'}
+					url: '/pages/doctor/elec-case',
+					options: {
+						uuid: '000001'
+					}
 				})
 			},
-			messageInputFocus(){
+			messageInputFocus() {
 				setTimeout(() => {
 					uni.pageScrollTo({
 						scrollTop: 9999,
@@ -141,7 +139,7 @@
 					})
 				}, 100)
 			},
-			messageInputBlur(){
+			messageInputBlur() {
 				setTimeout(() => {
 					uni.pageScrollTo({
 						scrollTop: 9999,
@@ -337,47 +335,42 @@
 		bottom: 0;
 		left: 0;
 		padding: 0 10px;
-		height: 50px;
-		// background-color: yellow;
 		background-color: white;
 		box-shadow: 0 0 12px #efefef;
-
+	
 		.little {
+			width: 100%;
 			display: flex;
 			justify-content: space-between;
-			width: 100%;
 			align-items: center;
-
+			min-height: 50px;
+			padding: 5px 0;
+			
 			.input-box {
+				flex: 1;
 				background-color: white;
 				width: 82%;
 				border-radius: 2px;
-
+				margin-right: 14px;
+			
 				.input {
+					box-sizing: content-box;
+					padding: 5px 0 5px 10px;
 					width: 100%;
-					height: 50px;
-					border-radius: 6px;
 					background-color: #F6F6F6;
-					border: 7px solid white;
-					padding: 6px 10px 6px 10px;
-					font-size: 16px;
+					font-size: 18px;
 				}
 			}
-
+	
 			.button {
 				height: 32px;
 				padding: 0 4px;
 				width: 3rem;
 				transition: all 1s linear;
-
-				.icon {
-					width: auto;
-					color: white !important;
-				}
 			}
-
+	
 			.icon {
-				width: 60px;
+				width: 40px;
 			}
 		}
 	}

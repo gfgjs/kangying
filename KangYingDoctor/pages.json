@@ -157,6 +157,10 @@
             "path" : "pages/mine/feedback",
             "style" : {}
         }
+        ,{
+            "path" : "pages/doctor/send-goods",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
