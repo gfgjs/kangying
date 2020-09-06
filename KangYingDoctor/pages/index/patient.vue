@@ -11,7 +11,7 @@
 					{{item.p_name}}
 				</view>
 				<view class="bottom">
-					{{item.user_info.gender}} 丨 年龄：{{item.Age}}丨{{item.diagnosis||'无诊断信息'}}
+					{{item.user_info.gender}} 丨 年龄：{{item.Age}}丨{{item.p_narrate||'无诊断信息'}}
 				</view>
 			</view>
 			<view class="right">

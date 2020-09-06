@@ -1,6 +1,6 @@
 <!-- 电子病历 -->
 <template>
-	<view class="page">
+	<view class="page" v-if="recordInfo">
 		<view class="row-title">就诊人信息</view>
 		<view class="row border-bottom">
 			<view class="title">患者姓名:</view>
@@ -8,11 +8,11 @@
 		</view>
 		<view class="row border-bottom">
 			<view class="title">性别:</view>
-			<view class="little-title">{{info.p_gender}}</view>
+			<view class="little-title">{{recordInfo.gender}}</view>
 		</view>
 		<view class="row border-bottom">
 			<view class="title">年龄:</view>
-			<view class="little-title">24</view>
+			<view class="little-title">{{recordInfo.age}}</view>
 		</view>
 		<!-- <view class="row border-bottom">
 			<view class="title">既往病史:</view>
@@ -58,20 +58,34 @@
 </template>
 
 <script>
-	import {request_recordUp} from '../../common/https.js'
+	import {request_recordUp,request_recordInfo} from '../../common/https.js'
 	export default {
 		data() {
 			return {
 				info:{},
+				recordInfo:{},
 				p_narrate:'',
 				diagnosis:''
 			};
 		},
 		onLoad(e) {
 			this.info = e
-			this.log(e);
+			request_recordInfo({
+				uni,
+				data: {
+					id: e.record_id
+				}
+			}).then(res => {
+				if (res.code === 0) {
+					this.log(res.data);
+					this.recordInfo = res.data
+					this.p_narrate = this.recordInfo.now_record.p_narrate
+					this.diagnosis = this.recordInfo.now_record.diagnosis
+				}
+			})
 		},
 		methods:{
+			
 			update(){
 				request_recordUp({
 					uni,
