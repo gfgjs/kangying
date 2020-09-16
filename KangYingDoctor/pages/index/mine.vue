@@ -36,11 +36,11 @@
 		<view class="menus-box">
 			<view class="row-title">诊所服务</view>
 			<view class="menus">
-				<view class="menu">
+				<view class="menu" @click="$pageTo({url:'/pages/mine/balance'})">
 					<image src="../../static/mine/1.png" mode=""></image>
 					结算收入
 				</view>
-				<view class="menu">
+				<view class="menu" @click="switchTo({url:'/pages/index/patient'})">
 					<image src="../../static/mine/2.png" mode=""></image>
 					出诊记录
 				</view>
@@ -87,16 +87,16 @@
 					console.log(e)
 				}
 			})
-			request_balance({uni}).then(res=>{
-				console.log(res);
-			})
 		},
 		onNavigationBarButtonTap(e) {
 			uni.switchTab({
-				url: '/pages/doctor/patient'
+				url: '/pages/index/patient'
 			})
 		},
 		methods: {
+			switchTo(e){
+				uni.switchTab(e)
+			},
 			pageTo(url) {
 				this.$pageTo({
 					url

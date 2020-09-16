@@ -78,77 +78,77 @@ import local from './local'
 const viewName = 'i18nView'
 
 export default {
-  name: 'I18n',
-  data() {
-    return {
-      date: '',
-      tableData: [{
-        date: '2016-05-03',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      },
-      {
-        date: '2016-05-02',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      },
-      {
-        date: '2016-05-04',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      },
-      {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      }],
-      options: [],
-      value: ''
-    }
-  },
-  computed: {
-    lang: {
-      get() {
-        return this.$store.state.app.language
-      },
-      set(lang) {
-        this.$i18n.locale = lang
-        this.$store.dispatch('app/setLanguage', lang)
-      }
-    }
-  },
-  watch: {
-    lang() {
-      this.setOptions()
-    }
-  },
-  created() {
-    if (!this.$i18n.getLocaleMessage('en')[viewName]) {
-      this.$i18n.mergeLocaleMessage('en', local.en)
-      this.$i18n.mergeLocaleMessage('zh', local.zh)
-      this.$i18n.mergeLocaleMessage('es', local.es)
-      this.$i18n.mergeLocaleMessage('ja', local.ja)
-    }
-    this.setOptions() // set default select options
-  },
-  methods: {
-    setOptions() {
-      this.options = [
-        {
-          value: '1',
-          label: this.$t('i18nView.one')
-        },
-        {
-          value: '2',
-          label: this.$t('i18nView.two')
-        },
-        {
-          value: '3',
-          label: this.$t('i18nView.three')
+    name: 'I18n',
+    data() {
+        return {
+            date: '',
+            tableData: [{
+                date: '2016-05-03',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles'
+            },
+            {
+                date: '2016-05-02',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles'
+            },
+            {
+                date: '2016-05-04',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles'
+            },
+            {
+                date: '2016-05-01',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles'
+            }],
+            options: [],
+            value: ''
         }
-      ]
+    },
+    computed: {
+        lang: {
+            get() {
+                return this.$store.state.app.language
+            },
+            set(lang) {
+                this.$i18n.locale = lang
+                this.$store.dispatch('app/setLanguage', lang)
+            }
+        }
+    },
+    watch: {
+        lang() {
+            this.setOptions()
+        }
+    },
+    created() {
+        if (!this.$i18n.getLocaleMessage('en')[viewName]) {
+            this.$i18n.mergeLocaleMessage('en', local.en)
+            this.$i18n.mergeLocaleMessage('zh', local.zh)
+            this.$i18n.mergeLocaleMessage('es', local.es)
+            this.$i18n.mergeLocaleMessage('ja', local.ja)
+        }
+        this.setOptions() // set default select options
+    },
+    methods: {
+        setOptions() {
+            this.options = [
+                {
+                    value: '1',
+                    label: this.$t('i18nView.one')
+                },
+                {
+                    value: '2',
+                    label: this.$t('i18nView.two')
+                },
+                {
+                    value: '3',
+                    label: this.$t('i18nView.three')
+                }
+            ]
+        }
     }
-  }
 }
 </script>
 

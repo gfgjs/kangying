@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
+    <div class="filter-container" v-if="0">
       <el-input
         v-model="listQuery.title"
         :placeholder="'医院名称'"
@@ -72,35 +72,35 @@
           <span>{{ row.d_name }}</span>
         </template>
       </el-table-column>
-        <el-table-column label="订单金额" min-width="150px" align="flex-start">
-            <template slot-scope="{row}">
-                <span>{{ row.pay_money }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="患者姓名" min-width="150px" align="flex-start">
-            <template slot-scope="{row}">
-                <span>{{ row.p_name }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="就诊卡号" min-width="150px" align="flex-start">
-            <template slot-scope="{row}">
-                <span>{{ row.address }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="电话" min-width="150px" align="flex-start">
-            <template slot-scope="{row}">
-                <span>{{ row.address }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="下单时间" min-width="150px" align="flex-start">
-            <template slot-scope="{row}">
-                <span>{{ row.create_time }}</span>
-            </template>
-        </el-table-column>
+      <el-table-column label="订单金额" min-width="150px" align="flex-start">
+        <template slot-scope="{row}">
+          <span>{{ row.pay_money }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="患者姓名" min-width="150px" align="flex-start">
+        <template slot-scope="{row}">
+          <span>{{ row.p_name }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="就诊卡号" min-width="150px" align="flex-start">
+        <template slot-scope="{row}">
+          <span>{{ row.address }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="电话" min-width="150px" align="flex-start">
+        <template slot-scope="{row}">
+          <span>{{ row.address }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="下单时间" min-width="150px" align="flex-start">
+        <template slot-scope="{row}">
+          <span>{{ row.create_time }}</span>
+        </template>
+      </el-table-column>
 
       <el-table-column label="订单状态" width="110px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.status}}</span>
+          <span>{{ row.status }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -108,6 +108,7 @@
         align="center"
         width="330"
         class-name="small-padding fixed-width"
+        v-if="0"
       >
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">

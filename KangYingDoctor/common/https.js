@@ -22,7 +22,9 @@ export const request = (e = {}, api, method ,contentType) => {
 		__token = e.token
 	}
 	
-	uni.showLoading()
+	if(!e.noLoading){
+		uni.showLoading()
+	}
 	return uni.request({
 		method,
 		url: HOST + api,
@@ -211,7 +213,7 @@ export const request_sendMedicineOrder = e => {
 export const request_expressList = e => {
 	return request(e, '/v1/p/express/list', 'GET')
 }
-// 获取物流公司列表
+// 结算收入
 export const request_balance = e => {
 	return request(e, '/v1/d/doctor/balance', 'GET')
 }

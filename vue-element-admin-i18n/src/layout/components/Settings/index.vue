@@ -43,70 +43,70 @@
 import ThemePicker from '@/components/ThemePicker'
 
 export default {
-  components: { ThemePicker },
-  data() {
-    return {}
-  },
-  computed: {
-    isShowJob() {
-      return this.$store.getters.language === 'zh'
+    components: { ThemePicker },
+    data() {
+        return {}
     },
-    fixedHeader: {
-      get() {
-        return this.$store.state.settings.fixedHeader
-      },
-      set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'fixedHeader',
-          value: val
-        })
-      }
+    computed: {
+        isShowJob() {
+            return this.$store.getters.language === 'zh'
+        },
+        fixedHeader: {
+            get() {
+                return this.$store.state.settings.fixedHeader
+            },
+            set(val) {
+                this.$store.dispatch('settings/changeSetting', {
+                    key: 'fixedHeader',
+                    value: val
+                })
+            }
+        },
+        tagsView: {
+            get() {
+                return this.$store.state.settings.tagsView
+            },
+            set(val) {
+                this.$store.dispatch('settings/changeSetting', {
+                    key: 'tagsView',
+                    value: val
+                })
+            }
+        },
+        sidebarLogo: {
+            get() {
+                return this.$store.state.settings.sidebarLogo
+            },
+            set(val) {
+                this.$store.dispatch('settings/changeSetting', {
+                    key: 'sidebarLogo',
+                    value: val
+                })
+            }
+        },
+        supportPinyinSearch: {
+            get() {
+                return this.$store.state.settings.supportPinyinSearch
+            },
+            set(val) {
+                this.$store.dispatch('settings/changeSetting', {
+                    key: 'supportPinyinSearch',
+                    value: val
+                })
+            }
+        },
+        lang() {
+            return this.$store.getters.language
+        }
     },
-    tagsView: {
-      get() {
-        return this.$store.state.settings.tagsView
-      },
-      set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'tagsView',
-          value: val
-        })
-      }
-    },
-    sidebarLogo: {
-      get() {
-        return this.$store.state.settings.sidebarLogo
-      },
-      set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'sidebarLogo',
-          value: val
-        })
-      }
-    },
-    supportPinyinSearch: {
-      get() {
-        return this.$store.state.settings.supportPinyinSearch
-      },
-      set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'supportPinyinSearch',
-          value: val
-        })
-      }
-    },
-    lang() {
-      return this.$store.getters.language
+    methods: {
+        themeChange(val) {
+            this.$store.dispatch('settings/changeSetting', {
+                key: 'theme',
+                value: val
+            })
+        }
     }
-  },
-  methods: {
-    themeChange(val) {
-      this.$store.dispatch('settings/changeSetting', {
-        key: 'theme',
-        value: val
-      })
-    }
-  }
 }
 </script>
 

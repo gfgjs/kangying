@@ -24,32 +24,32 @@
 import { transactionList } from '@/api/remote-search'
 
 export default {
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        success: 'success',
-        pending: 'danger'
-      }
-      return statusMap[status]
+    filters: {
+        statusFilter(status) {
+            const statusMap = {
+                success: 'success',
+                pending: 'danger'
+            }
+            return statusMap[status]
+        },
+        orderNoFilter(str) {
+            return str.substring(0, 30)
+        }
     },
-    orderNoFilter(str) {
-      return str.substring(0, 30)
+    data() {
+        return {
+            list: null
+        }
+    },
+    created() {
+        this.fetchData()
+    },
+    methods: {
+        fetchData() {
+            transactionList().then(response => {
+                this.list = response.data.items.slice(0, 8)
+            })
+        }
     }
-  },
-  data() {
-    return {
-      list: null
-    }
-  },
-  created() {
-    this.fetchData()
-  },
-  methods: {
-    fetchData() {
-      transactionList().then(response => {
-        this.list = response.data.items.slice(0, 8)
-      })
-    }
-  }
 }
 </script>

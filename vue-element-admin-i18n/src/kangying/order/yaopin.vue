@@ -1,207 +1,212 @@
 <template>
-    <div class="app-container">
-        <div class="filter-container">
-            <el-input
-                v-model="listQuery.title"
-                :placeholder="'医院名称'"
-                style="width: 200px;"
-                class="filter-item"
-                @keyup.enter.native="handleFilter"
+  <div class="app-container">
+    <div class="filter-container" v-if="0">
+      <el-input
+        v-model="listQuery.title"
+        :placeholder="'医院名称'"
+        style="width: 200px;"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-select
+        v-model="listQuery.importance"
+        :placeholder="'医院等级'"
+        clearable
+        style="width: 200px"
+        class="filter-item"
+      >
+        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
+      </el-select>
+
+      <el-button v-waves class="filter-item" type="primary" @click="handleFilter">
+        搜索
+      </el-button>
+      <el-button
+        class="filter-item"
+        style="margin-left: 10px;"
+        type="primary"
+        @click="handleCreate"
+      >
+        重置
+      </el-button>
+      <el-button
+        v-waves
+        :loading="downloadLoading"
+        class="filter-item"
+        type="primary"
+        style="float:right;"
+        @click="handleCreate"
+      >
+        添加
+      </el-button>
+    </div>
+
+    <el-table
+      :key="tableKey"
+      v-loading="listLoading"
+      :data="list"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%;"
+      @sort-change="sortChange"
+    >
+      <el-table-column label="订单号" prop="id" align="center" width="200px">
+        <template slot-scope="{row}">
+          <span>{{ row.order_no }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="处方凭证" min-width="150px" align="center">
+        <template slot-scope="{row}">
+          <div v-if="row.evidence">
+            <img
+              v-for="item in (JSON.parse(row.evidence))"
+              style="min-width: 100px;max-width: 100px;"
+              :src="item"
+              alt=""
+            >
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="患者姓名" min-width="150px" align="flex-start">
+        <template slot-scope="{row}">
+          <span>{{ row.user_name }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="收货地址" min-width="150px" align="flex-start">
+        <template slot-scope="{row}">
+          <span>{{ row.address }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="电话" min-width="150px" align="flex-start">
+        <template slot-scope="{row}">
+          <span>{{ row.user_mobile }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="下单时间" min-width="150px" align="flex-start">
+        <template slot-scope="{row}">
+          <span>{{ row.create_time }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="物流公司" min-width="150px" align="flex-start">
+        <template slot-scope="{row}">
+          <span>{{ row.express_company==0?'未发货':row.express_company }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="物流单号" min-width="150px" align="flex-start">
+        <template slot-scope="{row}">
+          <span>{{ row.express_no }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="订单金额" min-width="150px" align="flex-start">
+        <template slot-scope="{row}">
+          <span>{{ row.total_price }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="订单状态" width="110px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.status == 0 ? '未付款' : (row.status == 1 ? '待发货' : '已发货') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="操作"
+        align="center"
+        width="330"
+        class-name="small-padding fixed-width"
+        v-if="0"
+      >
+        <template slot-scope="{row,$index}">
+          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+            编辑
+          </el-button>
+          <el-button v-if="row.status!='draft'" size="mini" @click="handleModifyStatus(row,'draft')">
+            禁用
+          </el-button>
+          <el-button type="success" size="mini" @click="viewHospitalDetails(row)">
+            详情
+          </el-button>
+          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
+            删除
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <pagination
+      v-show="total>0"
+      :total="total"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
+      @pagination="getList"
+    />
+
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+      <el-form
+        ref="dataForm"
+        :rules="rules"
+        :model="temp"
+        label-position="left"
+        label-width="70px"
+        style="width: 400px; margin-left:50px;"
+      >
+        <el-form-item :label="$t('table.type')" prop="type">
+          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
+            <el-option
+              v-for="item in calendarTypeOptions"
+              :key="item.key"
+              :label="item.display_name"
+              :value="item.key"
             />
-            <el-select
-                v-model="listQuery.importance"
-                :placeholder="'医院等级'"
-                clearable
-                style="width: 200px"
-                class="filter-item"
-            >
-                <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item"/>
-            </el-select>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('table.date')" prop="timestamp">
+          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
+        </el-form-item>
+        <el-form-item :label="$t('table.title')" prop="title">
+          <el-input v-model="temp.title" />
+        </el-form-item>
+        <el-form-item :label="$t('table.status')">
+          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('table.importance')">
+          <el-rate
+            v-model="temp.importance"
+            :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
+            :max="3"
+            style="margin-top:8px;"
+          />
+        </el-form-item>
+        <el-form-item :label="$t('table.remark')">
+          <el-input
+            v-model="temp.remark"
+            :autosize="{ minRows: 2, maxRows: 4}"
+            type="textarea"
+            placeholder="Please input"
+          />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">
+          {{ $t('table.cancel') }}
+        </el-button>
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+          {{ $t('table.confirm') }}
+        </el-button>
+      </div>
+    </el-dialog>
 
-            <el-button v-waves class="filter-item" type="primary" @click="handleFilter">
-                搜索
-            </el-button>
-            <el-button
-                class="filter-item"
-                style="margin-left: 10px;"
-                type="primary"
-                @click="handleCreate"
-            >
-                重置
-            </el-button>
-            <el-button
-                v-waves
-                :loading="downloadLoading"
-                class="filter-item"
-                type="primary"
-                style="float:right;"
-                @click="handleCreate"
-            >
-                添加
-            </el-button>
-        </div>
-
-        <el-table
-            :key="tableKey"
-            v-loading="listLoading"
-            :data="list"
-            border
-            fit
-            highlight-current-row
-            style="width: 100%;"
-            @sort-change="sortChange"
-        >
-            <el-table-column label="订单号" prop="id" align="center" width="200px">
-                <template slot-scope="{row}">
-                    <span>{{ row.order_no }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="处方凭证" min-width="150px" align="center">
-                <template slot-scope="{row}">
-                    <div v-if="row.evidence">
-                        <img style="min-width: 100px;max-width: 100px;" v-for="item in (JSON.parse(row.evidence))"
-                             :src="item" alt="">
-                    </div>
-                </template>
-            </el-table-column>
-            <el-table-column label="患者姓名" min-width="150px" align="flex-start">
-                <template slot-scope="{row}">
-                    <span>{{ row.user_name }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="收货地址" min-width="150px" align="flex-start">
-                <template slot-scope="{row}">
-                    <span>{{ row.address }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="电话" min-width="150px" align="flex-start">
-                <template slot-scope="{row}">
-                    <span>{{ row.user_mobile }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="下单时间" min-width="150px" align="flex-start">
-                <template slot-scope="{row}">
-                    <span>{{ row.create_time }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="物流公司" min-width="150px" align="flex-start">
-                <template slot-scope="{row}">
-                    <span>{{ row.express_company==0?'未发货':row.express_company }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="物流单号" min-width="150px" align="flex-start">
-                <template slot-scope="{row}">
-                    <span>{{ row.express_no }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="订单金额" min-width="150px" align="flex-start">
-                <template slot-scope="{row}">
-                    <span>{{ row.total_price }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="订单状态" width="110px" align="center">
-                <template slot-scope="{row}">
-                    <span>{{ row.status == 0 ? '未付款' : (row.status == 1 ? '待发货' : '已发货') }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column
-                label="操作"
-                align="center"
-                width="330"
-                class-name="small-padding fixed-width"
-            >
-                <template slot-scope="{row,$index}">
-                    <el-button type="primary" size="mini" @click="handleUpdate(row)">
-                        编辑
-                    </el-button>
-                    <el-button v-if="row.status!='draft'" size="mini" @click="handleModifyStatus(row,'draft')">
-                        禁用
-                    </el-button>
-                    <el-button type="success" size="mini" @click="viewHospitalDetails(row)">
-                        详情
-                    </el-button>
-                    <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
-                        删除
-                    </el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-
-        <pagination
-            v-show="total>0"
-            :total="total"
-            :page.sync="listQuery.page"
-            :limit.sync="listQuery.limit"
-            @pagination="getList"
-        />
-
-        <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-            <el-form
-                ref="dataForm"
-                :rules="rules"
-                :model="temp"
-                label-position="left"
-                label-width="70px"
-                style="width: 400px; margin-left:50px;"
-            >
-                <el-form-item :label="$t('table.type')" prop="type">
-                    <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
-                        <el-option
-                            v-for="item in calendarTypeOptions"
-                            :key="item.key"
-                            :label="item.display_name"
-                            :value="item.key"
-                        />
-                    </el-select>
-                </el-form-item>
-                <el-form-item :label="$t('table.date')" prop="timestamp">
-                    <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date"/>
-                </el-form-item>
-                <el-form-item :label="$t('table.title')" prop="title">
-                    <el-input v-model="temp.title"/>
-                </el-form-item>
-                <el-form-item :label="$t('table.status')">
-                    <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-                        <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item"/>
-                    </el-select>
-                </el-form-item>
-                <el-form-item :label="$t('table.importance')">
-                    <el-rate
-                        v-model="temp.importance"
-                        :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
-                        :max="3"
-                        style="margin-top:8px;"
-                    />
-                </el-form-item>
-                <el-form-item :label="$t('table.remark')">
-                    <el-input
-                        v-model="temp.remark"
-                        :autosize="{ minRows: 2, maxRows: 4}"
-                        type="textarea"
-                        placeholder="Please input"
-                    />
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">
-                    {{ $t('table.cancel') }}
-                </el-button>
-                <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
-                    {{ $t('table.confirm') }}
-                </el-button>
-            </div>
-        </el-dialog>
-
-        <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-            <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-                <el-table-column prop="key" label="Channel"/>
-                <el-table-column prop="pv" label="Pv"/>
-            </el-table>
-            <span slot="footer" class="dialog-footer">
+    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
+      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
+        <el-table-column prop="key" label="Channel" />
+        <el-table-column prop="pv" label="Pv" />
+      </el-table>
+      <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogPvVisible = false">{{ $t('table.confirm') }}</el-button>
       </span>
-        </el-dialog>
-    </div>
+    </el-dialog>
+  </div>
 </template>
 
 <script>

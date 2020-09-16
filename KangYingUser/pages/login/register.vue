@@ -95,7 +95,7 @@
 				userName: '',
 				sex: '男',
 				mobile: '',
-				idcard: '1',
+				idcard: '',
 				verifyPassword: '',
 				password: '',
 				countDown: 0,

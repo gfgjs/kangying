@@ -84,18 +84,6 @@ export const constantRoutes = [
         ]
     },
     {
-        path: '/documentation',
-        component: Layout,
-        children: [
-            {
-                path: 'index',
-                component: () => import('@/views/documentation/index'),
-                name: 'Documentation',
-                meta: { title: 'documentation', icon: 'documentation', affix: true }
-            }
-        ]
-    },
-    {
         path: '/hospital',
         component: Layout,
         children: [
@@ -109,6 +97,44 @@ export const constantRoutes = [
                 component: () => import('@/kangying/hospital/details'),
                 name: 'HospitalDetails',
                 meta: { title: '医院详情', noCache: true, activeMenu: '/hospital/index' },
+                hidden: true
+            }
+        ]
+    },
+    {
+        path: '/pe',
+        component: Layout,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/kangying/pe/index'),
+                name: 'pe',
+                meta: { title: '体检套餐', icon: 'icon', noCache: true }
+            },
+            {
+                path: 'details',
+                component: () => import('@/kangying/pe/details'),
+                name: 'peDetails',
+                meta: { title: '套餐详情', noCache: true, activeMenu: '/pe/index' },
+                hidden: true
+            }
+        ]
+    },
+    {
+        path: '/article',
+        component: Layout,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/kangying/article/index'),
+                name: 'article',
+                meta: { title: '文章列表', icon: 'icon', noCache: true }
+            },
+            {
+                path: 'details',
+                component: () => import('@/kangying/article/details'),
+                name: 'articleDetails',
+                meta: { title: '文章详情', noCache: true, activeMenu: '/article/index' },
                 hidden: true
             }
         ]
@@ -203,7 +229,19 @@ export const constantRoutes = [
                 component: () => import('@/kangying/role/admin'),
                 name: 'admin',
                 meta: { title: '成员管理', icon: 'icon', noCache: true }
-            },
+            }
+        ]
+    },
+    {
+        path: '/documentation',
+        component: Layout,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/documentation/index'),
+                name: 'Documentation',
+                meta: { title: 'documentation', icon: 'documentation', affix: true }
+            }
         ]
     },
     {

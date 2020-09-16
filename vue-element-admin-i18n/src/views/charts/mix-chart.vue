@@ -8,8 +8,8 @@
 import Chart from '@/components/Charts/MixChart'
 
 export default {
-  name: 'MixChart',
-  components: { Chart }
+    name: 'MixChart',
+    components: { Chart }
 }
 </script>
 

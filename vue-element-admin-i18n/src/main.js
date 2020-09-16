@@ -3,7 +3,7 @@ import Vue from 'vue'
 import Cookies from 'js-cookie'
 
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
-import axios from 'axios';
+import axios from 'axios'
 
 import Element from 'element-ui'
 import './styles/element-variables.scss'
@@ -30,38 +30,38 @@ import * as filters from './filters' // global filters
  * please remove it before going online ! ! !
  */
 if (process.env.NODE_ENV === 'production') {
-  const { mockXHR } = require('../mock')
-  mockXHR()
+    const { mockXHR } = require('../mock')
+    mockXHR()
 }
 
 const http = (apiName, apiParams = {}) => {
     return new Promise((resolve, reject) => {
-        axios({apiName, apiParams}).then(res => {
-            let data = res instanceof Blob ? res : res.list ? res.list : res.data;
-            resolve(data);
+        axios({ apiName, apiParams }).then(res => {
+            const data = res instanceof Blob ? res : res.list ? res.list : res.data
+            resolve(data)
         }).catch(err => {
-            reject(err);
-        });
-    });
-};
-Vue.prototype.$http = http;
+            reject(err)
+        })
+    })
+}
+Vue.prototype.$http = http
 
 Vue.use(Element, {
-  size: Cookies.get('size') || 'medium', // set element-ui default size
-  i18n: (key, value) => i18n.t(key, value)
+    size: Cookies.get('size') || 'medium', // set element-ui default size
+    i18n: (key, value) => i18n.t(key, value)
 })
 
 // register global utility filters
 Object.keys(filters).forEach(key => {
-  Vue.filter(key, filters[key])
+    Vue.filter(key, filters[key])
 })
 
 Vue.config.productionTip = false
 
 new Vue({
-  el: '#app',
-  router,
-  store,
-  i18n,
-  render: h => h(App)
+    el: '#app',
+    router,
+    store,
+    i18n,
+    render: h => h(App)
 })

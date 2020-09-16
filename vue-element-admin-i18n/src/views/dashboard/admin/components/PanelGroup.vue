@@ -7,9 +7,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            New Visits
+            用户数量
           </div>
-          <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="counts.c1" :duration="2600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -20,9 +20,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Messages
+            药品订单
           </div>
-          <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="counts.c2" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -33,9 +33,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Purchases
+            体检订单
           </div>
-          <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="counts.c3" :duration="3200" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -46,9 +46,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Shoppings
+            问诊订单
           </div>
-          <count-to :start-val="0" :end-val="13600" :duration="3600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="counts.c4" :duration="3600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -57,16 +57,28 @@
 
 <script>
 import CountTo from 'vue-count-to'
+import { getCount } from '@/api/kangying-https'
 
 export default {
-  components: {
-    CountTo
-  },
-  methods: {
-    handleSetLineChartData(type) {
-      this.$emit('handleSetLineChartData', type)
+    components: {
+        CountTo
+    },
+    data(){
+      return {
+          counts:{}
+      }
+    },
+    mounted() {
+      getCount().then(res=>{
+          this.counts = res.data
+          console.log(res)
+      })
+    },
+    methods: {
+        handleSetLineChartData(type) {
+            this.$emit('handleSetLineChartData', type)
+        }
     }
-  }
 }
 </script>
 

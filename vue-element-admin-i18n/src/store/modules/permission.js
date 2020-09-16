@@ -56,7 +56,6 @@ const actions = {
                 resolve(res.data.node_menu)
             })
 
-
             // let accessedRoutes
             // if (roles.includes('admin')) {
             //     accessedRoutes = asyncRoutes || []

@@ -1,59 +1,59 @@
 <template>
-  <div >
+  <div>
     <el-dialog :title="title" :visible.sync="dialogVisible" :width="width" :before-close="handleClose">
-        <slot></slot>
-        <span slot="footer" class="dialog_footer">
-            <div class="dialog_btn">
-                <span class="dialog_btn_cancel" @click="onHandleClose('cancel')" v-if="isCancel">{{cancelTxt}}</span>
-                <span class="dialog_btn_comfirm" @click="onHandleClose('confirm')" v-if="isComfirm">{{comfirmTxt}}</span>
-            </div>
-        </span>
+      <slot />
+      <span slot="footer" class="dialog_footer">
+        <div class="dialog_btn">
+          <span v-if="isCancel" class="dialog_btn_cancel" @click="onHandleClose('cancel')">{{ cancelTxt }}</span>
+          <span v-if="isComfirm" class="dialog_btn_comfirm" @click="onHandleClose('confirm')">{{ comfirmTxt }}</span>
+        </div>
+      </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
 export default {
-	props:{
-		title:{
-			type:String,
-			default:''
-		},
-		width:{
-			type:String,
-			default:'440px'
-		},
-		dialogVisible:{
-			type:Boolean,
-			default:false
-		},
-		isCancel:{
-			type:Boolean,
-			default:true
-		},
-		isComfirm:{
-			type:Boolean,
-			default:true
-		},
-		cancelTxt:{
-			type:String,
-			default:'取消'
-		},
-		comfirmTxt:{
-			type:String,
-			default:'保存'
-		},
+    props: {
+        title: {
+            type: String,
+            default: ''
+        },
+        width: {
+            type: String,
+            default: '440px'
+        },
+        dialogVisible: {
+            type: Boolean,
+            default: false
+        },
+        isCancel: {
+            type: Boolean,
+            default: true
+        },
+        isComfirm: {
+            type: Boolean,
+            default: true
+        },
+        cancelTxt: {
+            type: String,
+            default: '取消'
+        },
+        comfirmTxt: {
+            type: String,
+            default: '保存'
+        }
 
-	},
-	methods:{
-		onHandleClose(type) {
-			this.$emit('closeDialog', type);
-		},
-		handleClose() {
-			this.$emit('closeDialog', 'cancel');
-		}
-	}
-};
+    },
+    methods: {
+        onHandleClose(type) {
+            this.$emit('closeDialog', type)
+        },
+        handleClose() {
+            this.$emit('closeDialog', 'cancel')
+        }
+    }
+}
 </script>
 
 <style lang="less" scoped>

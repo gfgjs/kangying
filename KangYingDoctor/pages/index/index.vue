@@ -47,7 +47,7 @@
 		<view class="menus-box">
 			<view class="row-title">服务中心</view>
 			<view class="row" style="border: none;">
-				<view class="row-item" @click="$api.msg('暂未开放')">
+				<view class="row-item" @click="switchTab('/pages/index/patient')">
 					<image src="../../static/index/1.png" mode=""></image>
 					<view class="name">服务台</view>
 				</view>
@@ -103,17 +103,19 @@
 			// console.log(lm);
 			if(lm.token){
 				request_userInfo({
-					uni
+					uni,
+					noLoading:true
 				}).then(res=>{
 					// console.log(res);
 				})
 				request_patientData({
-					uni
+					uni,
+					noLoading:true
 				}).then(res=>{
 					if(res.code===0){
 						this.patientCount = res.data
 					}
-					console.log(res);
+					// console.log(res);
 				})
 			}else{
 				uni.reLaunch({

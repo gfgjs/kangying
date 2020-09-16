@@ -371,6 +371,15 @@
 		}, {
 			"path": "pages/mine/feedback",
 			"style": {}
+		}, {
+			"path": "pages/doctor/webview",
+			"style": {
+				"app-plus": {
+					"titleNView": {
+						"type": "transparent"
+					}
+				}
+			}
 		}
 	],
 	"globalStyle": {

@@ -61,33 +61,33 @@ const content = `
 
 `
 export default {
-  name: 'MarkdownDemo',
-  components: { MarkdownEditor },
-  data() {
-    return {
-      content1: content,
-      content2: content,
-      content3: content,
-      content4: content,
-      html: '',
-      languageTypeList: {
-        'en': 'en_US',
-        'zh': 'zh_CN',
-        'es': 'es_ES'
-      }
+    name: 'MarkdownDemo',
+    components: { MarkdownEditor },
+    data() {
+        return {
+            content1: content,
+            content2: content,
+            content3: content,
+            content4: content,
+            html: '',
+            languageTypeList: {
+                'en': 'en_US',
+                'zh': 'zh_CN',
+                'es': 'es_ES'
+            }
+        }
+    },
+    computed: {
+        language() {
+            return this.languageTypeList[this.$store.getters.language]
+        }
+    },
+    methods: {
+        getHtml() {
+            this.html = this.$refs.markdownEditor.getHtml()
+            console.log(this.html)
+        }
     }
-  },
-  computed: {
-    language() {
-      return this.languageTypeList[this.$store.getters.language]
-    }
-  },
-  methods: {
-    getHtml() {
-      this.html = this.$refs.markdownEditor.getHtml()
-      console.log(this.html)
-    }
-  }
 }
 </script>
 

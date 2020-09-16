@@ -17,8 +17,8 @@ import FixedThead from './components/FixedThead'
 import UnfixedThead from './components/UnfixedThead'
 
 export default {
-  name: 'DynamicTable',
-  components: { FixedThead, UnfixedThead }
+    name: 'DynamicTable',
+    components: { FixedThead, UnfixedThead }
 }
 </script>
 

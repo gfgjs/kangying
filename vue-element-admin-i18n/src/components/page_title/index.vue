@@ -1,24 +1,24 @@
 <template>
-    <div class="page_title">
-        <span class="page_title_name">
-            <b>{{title}}</b>
-        </span>
-		<slot name="center"></slot>
-        <span class="page_title_btn">
-            <slot></slot>
-        </span>
-    </div>
+  <div class="page_title">
+    <span class="page_title_name">
+      <b>{{ title }}</b>
+    </span>
+    <slot name="center" />
+    <span class="page_title_btn">
+      <slot />
+    </span>
+  </div>
 </template>
 <script>
 export default {
-	name:'page_title',
-	props:{
-		title:{
-			type:String,
-			default:''
-		}
-	},
-};
+    name: 'PageTitle',
+    props: {
+        title: {
+            type: String,
+            default: ''
+        }
+    }
+}
 </script>
 <style lang="less" scoped>
 .page_title{

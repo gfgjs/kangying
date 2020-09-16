@@ -161,6 +161,10 @@
             "path" : "pages/doctor/send-goods",
             "style" : {}
         }
+        ,{
+            "path" : "pages/mine/balance",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",

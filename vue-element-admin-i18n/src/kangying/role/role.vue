@@ -1,144 +1,143 @@
 <template>
-    <div class="app-container">
-        <div class="filter-container">
-            <el-input
-                v-model="listQuery.title"
-                :placeholder="'医院名称'"
-                style="width: 200px;"
-                class="filter-item"
-                @keyup.enter.native="handleFilter"
-            />
-            <el-select
-                v-model="listQuery.importance"
-                :placeholder="'医院等级'"
-                clearable
-                style="width: 200px"
-                class="filter-item"
-            >
-                <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item"/>
-            </el-select>
+  <div class="app-container">
+    <div class="filter-container">
+      <el-input
+        v-model="listQuery.title"
+        :placeholder="'医院名称'"
+        style="width: 200px;"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-select
+        v-model="listQuery.importance"
+        :placeholder="'医院等级'"
+        clearable
+        style="width: 200px"
+        class="filter-item"
+      >
+        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
+      </el-select>
 
-            <el-button v-waves class="filter-item" type="primary" @click="handleFilter">
-                搜索
-            </el-button>
-            <el-button
-                class="filter-item"
-                style="margin-left: 10px;"
-                type="primary"
-                @click="handleCreate"
-            >
-                重置
-            </el-button>
-            <el-button
-                v-waves
-                :loading="downloadLoading"
-                class="filter-item"
-                type="primary"
-                style="float:right;"
-                @click="handleCreate"
-            >
-                添加
-            </el-button>
-        </div>
+      <el-button v-waves class="filter-item" type="primary" @click="handleFilter">
+        搜索
+      </el-button>
+      <el-button
+        class="filter-item"
+        style="margin-left: 10px;"
+        type="primary"
+        @click="handleCreate"
+      >
+        重置
+      </el-button>
+      <el-button
+        v-waves
+        :loading="downloadLoading"
+        class="filter-item"
+        type="primary"
+        style="float:right;"
+        @click="handleCreate"
+      >
+        添加
+      </el-button>
+    </div>
 
-        <el-table
-            :key="tableKey"
-            v-loading="listLoading"
-            :data="list"
-            border
-            fit
-            highlight-current-row
-            style="width: 100%;"
-            @sort-change="sortChange"
-        >
-            <el-table-column label="ID" prop="id" align="center" width="200px">
-                <template slot-scope="{row}">
-                    <span>{{ row.id }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="角色分类" min-width="150px" align="center">
-                <template slot-scope="{row}">
-                    <span>{{ row.role_name }}</span>
+    <el-table
+      :key="tableKey"
+      v-loading="listLoading"
+      :data="list"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%;"
+      @sort-change="sortChange"
+    >
+      <el-table-column label="ID" prop="id" align="center" width="200px">
+        <template slot-scope="{row}">
+          <span>{{ row.id }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="角色分类" min-width="150px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.role_name }}</span>
 
-                </template>
-            </el-table-column>
-            <el-table-column label="角色状态" width="110px" align="center">
-                <template slot-scope="{row}">
-                    <span>{{ row.role_status ? '启用' : '禁用' }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column
-                label="操作"
-                align="center"
-                width="330"
-                class-name="small-padding fixed-width"
-            >
-                <template slot-scope="{row,$index}">
-                    <el-button type="primary" size="mini" @click="handleUpdate(row)">
-                        编辑
-                    </el-button>
-                    <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
-                        删除
-                    </el-button>
-                </template>
-            </el-table-column>
-        </el-table>
+        </template>
+      </el-table-column>
+      <el-table-column label="角色状态" width="110px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.role_status ? '启用' : '禁用' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="操作"
+        align="center"
+        width="330"
+        class-name="small-padding fixed-width"
+      >
+        <template slot-scope="{row,$index}">
+          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+            编辑
+          </el-button>
+          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
+            删除
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
 
-        <pagination
-            v-show="total>0"
-            :total="total"
-            :page.sync="listQuery.page"
-            :limit.sync="listQuery.limit"
-            @pagination="getList"
-        />
+    <pagination
+      v-show="total>0"
+      :total="total"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
+      @pagination="getList"
+    />
 
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+      <el-form
+        ref="dataForm"
+        label-position="left"
+        label-width="70px"
+        style="width: 400px; margin-left:50px;"
+      >
+        <el-form-item label="角色名称" prop="title">
+          <el-input v-model="role_name" />
+        </el-form-item>
+        <el-form-item label="角色ID" prop="title">
+          <el-input v-model="role_id" disabled />
+        </el-form-item>
+      </el-form>
 
-        <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-            <el-form
-                ref="dataForm"
-                label-position="left"
-                label-width="70px"
-                style="width: 400px; margin-left:50px;"
-            >
-                <el-form-item label="角色名称" prop="title">
-                    <el-input v-model="role_name"/>
-                </el-form-item>
-                <el-form-item label="角色ID" prop="title">
-                    <el-input disabled v-model="role_id"/>
-                </el-form-item>
-            </el-form>
+      <el-tree
+        ref="tree"
+        :data="nodeList"
+        show-checkbox
+        node-key="id"
+        :default-expanded-keys="[1]"
+        :default-checked-keys="node_ids"
+        :props="defaultProps"
+        @check-change="treeChange"
+      />
 
-            <el-tree
-                :data="nodeList"
-                show-checkbox
-                node-key="id"
-                ref="tree"
-                @check-change="treeChange"
-                :default-expanded-keys="[1]"
-                :default-checked-keys="node_ids"
-                :props="defaultProps">
-            </el-tree>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">
+          {{ $t('table.cancel') }}
+        </el-button>
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+          {{ $t('table.confirm') }}
+        </el-button>
+      </div>
+    </el-dialog>
 
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">
-                    {{ $t('table.cancel') }}
-                </el-button>
-                <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
-                    {{ $t('table.confirm') }}
-                </el-button>
-            </div>
-        </el-dialog>
-
-        <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-            <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-                <el-table-column prop="key" label="Channel"/>
-                <el-table-column prop="pv" label="Pv"/>
-            </el-table>
-            <span slot="footer" class="dialog-footer">
+    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
+      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
+        <el-table-column prop="key" label="Channel" />
+        <el-table-column prop="pv" label="Pv" />
+      </el-table>
+      <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogPvVisible = false">{{ $t('table.confirm') }}</el-button>
       </span>
-        </el-dialog>
-    </div>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -298,7 +297,6 @@ export default {
             })
         },
         createData() {
-
             if (!this.role_name) {
                 this.$notify({
                     title: '提示',
@@ -309,7 +307,10 @@ export default {
                 return
             }
             roleAdd({ node_ids: this.$refs.tree.getCheckedKeys(), role_name: this.role_name }).then(res => {
-                if(res.code === '000'){
+                if (res.code === '000') {
+
+                    this.dialogFormVisible = false
+
                     this.$notify({
                         title: '成功',
                         message: res.msg,
@@ -346,7 +347,10 @@ export default {
                 role_name: this.role_name
             }).then(res => {
                 console.log(res)
-                if(res.code === '000'){
+
+                if (res.code === '000') {
+
+                    this.dialogFormVisible = false
                     this.$notify({
                         title: '成功',
                         message: res.msg,
@@ -410,7 +414,6 @@ export default {
             }
         },
         handleCreate() {
-
             this.resetTemp()
 
             this.dialogStatus = 'create'

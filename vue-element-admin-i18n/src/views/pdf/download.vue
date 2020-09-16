@@ -15,30 +15,30 @@
 <script>
 
 export default {
-  data() {
-    return {
-      article: '',
-      fullscreenLoading: true
+    data() {
+        return {
+            article: '',
+            fullscreenLoading: true
+        }
+    },
+    mounted() {
+        this.fetchData()
+    },
+    methods: {
+        fetchData() {
+            import('./content.js').then(data => {
+                const { title } = data.default
+                document.title = title
+                this.article = data.default
+                setTimeout(() => {
+                    this.fullscreenLoading = false
+                    this.$nextTick(() => {
+                        window.print()
+                    })
+                }, 3000)
+            })
+        }
     }
-  },
-  mounted() {
-    this.fetchData()
-  },
-  methods: {
-    fetchData() {
-      import('./content.js').then(data => {
-        const { title } = data.default
-        document.title = title
-        this.article = data.default
-        setTimeout(() => {
-          this.fullscreenLoading = false
-          this.$nextTick(() => {
-            window.print()
-          })
-        }, 3000)
-      })
-    }
-  }
 }
 </script>
 

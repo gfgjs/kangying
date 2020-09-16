@@ -61,7 +61,7 @@
 			</view>
 			<view class="list">
 				<view class="top">
-					<view class="item" @click="navTo('/pages/doctor/archives')">
+					<view class="item" @click="navTo('/pages/login/register')">
 						<view class="left">
 							<view class="big">注册建档</view>
 							<view class="little">在线完成注册建档</view>
@@ -169,7 +169,7 @@
 				})
 			}else if(e.index===1){
 				this.$pageTo({
-					url: '/pages/doctor/list'
+					url: '/pages/doctor/webview'
 				})
 			}
 		},

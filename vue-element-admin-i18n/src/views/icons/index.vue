@@ -45,24 +45,24 @@ import svgIcons from './svg-icons'
 import elementIcons from './element-icons'
 
 export default {
-  name: 'Icons',
-  data() {
-    return {
-      svgIcons,
-      elementIcons
-    }
-  },
-  methods: {
-    generateIconCode(symbol) {
-      return `<svg-icon icon-class="${symbol}" />`
+    name: 'Icons',
+    data() {
+        return {
+            svgIcons,
+            elementIcons
+        }
     },
-    generateElementIconCode(symbol) {
-      return `<i class="el-icon-${symbol}" />`
-    },
-    handleClipboard(text, event) {
-      clipboard(text, event)
+    methods: {
+        generateIconCode(symbol) {
+            return `<svg-icon icon-class="${symbol}" />`
+        },
+        generateElementIconCode(symbol) {
+            return `<i class="el-icon-${symbol}" />`
+        },
+        handleClipboard(text, event) {
+            clipboard(text, event)
+        }
     }
-  }
 }
 </script>
 

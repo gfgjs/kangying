@@ -3,7 +3,7 @@ import { Message } from 'element-ui'
 import store from '@/store/index'
 
 const auth_https = axios.create({
-    baseURL: process.env.VUE_APP_BASE_KANG_YING_AUTH,
+    baseURL: '/api',
     timeout: 5000
 })
 const https = axios.create({
@@ -50,15 +50,15 @@ export function permission(query) {
     return auth_https({
         url: '/admin/role/roleAccess',
         method: 'get',
-        headers:{
-            'Authorization':store.getters.token
+        headers: {
+            'Authorization': store.getters.token
         }
         // data: query
     })
 }
 export function getHospitalList(query) {
-    return https({
-        url: '/p/hospital/list',
+    return auth_https({
+        url: '/admin/hospital/list',
         method: 'get',
         params: query
     })
@@ -132,8 +132,8 @@ export function roleList(query) {
     return auth_https({
         url: '/admin/role/roleList',
         method: 'get',
-        headers:{
-            'Authorization':localStorage.getItem('ky_token')
+        headers: {
+            'Authorization': localStorage.getItem('ky_token')
         },
         params: query
     })
@@ -142,8 +142,8 @@ export function roleDetail(query) {
     return auth_https({
         url: '/admin/role/roleDetail',
         method: 'get',
-        headers:{
-            'Authorization':localStorage.getItem('ky_token')
+        headers: {
+            'Authorization': localStorage.getItem('ky_token')
         },
         params: query
     })
@@ -152,8 +152,8 @@ export function roleAdd(query) {
     return auth_https({
         url: '/admin/role/roleAdd',
         method: 'post',
-        headers:{
-            'Authorization':localStorage.getItem('ky_token')
+        headers: {
+            'Authorization': localStorage.getItem('ky_token')
         },
         data: query
     })
@@ -162,8 +162,8 @@ export function roleUpdate(query) {
     return auth_https({
         url: '/admin/role/roleUpdate',
         method: 'post',
-        headers:{
-            'Authorization':localStorage.getItem('ky_token')
+        headers: {
+            'Authorization': localStorage.getItem('ky_token')
         },
         data: query
     })
@@ -173,8 +173,8 @@ export function nodeList(query) {
     return auth_https({
         url: '/admin/role/nodeList',
         method: 'get',
-        headers:{
-            'Authorization':localStorage.getItem('ky_token')
+        headers: {
+            'Authorization': localStorage.getItem('ky_token')
         },
         params: query
     })
@@ -183,8 +183,8 @@ export function adminUserList(query) {
     return auth_https({
         url: '/admin/adminUser/list',
         method: 'get',
-        headers:{
-            'Authorization':localStorage.getItem('ky_token')
+        headers: {
+            'Authorization': localStorage.getItem('ky_token')
         },
         params: query
     })
@@ -193,8 +193,8 @@ export function adminUserSave(query) {
     return auth_https({
         url: '/admin/adminUser/save',
         method: 'post',
-        headers:{
-            'Authorization':localStorage.getItem('ky_token')
+        headers: {
+            'Authorization': localStorage.getItem('ky_token')
         },
         data: query
     })
@@ -203,8 +203,79 @@ export function adminUserDel(query) {
     return auth_https({
         url: '/admin/adminUser/del',
         method: 'post',
-        headers:{
-            'Authorization':localStorage.getItem('ky_token')
+        headers: {
+            'Authorization': localStorage.getItem('ky_token')
+        },
+        data: query
+    })
+}
+export function getCount(query) {
+    return auth_https({
+        url: '/admin/data/getCount ',
+        method: 'get',
+        headers: {
+            'Authorization': localStorage.getItem('ky_token')
+        },
+        params: query
+    })
+}
+export function adminPeList(query) {
+    return auth_https({
+        url: '/admin/pe/list',
+        method: 'get',
+        headers: {
+            'Authorization': localStorage.getItem('ky_token')
+        },
+        params: query
+    })
+}
+export function adminPeSave(query) {
+    return auth_https({
+        url: '/admin/pe/save',
+        method: 'post',
+        headers: {
+            'Authorization': localStorage.getItem('ky_token')
+        },
+        data: query
+    })
+}
+export function adminPeDel(query) {
+    return auth_https({
+        url: '/admin/pe/del',
+        method: 'post',
+        headers: {
+            'Authorization': localStorage.getItem('ky_token')
+        },
+        data: query
+    })
+}
+// 文章相关
+export function adminArticleList(query) {
+    return auth_https({
+        url: '/admin/article/list',
+        method: 'get',
+        headers: {
+            'Authorization': localStorage.getItem('ky_token')
+        },
+        params: query
+    })
+}
+export function adminArticleSave(query) {
+    return auth_https({
+        url: '/admin/article/save',
+        method: 'post',
+        headers: {
+            'Authorization': localStorage.getItem('ky_token')
+        },
+        data: query
+    })
+}
+export function adminArticleDel(query) {
+    return auth_https({
+        url: '/admin/article/del',
+        method: 'post',
+        headers: {
+            'Authorization': localStorage.getItem('ky_token')
         },
         data: query
     })

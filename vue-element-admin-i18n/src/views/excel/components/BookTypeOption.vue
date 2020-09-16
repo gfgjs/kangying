@@ -14,26 +14,26 @@
 
 <script>
 export default {
-  props: {
-    value: {
-      type: String,
-      default: 'xlsx'
+    props: {
+        value: {
+            type: String,
+            default: 'xlsx'
+        }
+    },
+    data() {
+        return {
+            options: ['xlsx', 'csv', 'txt']
+        }
+    },
+    computed: {
+        bookType: {
+            get() {
+                return this.value
+            },
+            set(val) {
+                this.$emit('input', val)
+            }
+        }
     }
-  },
-  data() {
-    return {
-      options: ['xlsx', 'csv', 'txt']
-    }
-  },
-  computed: {
-    bookType: {
-      get() {
-        return this.value
-      },
-      set(val) {
-        this.$emit('input', val)
-      }
-    }
-  }
 }
 </script>

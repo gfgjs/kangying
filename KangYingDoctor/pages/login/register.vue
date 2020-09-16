@@ -62,7 +62,7 @@
 					<view class="imgs-row">
 						<image v-for="(i,ind) in item.value" :key="'img'+ind" :src="i" class="add-button" @longpress="viewBigImg(item.value)"
 						 @click="clickImg(item,index,ind)" mode=""></image>
-						<view class="add-button" @click="upImg(item,index)">
+						<view class="add-button" @click="upImg(item,index)" v-if="item.maxLength>item.value.length">
 							<uni-icons type="plusempty" size="24" color="#cccccc"></uni-icons>
 						</view>
 					</view>
@@ -78,182 +78,6 @@
 						</view>
 					</picker>
 				</view>
-			</view>
-
-			<view v-if="0">
-				<view class="row">
-					<view class="title">
-						<view class="price" :style="userName&&'opacity:0;'">*</view>姓名
-					</view>
-					<input type="text" placeholder="请填写您的姓名" v-model="userName">
-				</view>
-
-				<view class="row">
-					<view class="title">
-						<view class="price" :style="userName&&'opacity:0;'">*</view>性别
-					</view>
-					<radio-group name="" class="radio-group">
-						<label>
-							<view>
-								<radio color="#5EB6AA" /><text>男</text></view>
-							<view>
-								<radio color="#5EB6AA" /><text>女</text></view>
-						</label>
-					</radio-group>
-				</view>
-
-				<view class="row">
-					<view class="title">
-						<view class="price" :style="idcard&&'opacity:0;'">*</view>身份证号
-					</view>
-					<input type="idcard" placeholder="请填写您的身份证号" v-model="idcard">
-				</view>
-				<view class="row">
-					<view class="title">
-						<view class="price" :style="idcard&&'opacity:0;'">*</view>出生日期
-					</view>
-					<input type="idcard" placeholder="根据身份证自动识别" disabled v-model="idcard">
-				</view>
-				<view class="row">
-					<view class="title">
-						<view class="price" :style="idcard&&'opacity:0;'">*</view>家庭地址
-					</view>
-					<input type="idcard" placeholder="请填写您的家庭地址" v-model="idcard">
-				</view>
-				<view class="row">
-					<view class="title">
-						<view class="price" :style="idcard&&'opacity:0;'">*</view>所在医院
-					</view>
-					<input type="idcard" placeholder="请填写您所在医院" v-model="idcard">
-				</view>
-				<view class="row">
-					<view class="title">
-						<view class="price" :style="idcard&&'opacity:0;'">*</view>所在科室
-					</view>
-					<input type="idcard" placeholder="请填写您所在科室" v-model="idcard">
-				</view>
-
-				<!-- 体检管理员 -->
-				<view class="row">
-					<view class="title">
-						<view class="price" :style="userName&&'opacity:0;'">*</view>执业资质
-					</view>
-					<radio-group name="" class="radio-group">
-						<label>
-							<view>
-								<radio /><text>有</text></view>
-							<view>
-								<radio /><text>无</text></view>
-						</label>
-					</radio-group>
-				</view>
-				<view class="row">
-					<view class="title">
-						<view class="price" :style="userName&&'opacity:0;'">*</view>职称
-					</view>
-					<radio-group name="" class="radio-group">
-						<label>
-							<view>
-								<radio /><text>有</text></view>
-							<view>
-								<radio /><text>无</text></view>
-						</label>
-					</radio-group>
-				</view>
-				<!-- | -->
-
-				<view class="row">
-					<view class="title">
-						<view class="price" :style="idcard&&'opacity:0;'">*</view>执业药师证编码
-					</view>
-					<input type="idcard" placeholder="请填写执业药师证编码" v-model="idcard">
-				</view>
-
-				<view class="row">
-					<view class="title">
-						<view class="price">*</view>职称
-					</view>
-					<picker mode="selector" :range="level">
-						<view class="picker">
-							<view class="little-title" :style="sex&&'font-size:16px;color:inherit;'">{{'请选择您的职称'}}</view>
-							<uni-icons type="arrowdown"></uni-icons>
-						</view>
-					</picker>
-				</view>
-				<view class="row">
-					<view class="title">
-						<view class="price" :style="idcard&&'opacity:0;'">*</view>从业年限
-					</view>
-					<input type="idcard" placeholder="请填写从业年限" v-model="idcard">
-				</view>
-				<view class="row">
-					<view class="title">
-						<view class="price" :style="idcard&&'opacity:0;'">*</view>上传证件照片
-					</view>
-
-					<view class="imgs-row">
-						<view class="add-button">
-							<uni-icons type="plusempty" size="24" color="#cccccc"></uni-icons>
-						</view>
-						<view class="add-button">
-							<uni-icons type="plusempty" size="24" color="#cccccc"></uni-icons>
-						</view>
-					</view>
-				</view>
-				<view class="row">
-					<view class="title">
-						<view class="price" :style="idcard&&'opacity:0;'">*</view>本人银行卡号
-					</view>
-					<input type="idcard" placeholder="请填写本人银行卡号" v-model="idcard">
-				</view>
-				<view class="row">
-					<view class="title">
-						<view class="price" :style="idcard&&'opacity:0;'">*</view>银行开户户名
-					</view>
-					<input type="idcard" placeholder="请填写银行开户户名" v-model="idcard">
-				</view>
-				<view class="row">
-					<view class="title">
-						<view class="price" :style="idcard&&'opacity:0;'">*</view>开户行
-					</view>
-					<input type="idcard" placeholder="请填写开户行" v-model="idcard">
-				</view>
-
-
-				<view class="row mobile-row">
-					<view class="title">
-						<view class="price" :style="mobile&&'opacity:0;'">*</view>联系电话
-					</view>
-					<view class="mobile-row">
-						<input type="text" placeholder="请填写您的联系电话" v-model="mobile">
-						<view class="get-code" @click="getVerifyCode">{{countDown?(countDown+' 秒后再次获取'):'获取验证码'}}</view>
-					</view>
-				</view>
-				<view class="row">
-					<view class="title">
-						<view class="price" :style="verifyCode&&'opacity:0;'">*</view>手机验证码
-					</view>
-					<input type="password" placeholder="请填写您收到的验证码" v-model="verifyCode">
-				</view>
-				<view class="row">
-					<view class="title">
-						<view class="price" :style="idcard&&'opacity:0;'">*</view>备用联系电话
-					</view>
-					<input type="idcard" placeholder="请填写备用联系电话" v-model="idcard">
-				</view>
-				<view class="row">
-					<view class="title">
-						<view class="price" :style="password&&'opacity:0;'">*</view>登录密码
-					</view>
-					<input type="password" placeholder="请填写您的登录密码" v-model="password">
-				</view>
-				<view class="row">
-					<view class="title">
-						<view class="price" :style="verifyPassword&&'opacity:0;'">*</view>确认密码
-					</view>
-					<input type="password" placeholder="请确认登录密码" v-model="verifyPassword">
-				</view>
-
 			</view>
 
 			<uni-popup ref="popup" type="dialog">
@@ -308,11 +132,11 @@
 						name: '手机',
 						type: 'input'
 					},
-					verifyCode: {
-						value: '',
-						name: '验证码',
-						type: 'input'
-					},
+					// verifyCode: {
+					// 	value: '',
+					// 	name: '验证码',
+					// 	type: 'input'
+					// },
 
 					sex: {
 						value: '',
@@ -360,12 +184,14 @@
 					avatar: {
 						value: '',
 						name: '头像',
-						type: 'upImg'
+						type: 'upImg',
+						maxLength:1
 					},
 					certificate: {
 						value: '',
 						name: '证书图片',
-						type: 'upImg'
+						type: 'upImg',
+						maxLength:10
 					},
 					pass: {
 						value: '',

@@ -54,7 +54,7 @@
 				})
 			}else if(e.index===1){
 				this.$pageTo({
-					url: '/pages/doctor/list'
+					url: '/pages/doctor/webview'
 				})
 			}
 		},

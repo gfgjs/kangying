@@ -38,7 +38,7 @@ const actions = {
                 // const { data } = response
                 commit('SET_TOKEN', res.data)
                 window.ky_token = res.data
-                localStorage.setItem('ky_token',res.data)
+                localStorage.setItem('ky_token', res.data)
                 setToken(res.data)
                 resolve()
             }).catch(error => {

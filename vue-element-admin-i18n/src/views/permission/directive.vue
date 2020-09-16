@@ -72,20 +72,20 @@ import checkPermission from '@/utils/permission' // 权限判断函数
 import SwitchRoles from './components/SwitchRoles'
 
 export default {
-  name: 'DirectivePermission',
-  components: { SwitchRoles },
-  directives: { permission },
-  data() {
-    return {
-      key: 1 // 为了能每次切换权限的时候重新初始化指令
+    name: 'DirectivePermission',
+    components: { SwitchRoles },
+    directives: { permission },
+    data() {
+        return {
+            key: 1 // 为了能每次切换权限的时候重新初始化指令
+        }
+    },
+    methods: {
+        checkPermission,
+        handleRolesChange() {
+            this.key++
+        }
     }
-  },
-  methods: {
-    checkPermission,
-    handleRolesChange() {
-      this.key++
-    }
-  }
 }
 </script>
 

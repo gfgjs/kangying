@@ -11,9 +11,9 @@
 
       <div class="title-container">
         <h3 class="title">
-          {{ $t('login.title') }}
+          天心医疗后台管理系统
         </h3>
-        <lang-select class="set-language" />
+<!--        <lang-select class="set-language" />-->
       </div>
 
       <el-form-item prop="username">
@@ -65,20 +65,20 @@
       </el-button>
 
       <div style="position:relative">
-        <div class="tips">
-          <span>{{ $t('login.username') }} : admin</span>
-          <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
-        </div>
-        <div class="tips">
-          <span style="margin-right:18px;">
-            {{ $t('login.username') }} : editor
-          </span>
-          <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
-        </div>
+<!--        <div class="tips">-->
+<!--          <span>{{ $t('login.username') }} : admin</span>-->
+<!--          <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>-->
+<!--        </div>-->
+<!--        <div class="tips">-->
+<!--          <span style="margin-right:18px;">-->
+<!--            {{ $t('login.username') }} : editor-->
+<!--          </span>-->
+<!--          <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>-->
+<!--        </div>-->
 
-        <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
-          {{ $t('login.thirdparty') }}
-        </el-button>
+<!--        <el-button class="thirdparty-button" type="primary" @click="showDialog=true">-->
+<!--          {{ $t('login.thirdparty') }}-->
+<!--        </el-button>-->
       </div>
     </el-form>
 
@@ -97,7 +97,7 @@ import { validUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
 import SocialSign from './components/SocialSignin'
 
-import {login,permission} from '@/api/kangying-https'
+import { login, permission } from '@/api/kangying-https'
 
 export default {
     name: 'Login',
