@@ -83,6 +83,11 @@
 				}
 			})
 		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		methods: {
 			chooseAddress(item){
 				getApp().globalData.tempOrderAddress = item

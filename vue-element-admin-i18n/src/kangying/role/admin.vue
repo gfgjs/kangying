@@ -304,9 +304,8 @@ export default {
             })
         },
         createData() {
-            adminUserSave(this.temp).then(res=>{
-                if(res.code === '000'){
-
+            adminUserSave(this.temp).then(res => {
+                if (res.code === '000') {
                     this.dialogFormVisible = false
 
                     this.$notify({
@@ -315,7 +314,7 @@ export default {
                         type: 'success',
                         duration: 2000
                     })
-                }else{
+                } else {
                     this.$notify({
                         title: '失败',
                         message: res.msg,
@@ -337,9 +336,8 @@ export default {
             // })
         },
         updateData() {
-            adminUserSave(this.temp).then(res=>{
-                if(res.code === '000'){
-
+            adminUserSave(this.temp).then(res => {
+                if (res.code === '000') {
                     this.dialogFormVisible = false
 
                     this.$notify({
@@ -348,7 +346,7 @@ export default {
                         type: 'success',
                         duration: 2000
                     })
-                }else{
+                } else {
                     this.$notify({
                         title: '失败',
                         message: res.msg,
@@ -359,8 +357,8 @@ export default {
             })
         },
         handleDelete(row, index) {
-            adminUserDel(row).then(res=>{
-                if(res.code === '000'){
+            adminUserDel(row).then(res => {
+                if (res.code === '000') {
                     this.dialogFormVisible = false
                     this.$notify({
                         title: '成功',
@@ -368,7 +366,7 @@ export default {
                         type: 'success',
                         duration: 2000
                     })
-                }else{
+                } else {
                     this.$notify({
                         title: '失败',
                         message: res.msg,

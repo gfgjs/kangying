@@ -96,6 +96,11 @@
 			// this.provinceList = array
 			// this.areaList.push(array.map(item => item.id))
 		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		methods: {
 			isDefaultChange(e) {
 				this.is_default = e.detail.value

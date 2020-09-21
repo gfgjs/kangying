@@ -84,6 +84,11 @@
 			this.id = e.id
 			this.price = e.price
 		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		methods: {
 			dateChange(e) {
 				this.date = e.detail.value

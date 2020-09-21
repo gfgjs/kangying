@@ -8,7 +8,7 @@
 			</view>
 			<view class="row-title" v-if="hotKeys.length">热门搜索</view>
 			<view class="list">
-				<view class="item" @click="clickKey(item)"  v-for="item in hotKeys" :key="item">{{item}}</view>
+				<view class="item" @click="clickKey(item)" v-for="item in hotKeys" :key="item">{{item}}</view>
 			</view>
 		</view>
 
@@ -23,7 +23,11 @@
 		request_medList,
 		request_searchHot
 	} from '@/common/https.js'
-	import {readSearchKey,saveSearchKey,clearSearchKey} from '../../common/util.js'
+	import {
+		readSearchKey,
+		saveSearchKey,
+		clearSearchKey
+	} from '../../common/util.js'
 	let timer
 	export default {
 		components: {
@@ -36,7 +40,7 @@
 				page: 1,
 				searchInput: '',
 				hotKeys: [],
-				historyKeys:[]
+				historyKeys: []
 			};
 		},
 		watch: {
@@ -52,6 +56,10 @@
 			this.page = 1
 			this.resultList = []
 			this.search()
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+
 		},
 		onReachBottom(e) {
 			this.search()
@@ -68,24 +76,24 @@
 			this.searchInput && this.search()
 		},
 		onLoad(e) {
-			e.key && this.clickKey(e.key)		
+			e.key && this.clickKey(e.key)
 		},
 		onShow() {
 			this.historyKeys = readSearchKey(uni)
 			request_searchHot({
 				uni
-			}).then(res=>{
-				if(res.code===0){
+			}).then(res => {
+				if (res.code === 0) {
 					this.hotKeys = res.data
 				}
 			})
 		},
 		methods: {
-			clearHistoryKeys(){
+			clearHistoryKeys() {
 				uni.showModal({
-					content:'确认删除所有搜索记录？将不可恢复！',
-					success:e=>{
-						if(e.confirm){
+					content: '确认删除所有搜索记录？将不可恢复！',
+					success: e => {
+						if (e.confirm) {
 							clearSearchKey(uni)
 							this.historyKeys = []
 						}
@@ -135,7 +143,7 @@
 			search() {
 				clearTimeout(timer)
 				timer = setTimeout(() => {
-					saveSearchKey(uni,this.searchInput)
+					saveSearchKey(uni, this.searchInput)
 					this.getList()
 				}, 400)
 			},

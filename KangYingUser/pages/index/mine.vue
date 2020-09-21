@@ -22,7 +22,7 @@
 						<view>购物车</view>
 					</view>
 					<view class="item" @click="pageTo('/pages/mall/order',0)">
-						<image :src="`../../static/mine/5.png`" mode=""></image>
+						<image :src="`../../static/mine/2.png`" mode=""></image>
 						<view>待付款</view>
 					</view>
 					<view class="item" @click="pageTo('/pages/mall/order',1)">
@@ -30,13 +30,13 @@
 						<view>待发货</view>
 					</view>
 					<view class="item" @click="pageTo('/pages/mall/order',2)">
-						<image :src="`../../static/mine/2.png`" mode=""></image>
+						<image :src="`../../static/mine/4.png`" mode=""></image>
 						<view>待收货</view>
 					</view>
-					<view class="item" @click="pageTo('/pages/mall/order',3)">
+					<!-- <view class="item" @click="pageTo('/pages/mall/order',3)">
 						<image :src="`../../static/mine/4.png`" mode=""></image>
 						<view>待评价</view>
-					</view>
+					</view> -->
 					<!-- <view class="item" @click="pageTo('/pages/mall/order',3)">
 						<image :src="`../../static/mine/5.png`" mode=""></image>
 						<view>退款/售后</view>
@@ -137,14 +137,14 @@
 						id: 3,
 						name: '待收货'
 					},
-					{
-						id: 4,
-						name: '待评价'
-					},
-					{
-						id: 5,
-						name: '退款/售后'
-					}
+					// {
+					// 	id: 4,
+					// 	name: '待评价'
+					// },
+					// {
+					// 	id: 5,
+					// 	name: '退款/售后'
+					// }
 				]
 			}
 		},

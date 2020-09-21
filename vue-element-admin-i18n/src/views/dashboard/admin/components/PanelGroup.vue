@@ -63,16 +63,16 @@ export default {
     components: {
         CountTo
     },
-    data(){
-      return {
-          counts:{}
-      }
+    data() {
+        return {
+            counts: {}
+        }
     },
     mounted() {
-      getCount().then(res=>{
-          this.counts = res.data
-          console.log(res)
-      })
+        getCount().then(res => {
+            this.counts = res.data
+            console.log(res)
+        })
     },
     methods: {
         handleSetLineChartData(type) {

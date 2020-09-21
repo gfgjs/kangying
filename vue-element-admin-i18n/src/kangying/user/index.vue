@@ -84,11 +84,11 @@
       </el-table-column>
 
       <el-table-column
+        v-if="0"
         label="操作"
         align="center"
         width="330"
         class-name="small-padding fixed-width"
-        v-if="0"
       >
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">

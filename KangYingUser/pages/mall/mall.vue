@@ -64,57 +64,40 @@
 		},
 		mounted() {
 			
-			// #ifdef APP-PLUS  
-			// var webView = this.$mp.page.$getAppWebview();  
-			// console.log(this.$mp.page.$getAppWebview());
-			
-			// 修改buttons  
-			// index: 按钮索引, style {WebviewTitleNViewButtonStyles }  
-			// webView.setTitleNViewButtonStyle(0, {  
-			//     text: 'hello',  
-			// });  
-			
-			// for(let i in webView){
-			// 	console.log(i)
-			// }
-			 // webView.setTitleNViewBackButtonStyles({
-				//  background:'red'
-			 // })
-			
-			// #endif
 			
 		},
 		onShow() {
 			this.refresh()
 			// #ifdef APP-PLUS
-			var webView = this.$mp.page.$getAppWebview()
-			// 设置 searchInput的 text  
-			webView.setTitleNViewSearchInputText('')
+			// let webView = this.$mp.page.$getAppWebview()
+			// // 设置 searchInput的 text  
+			// webView.setTitleNViewSearchInputText('')
 			// #endif
+			
 			// #ifdef H5
-			let inputSearch = document.querySelector('.uni-input-input[type=search]')
-			var evt = new InputEvent('input', {
-				inputType: 'insertText',
-				data: '',
-				dataTransfer: null,
-				isComposing: false
-			});
-			if (inputSearch) {
-				inputSearch.value = ''
-				inputSearch.dispatchEvent(evt)
-			}
+			// let inputSearch = document.querySelector('.uni-input-input[type=search]')
+			// var evt = new InputEvent('input', {
+			// 	inputType: 'insertText',
+			// 	data: '',
+			// 	dataTransfer: null,
+			// 	isComposing: false
+			// });
+			// if (inputSearch) {
+			// 	inputSearch.value = ''
+			// 	inputSearch.dispatchEvent(evt)
+			// }
 			// #endif
 		},
 		onNavigationBarSearchInputClicked(){
 			uni.navigateTo({
-				url:'./search'
+				url:'/pages/mall/search'
 			})
 		},
 		onPullDownRefresh() {
 			this.refresh()
 			setTimeout(()=>{
 				uni.stopPullDownRefresh()
-			},800)
+			},500)
 		},
 		methods: {
 			addToCart(item){

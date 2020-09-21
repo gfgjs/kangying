@@ -54,6 +54,11 @@
 				}
 			})
 		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		methods: {
 			nowAppoint() {
 				this.$pageTo({

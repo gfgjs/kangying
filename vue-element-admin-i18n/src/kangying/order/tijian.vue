@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div class="filter-container" v-if="0">
+    <div v-if="0" class="filter-container">
       <el-input
         v-model="listQuery.title"
         :placeholder="'医院名称'"
@@ -99,11 +99,11 @@
         </template>
       </el-table-column>
       <el-table-column
+        v-if="0"
         label="操作"
         align="center"
         width="330"
         class-name="small-padding fixed-width"
-        v-if="0"
       >
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">

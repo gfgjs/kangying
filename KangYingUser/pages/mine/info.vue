@@ -90,6 +90,11 @@
 		onShow() {
 			this.refresh()
 		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		methods: {
 			refresh(){
 				request_userInfo({

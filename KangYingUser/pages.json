@@ -104,12 +104,8 @@
 				"app-plus": {
 					"titleNView": {
 						"type": "transparent",
-						"backButton": {
-							"background": "rgba(0,0,0,0)"
-						},
 						"searchInput": {
-							"backgroundColor": "rgba(231, 231, 231,.7)",
-							"borderRadius": "16px",
+							"backgroundColor": "rgb(231, 231, 231)",
 							"placeholder": "药品名称和种类",
 							"disabled": true,
 							"placeholderColor": "#606266"
@@ -119,8 +115,7 @@
 							"text": "\ue744",
 							"fontSize": "26",
 							"color": "#303133",
-							"background": "rgba(0,0,0,0)",
-							"redDot": true
+							"background": "rgba(0,0,0,0)"
 						}]
 					}
 				}
@@ -136,12 +131,8 @@
 				"app-plus": {
 					"titleNView": {
 						"type": "default",
-						"backButton": {
-							"background": "rgba(0,0,0,0)"
-						},
 						"searchInput": {
-							"backgroundColor": "rgba(231, 231, 231,.7)",
-							"borderRadius": "16px",
+							"backgroundColor": "rgb(231, 231, 231)",
 							"placeholder": "药品名称和种类",
 							"disabled": false,
 							"placeholderColor": "#606266"
@@ -386,8 +377,7 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "天心医疗",
 		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8",
-		"enablePullDownRefresh": true
+		"backgroundColor": "#F8F8F8"
 	},
 	"tabBar": {
 		"color": "#C2CAD5",

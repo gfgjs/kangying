@@ -67,7 +67,7 @@
 		},
 		data() {
 			return {
-				tabs: ['待付款', '待发货', '待收货', '待评价', '已完成', '售后/退款'],
+				tabs: ['待付款', '待发货', '待收货', '已完成', '售后/退款'],
 				currTab: 0,
 				list: [],
 				tempItem:{}
@@ -81,6 +81,11 @@
 			// currTab(e) {
 			// 	this.getList(e)
 			// }
+		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
 		},
 		methods: {
 			orderConfirm(item){

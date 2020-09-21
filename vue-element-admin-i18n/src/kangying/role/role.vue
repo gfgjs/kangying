@@ -308,7 +308,6 @@ export default {
             }
             roleAdd({ node_ids: this.$refs.tree.getCheckedKeys(), role_name: this.role_name }).then(res => {
                 if (res.code === '000') {
-
                     this.dialogFormVisible = false
 
                     this.$notify({
@@ -349,7 +348,6 @@ export default {
                 console.log(res)
 
                 if (res.code === '000') {
-
                     this.dialogFormVisible = false
                     this.$notify({
                         title: '成功',

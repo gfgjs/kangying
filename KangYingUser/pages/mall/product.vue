@@ -93,6 +93,11 @@
 				url: '/pages/mall/cart'
 			})
 		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		methods: {
 			goodsNumberChange(e){
 				this.goodsNumber = e

@@ -64,6 +64,11 @@
 			}
 			// #endif
 		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		onShow() {
 
 		},

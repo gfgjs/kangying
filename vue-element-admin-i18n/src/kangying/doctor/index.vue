@@ -83,25 +83,25 @@
         </template>
       </el-table-column>
       <el-table-column
+        v-if="0"
         label="操作"
         align="center"
         width="330"
         class-name="small-padding fixed-width"
-        v-if="0"
       >
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
           </el-button>
-<!--          <el-button v-if="row.status!='draft'" size="mini" @click="handleModifyStatus(row,'draft')">-->
-<!--            禁用-->
-<!--          </el-button>-->
-<!--          <el-button type="success" size="mini" @click="viewHospitalDetails(row)">-->
-<!--            详情-->
-<!--          </el-button>-->
-<!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
-<!--            删除-->
-<!--          </el-button>-->
+          <!--          <el-button v-if="row.status!='draft'" size="mini" @click="handleModifyStatus(row,'draft')">-->
+          <!--            禁用-->
+          <!--          </el-button>-->
+          <!--          <el-button type="success" size="mini" @click="viewHospitalDetails(row)">-->
+          <!--            详情-->
+          <!--          </el-button>-->
+          <!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
+          <!--            删除-->
+          <!--          </el-button>-->
         </template>
       </el-table-column>
     </el-table>

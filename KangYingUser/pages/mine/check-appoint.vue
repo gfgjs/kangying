@@ -41,6 +41,11 @@
 				}
 			})
 		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		methods:{
 			viewItem(item){
 				this.$pageTo({

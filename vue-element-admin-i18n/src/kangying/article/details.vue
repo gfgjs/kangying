@@ -1,10 +1,10 @@
 <template>
-    <div class="content" v-html="this.$route.query.desc"></div>
+  <div class="content" v-html="this.$route.query.desc" />
 </template>
 
 <script>
 export default {
-    name: 'peDetails',
+    name: 'PeDetails',
     data() {
         return {}
     },
@@ -15,5 +15,5 @@ export default {
 </script>
 
 <style scoped>
-   
+
 </style>

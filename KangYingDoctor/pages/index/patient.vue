@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="row-title">患者信息</view>
+		<view class="row-title" style="z-index: 999;">患者信息</view>
 		<view class="place"></view>
 		<view v-for="(item,index) in list" :key="index" class="item" @click="toChat(item)">
 			<view class="image">

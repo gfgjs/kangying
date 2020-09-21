@@ -39,6 +39,11 @@
 				hasHide: false
 			}
 		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		watch: {
 			hasLogin(status) {
 				if (status) {

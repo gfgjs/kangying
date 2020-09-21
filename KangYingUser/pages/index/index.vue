@@ -48,7 +48,7 @@
 					<view>免费问医生</view>
 					<view class="little">有问题快速问医生</view>
 				</view>
-				<view class="item item-2" @click="navTo('/pages/doctor/case')">
+				<view class="item item-2" @click="navTo('/pages/doctor/case?tab=0')">
 					<view>云病例</view>
 					<view class="little">随时查看云病例</view>
 				</view>

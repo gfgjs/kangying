@@ -180,6 +180,11 @@
 				}
 			})
 		},
+		onPullDownRefresh() {
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		onShow() {
 			// const goods = getApp().globalData.tempOrderGoods
 			// this.goods = goods
