@@ -187,7 +187,7 @@
 				"pagePath": "pages/index/patient",
 				"iconPath": "static/index/online.png",
 				"selectedIconPath": "static/index/online-curr.png",
-				"text": "在线医院"
+				"text": "诊疗室"
 			},
 			{
 				"pagePath": "pages/index/mine",

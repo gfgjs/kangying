@@ -21,6 +21,21 @@
 			<view class="title">临床诊断</view>
 			<view class="little-title">{{info.diagnosis}}</view>
 		</view>
+		<view class="row sign-row">
+			<view class="title">
+				电子签名（请在框内签名）
+			</view>
+			<view class="hand-center handCenter">
+				<canvas class="handWriting" disable-scroll="true" @touchstart="uploadScaleStart" @touchmove="uploadScaleMove"
+				 @touchend="uploadScaleEnd" @tap="mouseDown" canvas-id="eSignCanvas">
+				</canvas>
+			</view>
+			<view style="width: 100%;">
+				<view style="float: right;" @click="clearSign">清空</view>
+				<!-- <view style="float: right;" @click="subCanvas">查看图片</view> -->
+			</view>
+			<!-- <image :src="signimg" mode=""></image> -->
+		</view>
 		<view class="common-place"></view>
 		<view class="common-place"></view>
 		<view class="row-title row">选择药品</view>
@@ -76,6 +91,7 @@
 		request_recordUp,
 		request_recordInfo
 	} from '../../common/https.js'
+	import Handwriting from '../../common/signature.js'
 	export default {
 		data() {
 			return {
@@ -83,15 +99,29 @@
 				record_id: '',
 				medList: {},
 
-				medHasBeen: false
+				medHasBeen: false,
+				handwriting: {},
+				lineColor: 'black',
+				slideValue: 50,
+				signimg:''
 			};
 		},
 		onLoad(e) {
-			this.log(e)
+			// this.log(e)
 			this.info = e
 			this.record_id = e.record_id
+
+
 		},
 		onShow() {
+
+			setTimeout(() => {
+				this.handwriting = new Handwriting({
+					lineColor: this.lineColor,
+					slideValue: this.slideValue,
+					canvasName: 'eSignCanvas'
+				})
+			})
 			this.medList = { ...(getApp().globalData.tempMedicineList[this.record_id] || {})
 			}
 
@@ -102,16 +132,16 @@
 				}
 			}).then(res => {
 				if (res.code === 0) {
-					if(res.data.now_record.goods){
+					if (res.data.now_record.goods) {
 						this.medHasBeen = true
 						const array = JSON.parse(res.data.now_record.goods)
-						this.medList = array.map(item=>{
+						this.medList = array.map(item => {
 							let newObj = item.GoodsInfo
 							newObj.number = item.GoodsNumber
 							newObj.guide = item.Guide
 							return newObj
 						})
-						
+
 						console.log(JSON.parse(res.data.now_record.goods));
 					}
 				}
@@ -119,13 +149,40 @@
 			})
 		},
 		methods: {
+
+			clearSign() {
+				this.handwriting.retDraw()
+			},
+			uploadScaleStart(event) {
+				this.handwriting.uploadScaleStart(event)
+			},
+			uploadScaleMove(event) {
+				this.handwriting.uploadScaleMove(event)
+			},
+			uploadScaleEnd(event) {
+				this.subCanvas()
+				this.handwriting.uploadScaleEnd(event)
+			},
+			subCanvas() {
+				this.handwriting.saveCanvas().then(res => {
+					this.signimg = res;
+					// console.log(res.length);
+				}).catch(err => {
+					// console.log(err);
+				});
+			},
 			submit() {
 				let array = []
 				for (let i in this.medList) {
 					array.push(this.medList[i])
 				}
-				if(this.medHasBeen){
+				if (this.medHasBeen) {
 					this.$api.msg('不能修改药方')
+					return
+				}
+				
+				if(this.signimg.length<=1594){
+					this.$api.msg('您必须签名，方可提交处方')
 					return
 				}
 				// if(!array.length){
@@ -137,6 +194,7 @@
 					uni,
 					data: {
 						record_id: this.info.record_id * 1, //（病历ID）、
+						doctor_sign:this.signimg,
 						goods: array, //（开的药 数组
 					}
 				}).then(res => {
@@ -154,7 +212,7 @@
 				})
 			},
 			addMed(item) {
-				if(this.medHasBeen){
+				if (this.medHasBeen) {
 					this.$api.msg('不能修改药方')
 					return
 				}
@@ -166,7 +224,7 @@
 				})
 			},
 			medPlus(item) {
-				if(this.medHasBeen){
+				if (this.medHasBeen) {
 					return
 				}
 				if (item.number + 1 > item.stock) {
@@ -177,7 +235,7 @@
 				}
 			},
 			medMinus(item) {
-				if(this.medHasBeen){
+				if (this.medHasBeen) {
 					return
 				}
 				if (item.number <= 1) {
@@ -205,7 +263,8 @@
 			},
 			updateMed(item, key, value) {
 				item[key] = value
-				this.$set(this.medList, item.id, { ...item})
+				this.$set(this.medList, item.id, { ...item
+				})
 
 				// 一个病历（record_id）的药品清单
 				let obj = getApp().globalData.tempMedicineList[this.record_id]
@@ -232,6 +291,7 @@
 
 	}
 
+	
 
 
 	.row {
@@ -311,6 +371,20 @@
 			.uni-icons {
 				margin-top: 2px;
 			}
+		}
+	}
+	.sign-row {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		height: auto;
+	
+		.hand-center {
+			width: 100%;
+			// height: 100%;
+			height: 150px;
+			border: 1px solid $base-color;
+			margin: 10px 0;
 		}
 	}
 </style>

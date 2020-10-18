@@ -32,6 +32,7 @@
 						</label> -->
 					</radio-group>
 					<view class="view-goods" @click="sendGoods(item,index)">查看订单</view>
+					<view class="view-goods" @click="sendGoods(item,index)">处方凭证</view>
 					<view class="view-goods" @click="viewGoods(item,index)">查看药品</view>
 				</view>
 

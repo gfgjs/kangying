@@ -372,7 +372,11 @@
 				}
 			}
 		}
-	],
+	    ,{
+            "path" : "components/agreement",
+            "style" : {}
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "天心医疗",

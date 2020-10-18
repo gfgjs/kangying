@@ -1,0 +1,31 @@
+<template name="c318c6ee">
+  <view class="_view data-v-7eb4792f wrapper">
+    <view class="_view data-v-7eb4792f handRight">
+      <view class="_view data-v-7eb4792f handTitle">手写板</view>
+    </view>
+    <view class="_view data-v-7eb4792f handBtn">
+      <view class="_view data-v-7eb4792f slide-wrapper">
+        <text class="_text data-v-7eb4792f">选择粗细</text>
+        <slider bindchange="handleProxy" value="50" show-value class="_slider data-v-7eb4792f slider" step="25" data-eventid="{{'5Px-0'}}" data-comkey="{{$k}}" />
+      </view>
+      <view class="_view data-v-7eb4792f color">
+        <text class="_text data-v-7eb4792f">选择颜色</text>
+        <image bindtap="handleProxy" src="{{selectColor === 'black' ? '../../static/img/color_black_selected.png' : '../../static/img/color_black.png'}}" class="_image data-v-7eb4792f black-select {{selectColor === 'black' ? 'color_select' : ''}}"
+          data-eventid="{{'eEj-1'}}" data-comkey="{{$k}}"></image>
+        <image bindtap="handleProxy" src="{{selectColor === 'red' ? '../../static/img/color_red_selected.png' : '../../static/img/color_red.png' }}" class="_image data-v-7eb4792f red-select {{selectColor === 'red' ? 'color_select' : ''}}" data-eventid="{{'K4y-2'}}"
+          data-comkey="{{$k}}"></image>
+      </view>
+    </view>
+    <view class="_view data-v-7eb4792f handCenter">
+      <canvas class="_canvas data-v-7eb4792f handWriting" disable-scroll="true" bindtouchstart="handleProxy" bindtouchmove="handleProxy" bindtouchend="handleProxy" bindtap="handleProxy" canvas-id="handWriting" data-eventid="{{'pRx-3'}}" data-comkey="{{$k}}"></canvas>
+    </view>
+    <view class="_view data-v-7eb4792f showimg">
+      <image wx:if="{{showimg}}" src="{{showimg}}" mode class="_image data-v-7eb4792f"></image>
+      <text wx:else class="_text data-v-7eb4792f">图片展示</text>
+    </view>
+    <view class="_view data-v-7eb4792f buttons">
+      <button bindtap="handleProxy" class="_button data-v-7eb4792f delBtn" data-eventid="{{'YKe-4'}}" data-comkey="{{$k}}">重写</button>
+      <button bindtap="handleProxy" class="_button data-v-7eb4792f subBtn" data-eventid="{{'eov-5'}}" data-comkey="{{$k}}">保存</button>
+    </view>
+  </view>
+</template>

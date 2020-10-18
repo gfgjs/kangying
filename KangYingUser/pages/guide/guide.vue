@@ -37,22 +37,26 @@
 				notFirstUse: true
 			}
 		},
-		created() {
+		onShow() {
 			// #ifdef APP-PLUS
 			this.notFirstUse = plus.storage.getItem('NOT_FIRST_USE')
+			console.log(this.notFirstUse)
 			if (!!this.notFirstUse) {
 				setTimeout(() => {
-					this.jump()
+					timer = this.jump()
 				}, 3000)
 			} else {
 				plus.storage.setItem('NOT_FIRST_USE', 'true')
 			}
 			// #endif
+			
 			// #ifdef H5
 			this.notFirstUse = uni.getStorageSync('NOT_FIRST_USE')
 
 			if (this.notFirstUse) {
-				this.jump()
+				setTimeout(() => {
+					timer = this.jump()
+				}, 3000)
 			} else {
 				uni.setStorage({
 					key: 'NOT_FIRST_USE',
@@ -62,15 +66,12 @@
 					}
 				})
 			}
-			// #endif
+			//#endif
 		},
 		onPullDownRefresh() {
 			setTimeout(() => {
 				uni.stopPullDownRefresh()
 			}, 500)
-		},
-		onShow() {
-
 		},
 		beforeDestroy() {
 			clearTimeout(timer)

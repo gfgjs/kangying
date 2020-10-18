@@ -8,7 +8,7 @@
 			</view>
 			<view class="center">
 				<view class="name">
-					{{item.p_name}}
+					{{item.p_name}} <view class="little-title">{{formatDate(item.create_time)+' '+formatMinute(item.create_time)}}</view>
 				</view>
 				<view class="bottom">
 					{{item.user_info.gender}} 丨 年龄：{{item.Age}}丨{{item.p_narrate||'无诊断信息'}}
@@ -23,10 +23,12 @@
 </template>
 
 <script>
+	import {formatDate,formatMinute} from '../../common/util.js'
 	import {request_recordList} from '../../common/https.js'
 	export default {
 		data() {
 			return {
+				formatDate,formatMinute,
 				list:[]
 			};
 		},
@@ -93,6 +95,9 @@
 		.center{
 			width: calc(100% - 130px);
 			.name{
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
 				font-size: 16px;
 				color: #494949;
 			}

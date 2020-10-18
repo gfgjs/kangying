@@ -16,6 +16,10 @@
 				<view class="title">患者姓名</view>
 				<view class="right">{{item.user_name}}</view>
 			</view>
+			<view class="item-row border-bottom">
+				<view class="title">医生签名</view>
+				<view class="right">{{item.user_name}}</view>
+			</view>
 			<view class="item-row buttons">
 				<view class="title">审批</view>
 				<view class="content">
