@@ -56,8 +56,7 @@
 		</view>
 		<uni-popup ref="viewPanel" class="view-panel">
 			<scroll-view scroll-y class="content">
-				<view class="item-content" v-for="(item,index) in viewItemList"
-				 :key="'med_'+index">
+				<view class="item-content" v-for="(item,index) in viewItemList" :key="'med_'+index">
 					<view class="left">
 						<view class="name">{{item.GoodsInfo.m_name}}</view>
 						<view class="bottom-row">
@@ -93,9 +92,9 @@
 				formatMinute,
 				cardList: [],
 				cardListNames: [],
-				currentCard:{},
-				caseList:[],
-				viewItemList:[]
+				currentCard: {},
+				caseList: [],
+				viewItemList: []
 			};
 		},
 
@@ -126,26 +125,31 @@
 					urls
 				})
 			},
-			getCaseList(){
+			getCaseList() {
 				request_recordList({
 					uni,
-					data:{
-						card_id:this.currentCard.id
+					data: {
+						card_id: this.currentCard.id
 					}
 				}).then(res => {
 					this.caseList = res.data
 				})
 			},
-			cardChange(e){
+			cardChange(e) {
 				this.currentCard = this.cardList[e.detail.value]
 				this.getCaseList()
 			},
 			viewMed(item) {
-				if(item.goods){
+				this.$pageTo({
+					url:'/pages/doctor/prescript',
+					options:{id:item.Id,PayStatus:item.PayStatus}
+				})
+				return
+				if (item.goods) {
 					this.viewItemList = JSON.parse(item.goods)
 					console.log(JSON.parse(item.goods));
 					this.$refs.viewPanel.open()
-				}else{
+				} else {
 					this.$api.msg('暂无处方')
 				}
 			}
@@ -280,63 +284,62 @@
 			}
 		}
 	}
-	
+
 	.view-panel {
-			.content {
-				height: 80vh;
-				width: 90vw;
-				background-color: white;
-				border-radius: 4px;
-				overflow: hidden;
-				
-				
-				.little-title{
-					color: $base-color;
-					font-size: 16px;
-				}
-	
-				.item-content {
-					padding: 10px 10px;
-					font-size: 14px;
-					height: 70px;
+		.content {
+			height: 80vh;
+			width: 90vw;
+			background-color: white;
+			border-radius: 4px;
+			overflow: hidden;
+
+
+			.little-title {
+				color: $base-color;
+				font-size: 16px;
+			}
+
+			.item-content {
+				padding: 10px 10px;
+				font-size: 14px;
+				height: 70px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				border-bottom: 1px solid #e5e5e5;
+
+				.left {
 					display: flex;
-					align-items: center;
-					justify-content: space-between;
-					border-bottom: 1px solid #e5e5e5;
-	
-					.left {
+					flex-direction: column;
+					justify-content: space-around;
+					height: 100%;
+
+					.name {
+						width: 55vw;
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+					}
+
+					.bottom-row {
 						display: flex;
-						flex-direction: column;
-						justify-content: space-around;
-						height: 100%;
-	
-						.name {
-							width: 55vw;
-							white-space: nowrap;
-							overflow: hidden;
-							text-overflow: ellipsis;
-						}
-	
-						.bottom-row {
-							display: flex;
-							justify-content: space-between;
-						}
-					}
-	
-					.icon {
-						color: $base-color !important;
+						justify-content: space-between;
 					}
 				}
-	
-				.item-content:first-of-type {
-					border-top: 1px solid #e5e5e5;
-				}
-	
-				.item-content:last-of-type {
-					// border: none;
+
+				.icon {
+					color: $base-color !important;
 				}
 			}
-	
+
+			.item-content:first-of-type {
+				border-top: 1px solid #e5e5e5;
+			}
+
+			.item-content:last-of-type {
+				// border: none;
+			}
 		}
-	
+
+	}
 </style>

@@ -194,6 +194,11 @@
 								provider: res.data.provider,
 								orderInfo: res.data.orderInfo,
 								success: function(res) {
+									setTimeout(()=>{
+										this.$pageTo({
+											url:'/pages/mall/order?tab=1'
+										})
+									})
 									console.log('success:' + JSON.stringify(res));
 								},
 								fail: function(err) {

@@ -122,23 +122,27 @@
 						pay_type: type
 					}
 				}).then(res => {
-					uni.requestPayment({
-						provider: res.data.provider,
-						orderInfo: res.data.orderInfo,
-						success: (res) => {
-							this.$pageTo({
-								url: '/pages/mall/order',
-								options: {
-									tab: 1
-								}
-							})
-							console.log('success:' + JSON.stringify(res));
-						},
-						fail: (err) => {
-							this.$api.msg('支付失败')
-							console.log('fail:' + JSON.stringify(err));
-						}
-					})
+					if(res.code === 0){
+						uni.requestPayment({
+							provider: res.data.provider,
+							orderInfo: res.data.orderInfo,
+							success: (res) => {
+								this.$pageTo({
+									url: '/pages/mall/order',
+									options: {
+										tab: 1
+									}
+								})
+								console.log('success:' + JSON.stringify(res));
+							},
+							fail: (err) => {
+								this.$api.msg('支付失败')
+								console.log('fail:' + JSON.stringify(err));
+							}
+						})
+					}else{
+						this.$api.msg(res.err)
+					}
 				})
 				this.$refs.payType.close()
 			},

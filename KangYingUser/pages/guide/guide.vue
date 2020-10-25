@@ -17,11 +17,11 @@
 		</swiper>
 		<view v-if="!!notFirstUse" class="tips linear-background">
 			<image src="../../static/logo.png" mode=""></image>
-			欢迎使用天心医疗
+			欢迎使用天心医疗 V {{version}}
 		</view>
 		<view v-if="!notFirstUse" class="jump linear-background" @click="jump">立即体验</view>
 		<view v-if="!!notFirstUse" class="jump linear-background" @click="jump">跳过</view>
-		
+
 	</view>
 </template>
 
@@ -34,11 +34,17 @@
 				autoplay: true,
 				interval: 2000,
 				duration: 500,
-				notFirstUse: true
+				notFirstUse: true,
+				version: '0.00'
 			}
 		},
 		onShow() {
 			// #ifdef APP-PLUS
+			this.version = plus.runtime.version
+			
+			console.log(plus.runtime.version)
+			console.log(plus.runtime.versionCode)
+			
 			this.notFirstUse = plus.storage.getItem('NOT_FIRST_USE')
 			console.log(this.notFirstUse)
 			if (!!this.notFirstUse) {
@@ -49,7 +55,7 @@
 				plus.storage.setItem('NOT_FIRST_USE', 'true')
 			}
 			// #endif
-			
+
 			// #ifdef H5
 			this.notFirstUse = uni.getStorageSync('NOT_FIRST_USE')
 
@@ -127,7 +133,8 @@
 			height: 100%;
 			color: white;
 			font-weight: bold;
-			image{
+
+			image {
 				width: 100px;
 				height: 100px;
 				margin-bottom: 50px;

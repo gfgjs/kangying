@@ -34,7 +34,7 @@
 					<image src="../../static/home/5.png" mode=""></image>
 					<view>网上看病</view>
 				</view>
-				<view @click="navTo('线下就诊')">
+				<view @click="navTo('/pages/test/test')">
 					<image src="../../static/home/6.png" mode=""></image>
 					<view>线下就诊</view>
 				</view>

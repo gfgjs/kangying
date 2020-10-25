@@ -89,18 +89,19 @@
 	} from 'vuex'
 	import {
 		request_doctorInfo,
-		request_recordAdd
+		request_recordAdd,
+		request_recordLast
 	} from '../../common/https.js'
 	export default {
 		data() {
 			return {
 				info: {},
 				patientCard: null,
-				doctor_id:null,
-				
-				payResult:false,
-				order_no:'',//生成的订单号
-				record_id:'',//生成的病历id
+				doctor_id: null,
+
+				payResult: false,
+				order_no: '', //生成的订单号
+				record_id: '', //生成的病历id
 			}
 		},
 		onLoad(e) {
@@ -114,13 +115,13 @@
 				this.info = res.data || {}
 			})
 			if (e.chatNow) {
-				this.chat(null, e.im_username,e.price)
+				this.chat(null, e.im_username, e.price)
 			}
 		},
 		onShow() {
-			if(this.patientCard){
-				this.$refs.payType.open()
-			}
+			// if(this.patientCard){
+			// 	this.$refs.payType.open()
+			// }
 			// if(this.payResult){
 			// 	this.$pageTo({
 			// 		url:'/pages/doctor/chat',
@@ -136,88 +137,116 @@
 				uni.stopPullDownRefresh()
 			}, 500)
 		},
-		computed:{
+		computed: {
 			...mapGetters(['hasLogin'])
 		},
 		methods: {
-			pay(type){
-				this.$refs.payType.close()
+			pay(type) {
+				// 查询最近一次问诊是否结束
+				request_recordLast({uni,data:{card_id:this.patientCard.id}}).then(res=>{
+					
+				})
+				// this.$refs.payType.close()
 				request_recordAdd({
 					uni,
-					data:{
-						p_card_id:this.patientCard.id,
-						doctor_id:this.doctor_id,
-						pay_type:type
+					data: {
+						p_card_id: this.patientCard.id,
+						doctor_id: this.doctor_id,
+						pay_type: type
 					}
-				}).then(res=>{
-					if(res.code===0){
+				}).then(res => {
+					if (res.code === 0) {
 						this.patientCard = null
-						const on = res.data.order_no
-						const ri = res.data.record_id
-						this.order_no = on
-						this.record_id = ri
-						console.log('病例id：',ri);
-						
-						uni.requestPayment({
-							provider: res.data.provider,
-							orderInfo: res.data.orderInfo,
-							success: (res) =>{
-								
-								this.payResult = true
-								
-								// 跳转聊天窗口
-								this.$pageTo({
-									url:'/pages/doctor/chat',
-									options:{
-										im_username:this.info.im_username,
-										// order_no:on,
-										record_id:ri,
-										d_name:this.info.user_name,
-										d_avatar:this.info.d_avatar
-									}
-								})
-							},
-							fail: (err)=> {
-								this.$api.msg('支付失败')
+						// const on = res.data.order_no
+						this.order_no = res.data.order_no
+						// const ri = res.data.record_id
+						this.record_id = res.data.record_id
+						// this.order_no = on
+						// this.record_id = ri
+						// console.log('病例id：', ri);
+						// 跳转聊天窗口
+						this.$pageTo({
+							url: '/pages/doctor/chat',
+							options: {
+								im_username: this.info.im_username,
+								record_id: this.record_id,
+								d_name: this.info.user_name,
+								d_avatar: this.info.d_avatar
 							}
 						})
-					}else{
+						// uni.requestPayment({
+						// 	provider: res.data.provider,
+						// 	orderInfo: res.data.orderInfo,
+						// 	success: (res) => {
+
+						// 		this.payResult = true
+
+						// 		// 跳转聊天窗口
+						// 		this.$pageTo({
+						// 			url: '/pages/doctor/chat',
+						// 			options: {
+						// 				im_username: this.info.im_username,
+						// 				// order_no:on,
+						// 				record_id: ri,
+						// 				d_name: this.info.user_name,
+						// 				d_avatar: this.info.d_avatar
+						// 			}
+						// 		})
+						// 	},
+						// 	fail: (err) => {
+						// 		this.$api.msg('支付失败')
+						// 	}
+						// })
+					} else {
 						this.$api.msg(res.err)
 					}
 				})
 			},
-			chat(e, im_username,price) {
-				if(this.hasLogin){
-					if(this.payResult){
-						this.$pageTo({
-							url:'/pages/doctor/chat',
-							options:{
-								im_username:im_username||this.info.im_username,
-								// order_no:this.order_no,
-								record_id:this.record_id
-							}
-						})
+			chat(e, im_username, price) {
+				if (this.hasLogin) {
+					if(this.patientCard){
+						this.pay()
 					}else{
-						uni.showModal({
-							title: '收费问诊提示',
-							content: `您选择的问诊服务需收取 ￥${price||this.info.fee} 元 服务费，是否确认使用此服务？`,
-							success: (e) => {
-								if (e.confirm) {
-									this.$pageTo({
-										url:'/pages/card/list',
-										options:{
-											pageFrom:'doctor'
-										}
-									})
-								}
+						this.$pageTo({
+							url: '/pages/card/list',
+							options: {
+								pageFrom: 'doctor'
 							}
 						})
 					}
-				}else{
+
+					// if (this.payResult) {
+					// 	this.$pageTo({
+					// 		url: '/pages/doctor/chat',
+					// 		options: {
+					// 			im_username: im_username || this.info.im_username,
+					// 			// order_no:this.order_no,
+					// 			record_id: this.record_id
+					// 		}
+					// 	})
+					// } else {
+					// 	uni.showModal({
+					// 		title: '收费问诊提示',
+					// 		content: `您选择的问诊服务需收取 ￥${price||this.info.fee} 元 服务费，是否确认使用此服务？`,
+					// 		success: (e) => {
+					// 			if (e.confirm) {
+					// 				this.$pageTo({
+					// 					url: '/pages/card/list',
+					// 					options: {
+					// 						pageFrom: 'doctor'
+					// 					}
+					// 				})
+					// 			}
+					// 		}
+					// 	})
+					// }
+				} else {
 					this.$pageTo({
 						// url:'/pages/doctor/chat',
-						needLogin:true,
-						lastPage:{back:true}
+						needLogin: true,
+						lastPage: {
+							back: true
+						}
 						// options:{
 						// 	im_username:im_username||this.info.im_username,
 						// 	order_no:this.order_no
@@ -376,25 +405,26 @@
 		height: 60px;
 		border-radius: 0;
 	}
+
 	.pay-type {
 		background-color: white;
 		position: fixed;
 		bottom: 0;
 		left: 0;
 		width: 100vw;
-	
+
 		.row {
 			padding: 20px;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 			width: 100%;
-	
+
 			.left {
 				display: flex;
 				align-items: center;
 				font-size: 16px;
-	
+
 				image {
 					width: 31px;
 					height: 31px;

@@ -154,6 +154,11 @@
 				})
 			},
 			viewMedList(item) {
+				this.$pageTo({
+					url:'/pages/doctor/prescript',
+					options:{id:item.Id,PayStatus:item.PayStatus}
+				})
+				return
 				this.viewItemList = item.Goods
 				if (1) {
 					this.$refs.agreement.open()

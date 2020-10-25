@@ -162,6 +162,18 @@ export const request_recordList = e => {
 export const request_prescriptionList = e => {
 	return request(e, '/v1/u/prescription/list')
 }
+// 根据处方id支付电子药方
+export const request_prescriptionPay = e => {
+	return request(e, '/v1/u/prescription/pay')
+}
+// 根据处方id查询电子药方
+export const request_prescriptionInfo = e => {
+	return request(e, '/v1/u/prescription/info','GET')
+}
+// 查询最近的问诊订单
+export const request_recordLast = e => {
+	return request(e, '/v1/u/record/last','GET')
+}
 
 
 

@@ -54,6 +54,12 @@
 					</view>
 					<uni-icons type="arrowright"></uni-icons>
 				</view>
+				<view class="row" for="pay-wx" @click="moreClick('/pages/doctor/case?tab=2')">
+					<view class="left">
+						语音/视频通话
+					</view>
+					<uni-icons type="arrowright"></uni-icons>
+				</view>
 			</view>
 		</uni-popup>
 	</view>

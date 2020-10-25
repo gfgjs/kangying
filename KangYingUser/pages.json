@@ -376,6 +376,24 @@
             "path" : "components/agreement",
             "style" : {}
         }
+        ,{
+            "path" : "pages/test/test",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/doctor/prescript",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "处方详情",
+                "enablePullDownRefresh": true
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
