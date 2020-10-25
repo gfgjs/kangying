@@ -42,8 +42,8 @@
 			// #ifdef APP-PLUS
 			this.version = plus.runtime.version
 			
-			console.log(plus.runtime.version)
-			console.log(plus.runtime.versionCode)
+			// console.log(plus.runtime.version)
+			// console.log(plus.runtime.versionCode)
 			
 			this.notFirstUse = plus.storage.getItem('NOT_FIRST_USE')
 			console.log(this.notFirstUse)

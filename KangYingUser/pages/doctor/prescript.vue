@@ -109,13 +109,28 @@
 		onLoad(o) {
 			this.pid = o.id
 		},
+		onPullDownRefresh() {
+			// this.refresh()
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		onShow() {
 			this.getInfo()
-			
+
 			const status = uni.getStorageSync('USER_AGREEMENT')
 			console.log(status)
 			//同意协议的有效期为30分钟
-			if(status&&(Date.now()-status.time>3600*1000)){
+			if (status) {
+				if (Date.now() - status.time > 3600 * 1000) {
+					this.hasAgree = false
+					setTimeout(() => {
+						this.$refs.agreement.open()
+					})
+				}else{
+					this.hasAgree = true
+				}
+			} else {
 				setTimeout(() => {
 					this.$refs.agreement.open()
 				})
@@ -136,7 +151,7 @@
 					}
 				}).then(res => {
 					console.log(res)
-					if(res.code=== 0){
+					if (res.code === 0) {
 						uni.requestPayment({
 							provider: res.data.provider,
 							orderInfo: res.data.orderInfo,
@@ -150,7 +165,7 @@
 								console.log('fail:' + JSON.stringify(err));
 							}
 						})
-					}else{
+					} else {
 						this.$api.msg(res.err)
 					}
 				})
@@ -167,12 +182,11 @@
 				})
 			},
 			agreement() {
-				
 				uni.setStorageSync('USER_AGREEMENT', {
-					time:Date.now(),
-					status:true
+					time: Date.now(),
+					status: true
 				})
-				
+
 				this.$refs.agreement.close()
 				this.hasAgree = true
 				if (this.hasPay) {
@@ -197,7 +211,6 @@
 				if (1) {
 					this.$refs.agreement.open()
 				} else {
-
 					this.$refs.viewPanel.open()
 				}
 
@@ -281,8 +294,8 @@
 
 
 		.content {
-			height: 80vh;
-			width: 90vw;
+			height: 100%;
+			width: 100%;
 			background-color: white;
 			border-radius: 4px;
 			overflow: hidden;

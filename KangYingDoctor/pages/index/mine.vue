@@ -84,7 +84,7 @@
 		onShow() {
 			uni.getSystemInfo({
 				success: function(e) {
-					console.log(e)
+					// console.log(e)
 				}
 			})
 		},

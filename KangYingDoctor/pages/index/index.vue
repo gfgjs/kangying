@@ -8,7 +8,7 @@
 				医生诊疗室
 				<label for="" style="display: flex;align-items: center;">
 					<switch class="" color="#5EB6AA" :checked="!!patientCount.work_status" @change="changeWordStatus"></switch>
-					<view style="margin-left: 6px;">出诊</view>
+					<view style="margin-left: 6px;">{{workTextStatus?'出诊':'休息'}}</view>
 				</label>
 			</view>
 			<view class="row">
@@ -95,7 +95,8 @@
 			return {
 				href: 'https://uniapp.dcloud.io/component/README?id=uniui',
 				"pages": [],
-				patientCount:{}
+				patientCount:{},
+				workTextStatus:true
 			}
 		},
 		onShow() {
@@ -114,8 +115,8 @@
 				}).then(res=>{
 					if(res.code===0){
 						this.patientCount = res.data
+						this.workTextStatus = res.data.work_status
 					}
-					// console.log(res);
 				})
 			}else{
 				uni.reLaunch({
@@ -130,6 +131,7 @@
 				})
 			},
 			changeWordStatus(e){
+				this.workTextStatus = e.detail.value*1
 				request_changeWorkStatus({uni,data:{work_status:e.detail.value*1}})
 			},
 			toPage(url) {

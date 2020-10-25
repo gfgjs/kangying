@@ -33,7 +33,7 @@
 			};
 		},
 		onShow() {
-			request_recordList({uni,noLoading:true,data:{status:2}}).then(res=>{
+			request_recordList({uni,noLoading:this.list.length,data:{status:2}}).then(res=>{
 				this.list = res.data||[]
 			})
 		},

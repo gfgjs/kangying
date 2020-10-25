@@ -20,7 +20,7 @@
 	export default {
 		globalData: {
 			regMessage: {},
-			tempMedicineList:{}, // 医生开出药方时的临时存储
+			tempMedicineList: {}, // 医生开出药方时的临时存储
 		},
 		data() {
 			return {
@@ -31,12 +31,12 @@
 		onLaunch: function() {
 			console.log('App Launch');
 			this.login()
-			
+
 			//#ifdef APP-PLUS
-			plus.push.addEventListener( 'click', e=>{
-				setTimeout(()=>{
+			plus.push.addEventListener('click', e => {
+				setTimeout(() => {
 					uni.navigateTo({
-						url:'/pages/doctor/consulting-desk'
+						url: '/pages/doctor/consulting-desk'
 					})
 				})
 			})
@@ -53,6 +53,16 @@
 			//   }
 			// });
 			//#endif
+			// 网络变化后重新登录极光IM
+			uni.onNetworkStatusChange((res) => {
+				if(res.isConnected){
+					this.jimInit()
+				}else{
+					this.JIMLOGOUT()
+				}
+				// console.log(res.isConnected); //当前是否有网络连接
+				// console.log(res.networkType); //网络类型
+			})
 		},
 		onHide: function() {
 			this.hasHide = true
@@ -110,7 +120,7 @@
 			},
 			jimLogin() {
 				const message = readLoginMessage(uni)
-				console.log(message);
+				// console.log(message);
 				this.$jim.login({
 					'username': 'd_' + message.mobile,
 					'password': message.password
@@ -123,7 +133,7 @@
 					});
 
 					console.log('极光im登录成功', e);
-					
+
 					// 重新登录jim时可能会造成消息重复，先清除store中的所有消息
 					this.CLEAR_JIMMSGS()
 
@@ -149,7 +159,7 @@
 
 						//#ifdef APP-PLUS
 						// if (this.hasHide) {
-							plus.push.createMessage(msg.msgs.from_name + '：' + msg.msgs.msg_body.text)
+						plus.push.createMessage(msg.msgs.from_name + '：' + msg.msgs.msg_body.text)
 						// }
 						//#endif
 
@@ -164,7 +174,7 @@
 				this.JIMLOGOUT()
 			},
 
-			...mapActions(['LOGIN', 'LOGOUT', 'UPDATE_JIMMSGS', 'JIMLOGOUT', 'JIMLOGIN','CLEAR_JIMMSGS'])
+			...mapActions(['LOGIN', 'LOGOUT', 'UPDATE_JIMMSGS', 'JIMLOGOUT', 'JIMLOGIN', 'CLEAR_JIMMSGS'])
 		}
 	};
 </script>
@@ -188,13 +198,13 @@
 		font-size: 14px;
 		color: #cccccc;
 	}
-	
+
 	// radio选中的颜色
 	.uni-radio-input-checked {
 		background-color: $base-color !important;
 		border-color: $base-color !important;
 	}
-	
+
 	.uni-switch-input-checked {
 		background-color: $base-color !important;
 		border-color: $base-color !important;

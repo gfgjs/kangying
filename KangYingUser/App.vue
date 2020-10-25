@@ -94,6 +94,18 @@
 			});
 			// #endif
 		},
+		onShow(){
+			// 网络变化后重新登录极光IM
+			uni.onNetworkStatusChange((res) => {
+				if(res.isConnected){
+					this.jimInit()
+				}else{
+					this.JIMLOGOUT()
+				}
+				// console.log(res.isConnected); //当前是否有网络连接
+				// console.log(res.networkType); //网络类型
+			})
+		},
 		methods: {
 			checkJimStatus() {
 				return new Promise((resolve, reject) => {

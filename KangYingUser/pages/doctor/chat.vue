@@ -11,10 +11,20 @@
 
 		<view class="row " v-for="(item,index) in jimMsgs[targetUser]" :key='index' v-if="item.msg_body.extras.record_id== targetInfo.record_id"
 		 :class="item.from_id === targetUser?'doctor-row':'user-row'">
-			<image v-if="item.from_id === targetUser" :src="targetInfo.d_avatar" mode=""></image>
-			<view class="message" v-if="item.msg_type==='text'">
+
+			{{log(item)}}
+			
+			<image style="border-radius: 5px;" v-if="item.from_id === targetUser" :src="targetInfo.d_avatar" mode=""></image>
+			
+			<view class="message link" v-if="item.msg_type==='text'&&item.msg_body.extras.messageType==='prescript'"
+			 @click="$pageTo({url:item.msg_body.extras.url,options:item.msg_body.extras.options})"
+			>
 				{{item.msg_body[item.msg_type]}}
 			</view>
+			<view class="message" v-else-if="item.msg_type==='text'">
+				{{item.msg_body[item.msg_type]}}
+			</view>
+			
 			<view class="message" v-if="item.msg_type==='image'">
 				<view v-if="!imageList[item.msg_body.media_id]" @click="reLoadImage(item.msg_body.media_id)" class="little-title image-tips">
 					<uni-icons type="refreshempty" color="white" size="24" style="position: relative;top: 2px;"></uni-icons>
@@ -23,6 +33,8 @@
 				<image v-if="imageList[item.msg_body.media_id]" :src="imageList[item.msg_body.media_id]" @error='imageLoadError($event,item.msg_body.media_id)'
 				 @click="viewImage([imageList[item.msg_body.media_id]])" mode=""></image>
 			</view>
+			
+			<image style="border-radius: 5px;margin-left: 4px;" v-if="item.from_id !== targetUser" :src="userInfo.avatar" mode=""></image>
 		</view>
 		<!-- <view class="row time-row">22:33</view> -->
 		<view id="bottom-place"></view>
@@ -79,6 +91,7 @@
 				imageList: {},
 				targetInfo: {},
 				record_id: '',
+				log: console.log
 			};
 		},
 		watch: {
@@ -285,7 +298,11 @@
 			font-size: 14px;
 			padding: 10px 20px;
 		}
-
+		
+		.link{
+			color: $base-color;
+			text-decoration: underline;
+		}
 		image {
 			width: 50px;
 			height: 50px;
@@ -341,7 +358,7 @@
 		padding: 0 10px;
 		background-color: white;
 		box-shadow: 0 0 12px #efefef;
-	
+
 		.little {
 			width: 100%;
 			display: flex;
@@ -349,14 +366,14 @@
 			align-items: center;
 			min-height: 50px;
 			padding: 5px 0;
-			
+
 			.input-box {
 				flex: 1;
 				background-color: white;
 				width: 82%;
 				border-radius: 2px;
 				margin-right: 14px;
-			
+
 				.input {
 					box-sizing: content-box;
 					padding: 5px 0 5px 10px;
@@ -365,14 +382,14 @@
 					font-size: 18px;
 				}
 			}
-	
+
 			.button {
 				height: 32px;
 				padding: 0 4px;
 				width: 3rem;
 				transition: all 1s linear;
 			}
-	
+
 			.icon {
 				width: 40px;
 			}

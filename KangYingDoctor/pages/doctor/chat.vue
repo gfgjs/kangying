@@ -9,9 +9,8 @@
 			</view>
 		</view>
 
-		<view class="row " v-for="(item,index) in jimMsgs[targetUser]" :key='index' 
-		v-if="item.msg_body.extras.record_id== targetInfo.record_id"
-		:class="item.from_id === targetUser?'doctor-row':'user-row'">
+		<view class="row " v-for="(item,index) in jimMsgs[targetUser]" :key='index' v-if="item.msg_body.extras.record_id== targetInfo.record_id"
+		 :class="item.from_id === targetUser?'doctor-row':'user-row'">
 			<image class="head-image" v-if="item.from_id === targetUser" :src="targetInfo.p_avatar" mode=""></image>
 			<view class="message" v-if="item.msg_type==='text'">
 				{{item.msg_body[item.msg_type]}}
@@ -24,7 +23,7 @@
 				<image v-if="imageList[item.msg_body.media_id]" :src="imageList[item.msg_body.media_id]" @error='imageLoadError($event,item.msg_body.media_id)'
 				 @click="viewImage([imageList[item.msg_body.media_id]])" mode=""></image>
 			</view>
-			
+
 			<image class="head-image" v-if="item.from_id !== targetInfo.p_im_name" :src="targetInfo.d_avatar" mode=""></image>
 		</view>
 		<!-- <view class="row time-row">22:33</view> -->
@@ -33,13 +32,8 @@
 			<view class="little">
 				<!-- <uni-icons type="mic" class="icon" size="24"></uni-icons> -->
 				<view class="input-box">
-					<textarea class="input" 
-					@focus="messageInputFocus" 
-					@blur="messageInputBlur" 
-					placeholder="输入想说的话" 
-					auto-height
-					fixed
-					v-model="messageInput"></textarea>
+					<textarea class="input" @focus="messageInputFocus" @blur="messageInputBlur" placeholder="输入想说的话" auto-height fixed
+					 v-model="messageInput"></textarea>
 				</view>
 				<uni-icons type="camera" class="icon" size="28" @click="sendMore"></uni-icons>
 				<view v-if="messageInput" @touchend.prevent="sendMessage()" class="button">
@@ -58,7 +52,7 @@
 				</view>
 				<view class="row" @click="moreClick('/pages/doctor/prescription')">
 					<view class="left">
-						开电子处方
+						电子处方
 					</view>
 					<uni-icons type="arrowright"></uni-icons>
 				</view>
@@ -84,7 +78,9 @@
 		mapActions,
 		mapGetters
 	} from 'vuex'
-	import {request_recordNotice}from '../../common/https.js'
+	import {
+		request_recordNotice
+	} from '../../common/https.js'
 	export default {
 		data() {
 			return {
@@ -93,7 +89,7 @@
 				messageList: [],
 				imageList: {},
 				targetInfo: {},
-				record_id:'',
+				record_id: '',
 			};
 		},
 		watch: {
@@ -126,11 +122,11 @@
 			this.targetUser = e.im_username
 			this.record_id = e.record_id
 			this.targetInfo = e
-			
+
 			uni.setNavigationBarTitle({
-			　　title:e.d_name
+				title: e.d_name
 			})
-			
+
 			setTimeout(() => {
 				uni.pageScrollTo({
 					scrollTop: 9999,
@@ -139,40 +135,40 @@
 			}, 600)
 		},
 		methods: {
-			finishChat(){
+			finishChat() {
 				this.$refs.moreHandle.close()
 				uni.showModal({
-					title:'提示',
-					content:'确定要结束问诊吗？',
-					success:e=>{
-						if(e.confirm){
+					title: '提示',
+					content: '确定要结束问诊吗？',
+					success: e => {
+						if (e.confirm) {
 							this.sendMessage('问诊已结束，感谢您的使用！')
 							this.changeRecordStatus(2)
 						}
 					}
 				})
 			},
-			changeRecordStatus(status){
+			changeRecordStatus(status) {
 				request_recordNotice({
 					uni,
-					data:{
-						record_id:this.record_id,
+					data: {
+						record_id: this.record_id,
 						status
 					}
-				}).then(res=>{
-					if(res.code === 0){
+				}).then(res => {
+					if (res.code === 0) {
 						this.targetInfo.status = res.data
 					}
 				})
 			},
-			moreClick(url){
+			moreClick(url) {
 				this.$refs.moreHandle.close()
 				this.$pageTo({
 					url,
-					options:this.targetInfo
+					options: this.targetInfo
 				})
 			},
-			messageInputFocus(){
+			messageInputFocus() {
 				setTimeout(() => {
 					uni.pageScrollTo({
 						scrollTop: 9999,
@@ -180,7 +176,7 @@
 					})
 				}, 100)
 			},
-			messageInputBlur(){
+			messageInputBlur() {
 				setTimeout(() => {
 					uni.pageScrollTo({
 						scrollTop: 9999,
@@ -256,6 +252,17 @@
 					}
 				})
 			},
+			sendPrescript(id) {
+				this.sendMessage('请查看药方', {
+					messageType: 'prescript',
+					url: '/pages/doctor/prescript',
+					options: {
+						id
+					}
+				}, () => {
+					this.$api.msg('药方已发送')
+				})
+			},
 			jimfun() {
 				this.$jim.onSyncConversation(data => {
 					data.forEach(item => {
@@ -271,19 +278,20 @@
 			emoji() {
 				// this.$jim.loginOut()
 			},
-			sendMessage(text) {
+			sendMessage(text, obj, callback) {
 				this.$jim.sendSingleMsg({
 					'target_username': this.targetUser,
-					'content': text||this.messageInput,
+					'content': text || this.messageInput,
 					'extras': {
-						record_id: this.record_id
+						record_id: this.record_id,
+						...obj
 					}
 				}).onSuccess((data, msg) => {
 					// 医生首次向患者发送消息时，改变status为3
-					if(this.targetInfo.status == 1){
+					if (this.targetInfo.status == 1) {
 						this.changeRecordStatus(3)
 					}
-					
+					callback && callback()
 					setTimeout(() => {
 						uni.pageScrollTo({
 							scrollTop: 9999,
@@ -295,7 +303,8 @@
 						msgs: msg.content
 					})
 					this.messageInput = ''
-				}).onFail(function(data) {
+				}).onFail((data) => {
+					console.log(data)
 					//data.code 返回码
 					//data.message 描述
 				});
@@ -333,8 +342,9 @@
 			height: 50px;
 			margin-right: 10px;
 		}
-		.head-image{
-			border-radius: 50%;
+
+		.head-image {
+			border-radius: 5px;
 		}
 	}
 
@@ -395,14 +405,14 @@
 			align-items: center;
 			min-height: 50px;
 			padding: 5px 0;
-			
+
 			.input-box {
 				flex: 1;
 				background-color: white;
 				width: 82%;
 				border-radius: 2px;
 				margin-right: 14px;
-			
+
 				.input {
 					box-sizing: content-box;
 					padding: 5px 0 5px 10px;

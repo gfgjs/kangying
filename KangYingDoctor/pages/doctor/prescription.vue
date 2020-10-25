@@ -21,7 +21,7 @@
 			<view class="title">临床诊断</view>
 			<view class="little-title">{{info.diagnosis}}</view>
 		</view>
-		<view class="row sign-row">
+		<view class="row sign-row" v-if="!medHasBeen">
 			<view class="title">
 				电子签名（请在框内签名）
 			</view>
@@ -36,6 +36,15 @@
 			</view>
 			<!-- <image :src="signimg" mode=""></image> -->
 		</view>
+		<view v-else>
+			<view class="title">
+				电子签名
+			</view>
+			<view class="hand-center handCenter">
+				<image style="max-width: 100%;" :src="nowRecord.doctor_sign" mode=""></image>
+			</view>
+		</view>
+
 		<view class="common-place"></view>
 		<view class="common-place"></view>
 		<view class="row-title row">选择药品</view>
@@ -74,13 +83,17 @@
 			</view> -->
 		</view>
 
-		<view class="buttons" v-if="!medHasBeen">
-			<view class="button" @click="addMed">
+		<view class="buttons">
+			<view class="button" v-if="!medHasBeen" @click="addMed">
 				添加西药
 			</view>
 
-			<view class="button" @click="submit">
+			<view class="button" v-if="!medHasBeen" @click="submit">
 				提交药方
+			</view>
+
+			<view class="button" v-if="medHasBeen" @click="sendPrescript">
+				发送药方
 			</view>
 		</view>
 	</view>
@@ -98,23 +111,20 @@
 				info: {},
 				record_id: '',
 				medList: {},
-
+				nowRecord: null,
 				medHasBeen: false,
 				handwriting: {},
 				lineColor: 'black',
 				slideValue: 50,
-				signimg:''
+				signimg: ''
 			};
 		},
 		onLoad(e) {
 			// this.log(e)
 			this.info = e
 			this.record_id = e.record_id
-
-
 		},
 		onShow() {
-
 			setTimeout(() => {
 				this.handwriting = new Handwriting({
 					lineColor: this.lineColor,
@@ -132,9 +142,12 @@
 				}
 			}).then(res => {
 				if (res.code === 0) {
+					this.nowRecord = res.data.now_record
 					if (res.data.now_record.goods) {
+
 						this.medHasBeen = true
 						const array = JSON.parse(res.data.now_record.goods)
+						// console.log(array)
 						this.medList = array.map(item => {
 							let newObj = item.GoodsInfo
 							newObj.number = item.GoodsNumber
@@ -149,7 +162,13 @@
 			})
 		},
 		methods: {
-
+			sendPrescript() {
+				let pages = getCurrentPages(); //获取页面栈
+				if (pages.length > 1) {
+					var beforePage = pages[pages.length - 2]; //获取上一个页面实例对象 
+					beforePage.sendPrescript(this.nowRecord.PreId); //触发父页面中的方法  
+				}
+			},
 			clearSign() {
 				this.handwriting.retDraw()
 			},
@@ -180,8 +199,8 @@
 					this.$api.msg('不能修改药方')
 					return
 				}
-				
-				if(this.signimg.length<=1594){
+
+				if (this.signimg.length <= 1594) {
 					this.$api.msg('您必须签名，方可提交处方')
 					return
 				}
@@ -194,11 +213,12 @@
 					uni,
 					data: {
 						record_id: this.info.record_id * 1, //（病历ID）、
-						doctor_sign:this.signimg,
+						doctor_sign: this.signimg,
 						goods: array, //（开的药 数组
 					}
 				}).then(res => {
 					if (res.code === 0) {
+						this.sendPrescript()
 						this.$api.msg(res.data)
 						setTimeout(() => {
 							array.forEach(item => {
@@ -291,7 +311,7 @@
 
 	}
 
-	
+
 
 
 	.row {
@@ -361,11 +381,12 @@
 
 	.buttons {
 		display: flex;
+		justify-content: center;
 
 		.button {
 			display: flex;
 			align-items: center;
-			margin: 30px auto 50px;
+			margin: 30px 5px 50px;
 			font-size: 16px;
 
 			.uni-icons {
@@ -373,12 +394,13 @@
 			}
 		}
 	}
+
 	.sign-row {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
 		height: auto;
-	
+
 		.hand-center {
 			width: 100%;
 			// height: 100%;

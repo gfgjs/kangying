@@ -8804,21 +8804,29 @@ var render = function() {
             }
           }
         },
-        [_vm._v("在线问诊")]
+        [
+          _vm._v("在线问诊"),
+          _vm._$g(37, "i")
+            ? _c("v-uni-text", { attrs: { _i: 37 } }, [
+                _vm._v("(已选就诊卡：" + _vm._$g(37, "t0-0") + ")")
+              ])
+            : _vm._e()
+        ],
+        1
       ),
       _c(
         "uni-popup",
-        { ref: "payType", attrs: { _i: 37 } },
+        { ref: "payType", attrs: { _i: 38 } },
         [
           _c(
             "v-uni-radio-group",
-            { staticClass: _vm._$g(38, "sc"), attrs: { _i: 38 } },
+            { staticClass: _vm._$g(39, "sc"), attrs: { _i: 39 } },
             [
               _c(
                 "v-uni-label",
                 {
-                  staticClass: _vm._$g(39, "sc"),
-                  attrs: { for: "pay-ali", _i: 39 },
+                  staticClass: _vm._$g(40, "sc"),
+                  attrs: { for: "pay-ali", _i: 40 },
                   on: {
                     click: function($event) {
                       return _vm.$handleViewEvent($event)
@@ -8828,26 +8836,26 @@ var render = function() {
                 [
                   _c(
                     "v-uni-view",
-                    { staticClass: _vm._$g(40, "sc"), attrs: { _i: 40 } },
+                    { staticClass: _vm._$g(41, "sc"), attrs: { _i: 41 } },
                     [
                       _c("v-uni-image", {
-                        attrs: { src: _vm._$g(41, "a-src"), mode: "", _i: 41 }
+                        attrs: { src: _vm._$g(42, "a-src"), mode: "", _i: 42 }
                       }),
-                      _c("v-uni-view", { attrs: { _i: 42 } }, [
+                      _c("v-uni-view", { attrs: { _i: 43 } }, [
                         _vm._v("支付宝支付")
                       ])
                     ],
                     1
                   ),
-                  _c("uni-icons", { attrs: { _i: 43 } })
+                  _c("uni-icons", { attrs: { _i: 44 } })
                 ],
                 1
               ),
               _c(
                 "v-uni-label",
                 {
-                  staticClass: _vm._$g(44, "sc"),
-                  attrs: { for: "pay-wx", _i: 44 },
+                  staticClass: _vm._$g(45, "sc"),
+                  attrs: { for: "pay-wx", _i: 45 },
                   on: {
                     click: function($event) {
                       return _vm.$handleViewEvent($event)
@@ -8857,18 +8865,86 @@ var render = function() {
                 [
                   _c(
                     "v-uni-view",
-                    { staticClass: _vm._$g(45, "sc"), attrs: { _i: 45 } },
+                    { staticClass: _vm._$g(46, "sc"), attrs: { _i: 46 } },
                     [
                       _c("v-uni-image", {
-                        attrs: { src: _vm._$g(46, "a-src"), mode: "", _i: 46 }
+                        attrs: { src: _vm._$g(47, "a-src"), mode: "", _i: 47 }
                       }),
-                      _c("v-uni-view", { attrs: { _i: 47 } }, [
+                      _c("v-uni-view", { attrs: { _i: 48 } }, [
                         _vm._v("微信支付")
                       ])
                     ],
                     1
                   ),
-                  _c("uni-icons", { attrs: { _i: 48 } })
+                  _c("uni-icons", { attrs: { _i: 49 } })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _c(
+        "uni-popup",
+        { ref: "order", attrs: { _i: 50 } },
+        [
+          _c(
+            "v-uni-view",
+            { staticClass: _vm._$g(51, "sc"), attrs: { _i: 51 } },
+            [
+              _c(
+                "v-uni-view",
+                { staticClass: _vm._$g(52, "sc"), attrs: { _i: 52 } },
+                [
+                  _c(
+                    "v-uni-view",
+                    { staticClass: _vm._$g(53, "sc"), attrs: { _i: 53 } },
+                    [_vm._v("查询到您有正在进行中的问诊，您可以：")]
+                  )
+                ],
+                1
+              ),
+              _c(
+                "v-uni-view",
+                {
+                  staticClass: _vm._$g(54, "sc"),
+                  attrs: { _i: 54 },
+                  on: {
+                    click: function($event) {
+                      return _vm.$handleViewEvent($event)
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "v-uni-view",
+                    { staticClass: _vm._$g(55, "sc"), attrs: { _i: 55 } },
+                    [_vm._v("新建问诊")]
+                  ),
+                  _c("uni-icons", { attrs: { _i: 56 } })
+                ],
+                1
+              ),
+              _c(
+                "v-uni-view",
+                {
+                  staticClass: _vm._$g(57, "sc"),
+                  attrs: { _i: 57 },
+                  on: {
+                    click: function($event) {
+                      return _vm.$handleViewEvent($event)
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "v-uni-view",
+                    { staticClass: _vm._$g(58, "sc"), attrs: { _i: 58 } },
+                    [_vm._v("继续问诊")]
+                  ),
+                  _c("uni-icons", { attrs: { _i: 59 } })
                 ],
                 1
               )
@@ -8970,7 +9046,7 @@ if(false) {}
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../../HBuilderX/plugins/uniapp-cli/node_modules/css-loader/dist/runtime/api.js */ 10);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "@charset \"UTF-8\";\r\n/**\r\n * 这里是uni-app内置的常用样式变量\r\n *\r\n * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量\r\n * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App\r\n *\r\n */\r\n/**\r\n * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能\r\n *\r\n * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件\r\n */\r\n/* 颜色变量 */\r\n/* 行为相关颜色 */\r\n/* 文字基本颜色 */\r\n/* 背景颜色 */\r\n/* 边框颜色 */\r\n/* 尺寸变量 */\r\n/* 文字尺寸 */\r\n/* 图片尺寸 */\r\n/* Border Radius */\r\n/* 水平间距 */\r\n/* 垂直间距 */\r\n/* 透明度 */\r\n/* 文章场景相关 */\r\n/* 页面左右间距 */\r\n/* 页面背景色 */\r\n/* 主题色 */\r\n/* 提示文字颜色 */\r\n/* 文字尺寸 */\r\n/*文字颜色*/\r\n/* 边框颜色 */\r\n/* 图片加载中颜色 */\nbody[data-v-a0855d94] {\r\n  background-color: #fcfdfe;\n}\n.header[data-v-a0855d94] {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-justify-content: space-around;\r\n          justify-content: space-around;\r\n  background-color: #5eb6aa;\r\n  border-bottom-left-radius: 12px;\r\n  padding: 20px;\r\n  padding-top: 44px;\r\n  color: white;\n}\n.header uni-image[data-v-a0855d94] {\r\n  width: 60px;\r\n  height: 60px;\n}\n.header .message[data-v-a0855d94] {\r\n  width: calc(100% - 60px);\n}\n.header .row[data-v-a0855d94] {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  margin: 10px 0;\n}\n.header .row .tag[data-v-a0855d94] {\r\n  background: rgba(255, 248, 235, 0.3);\r\n  font-size: 14px;\r\n  border-radius: 18px;\r\n  padding: 2px 10px;\n}\n.header .name uni-view[data-v-a0855d94] {\r\n  margin-right: 10px;\n}\n.header .name .little-title[data-v-a0855d94] {\r\n  color: #EAF3FF;\n}\n.header .address uni-view[data-v-a0855d94] {\r\n  background-color: white;\r\n  padding: 2px 10px;\r\n  border-radius: 10px;\r\n  font-size: 14px;\r\n  color: #5eb6aa;\n}\n.header .address uni-view .uni-icons[data-v-a0855d94] {\r\n  color: #5eb6aa !important;\r\n  margin-left: 10px;\n}\n.header .message-count[data-v-a0855d94] {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  background-color: #5eb6aa;\r\n  box-shadow: 0 0 2px #5eb6aa;\r\n  padding: 4px 20px;\n}\n.header .message-count .count[data-v-a0855d94] {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n  -webkit-flex-direction: column;\r\n          flex-direction: column;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  width: 33%;\n}\n.header .message-count .count uni-view[data-v-a0855d94] {\r\n  padding: 2px 0;\r\n  color: white;\n}\n.content[data-v-a0855d94] {\r\n  width: calc(100% - 40px);\r\n  margin: 20px auto 100px;\r\n  background: white;\r\n  border-radius: 6px;\r\n  padding: 20px 10px;\r\n  font-size: 14px;\r\n  color: #2D2D2D;\n}\n.content .major[data-v-a0855d94] {\r\n  background-image: -webkit-linear-gradient(336deg, #e7eefe 0%, #ffffff 74%);\r\n  background-image: linear-gradient(114deg, #e7eefe 0%, #ffffff 74%);\r\n  width: 40vw;\r\n  padding: 2px 0 2px 20px;\r\n  border-radius: 20px;\r\n  position: relative;\r\n  left: -15px;\n}\n.content .row[data-v-a0855d94] {\r\n  margin: 30px 0;\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-pack: justify;\r\n  -webkit-justify-content: space-between;\r\n          justify-content: space-between;\n}\n.content .row .dot[data-v-a0855d94] {\r\n  width: 16px;\r\n  height: 16px;\r\n  margin: 8px 0 0 0;\r\n  background: white;\r\n  box-shadow: 0px 0px 19px 1px rgba(11, 125, 255, 0.1);\r\n  border-radius: 50%;\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  -webkit-box-pack: center;\r\n  -webkit-justify-content: center;\r\n          justify-content: center;\n}\n.content .row .dot .dot-inner[data-v-a0855d94] {\r\n  width: 8px;\r\n  height: 8px;\r\n  background: #5eb6aa;\r\n  border-radius: 50%;\n}\n.content .row .text[data-v-a0855d94] {\r\n  width: 80%;\r\n  font-size: 15px;\n}\n.button[data-v-a0855d94] {\r\n  font-size: 16px;\r\n  width: 100%;\r\n  position: fixed;\r\n  bottom: 0;\r\n  height: 60px;\r\n  border-radius: 0;\n}\n.pay-type[data-v-a0855d94] {\r\n  background-color: white;\r\n  position: fixed;\r\n  bottom: 0;\r\n  left: 0;\r\n  width: 100vw;\n}\n.pay-type .row[data-v-a0855d94] {\r\n  padding: 20px;\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  -webkit-box-pack: justify;\r\n  -webkit-justify-content: space-between;\r\n          justify-content: space-between;\r\n  width: 100%;\n}\n.pay-type .row .left[data-v-a0855d94] {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  font-size: 16px;\n}\n.pay-type .row .left uni-image[data-v-a0855d94] {\r\n  width: 31px;\r\n  height: 31px;\r\n  margin-right: 10px;\n}\r\n", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\r\n/**\r\n * 这里是uni-app内置的常用样式变量\r\n *\r\n * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量\r\n * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App\r\n *\r\n */\r\n/**\r\n * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能\r\n *\r\n * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件\r\n */\r\n/* 颜色变量 */\r\n/* 行为相关颜色 */\r\n/* 文字基本颜色 */\r\n/* 背景颜色 */\r\n/* 边框颜色 */\r\n/* 尺寸变量 */\r\n/* 文字尺寸 */\r\n/* 图片尺寸 */\r\n/* Border Radius */\r\n/* 水平间距 */\r\n/* 垂直间距 */\r\n/* 透明度 */\r\n/* 文章场景相关 */\r\n/* 页面左右间距 */\r\n/* 页面背景色 */\r\n/* 主题色 */\r\n/* 提示文字颜色 */\r\n/* 文字尺寸 */\r\n/*文字颜色*/\r\n/* 边框颜色 */\r\n/* 图片加载中颜色 */\nbody[data-v-a0855d94] {\r\n  background-color: #fcfdfe;\n}\n.more-handle[data-v-a0855d94] {\r\n  background-color: white;\r\n  position: fixed;\r\n  bottom: 0;\r\n  left: 0;\r\n  width: 100vw;\n}\n.more-handle .row[data-v-a0855d94] {\r\n  padding: 20px;\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  -webkit-box-pack: justify;\r\n  -webkit-justify-content: space-between;\r\n          justify-content: space-between;\r\n  width: 100%;\n}\n.more-handle .row .left[data-v-a0855d94] {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  font-size: 16px;\n}\n.more-handle .row .left uni-image[data-v-a0855d94] {\r\n  width: 31px;\r\n  height: 31px;\r\n  margin-right: 10px;\n}\n.header[data-v-a0855d94] {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-justify-content: space-around;\r\n          justify-content: space-around;\r\n  background-color: #5eb6aa;\r\n  border-bottom-left-radius: 12px;\r\n  padding: 20px;\r\n  padding-top: 44px;\r\n  color: white;\n}\n.header uni-image[data-v-a0855d94] {\r\n  width: 60px;\r\n  height: 60px;\n}\n.header .message[data-v-a0855d94] {\r\n  width: calc(100% - 60px);\n}\n.header .row[data-v-a0855d94] {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  margin: 10px 0;\n}\n.header .row .tag[data-v-a0855d94] {\r\n  background: rgba(255, 248, 235, 0.3);\r\n  font-size: 14px;\r\n  border-radius: 18px;\r\n  padding: 2px 10px;\n}\n.header .name uni-view[data-v-a0855d94] {\r\n  margin-right: 10px;\n}\n.header .name .little-title[data-v-a0855d94] {\r\n  color: #EAF3FF;\n}\n.header .address uni-view[data-v-a0855d94] {\r\n  background-color: white;\r\n  padding: 2px 10px;\r\n  border-radius: 10px;\r\n  font-size: 14px;\r\n  color: #5eb6aa;\n}\n.header .address uni-view .uni-icons[data-v-a0855d94] {\r\n  color: #5eb6aa !important;\r\n  margin-left: 10px;\n}\n.header .message-count[data-v-a0855d94] {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  background-color: #5eb6aa;\r\n  box-shadow: 0 0 2px #5eb6aa;\r\n  padding: 4px 20px;\n}\n.header .message-count .count[data-v-a0855d94] {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n  -webkit-flex-direction: column;\r\n          flex-direction: column;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  width: 33%;\n}\n.header .message-count .count uni-view[data-v-a0855d94] {\r\n  padding: 2px 0;\r\n  color: white;\n}\n.content[data-v-a0855d94] {\r\n  width: calc(100% - 40px);\r\n  margin: 20px auto 100px;\r\n  background: white;\r\n  border-radius: 6px;\r\n  padding: 20px 10px;\r\n  font-size: 14px;\r\n  color: #2D2D2D;\n}\n.content .major[data-v-a0855d94] {\r\n  background-image: -webkit-linear-gradient(336deg, #e7eefe 0%, #ffffff 74%);\r\n  background-image: linear-gradient(114deg, #e7eefe 0%, #ffffff 74%);\r\n  width: 40vw;\r\n  padding: 2px 0 2px 20px;\r\n  border-radius: 20px;\r\n  position: relative;\r\n  left: -15px;\n}\n.content .row[data-v-a0855d94] {\r\n  margin: 30px 0;\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-pack: justify;\r\n  -webkit-justify-content: space-between;\r\n          justify-content: space-between;\n}\n.content .row .dot[data-v-a0855d94] {\r\n  width: 16px;\r\n  height: 16px;\r\n  margin: 8px 0 0 0;\r\n  background: white;\r\n  box-shadow: 0px 0px 19px 1px rgba(11, 125, 255, 0.1);\r\n  border-radius: 50%;\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  -webkit-box-pack: center;\r\n  -webkit-justify-content: center;\r\n          justify-content: center;\n}\n.content .row .dot .dot-inner[data-v-a0855d94] {\r\n  width: 8px;\r\n  height: 8px;\r\n  background: #5eb6aa;\r\n  border-radius: 50%;\n}\n.content .row .text[data-v-a0855d94] {\r\n  width: 80%;\r\n  font-size: 15px;\n}\n.button[data-v-a0855d94] {\r\n  font-size: 16px;\r\n  width: 100%;\r\n  position: fixed;\r\n  bottom: 0;\r\n  height: 60px;\r\n  border-radius: 0;\n}\n.pay-type[data-v-a0855d94] {\r\n  background-color: white;\r\n  position: fixed;\r\n  bottom: 0;\r\n  left: 0;\r\n  width: 100vw;\n}\n.pay-type .row[data-v-a0855d94] {\r\n  padding: 20px;\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  -webkit-box-pack: justify;\r\n  -webkit-justify-content: space-between;\r\n          justify-content: space-between;\r\n  width: 100%;\n}\n.pay-type .row .left[data-v-a0855d94] {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  font-size: 16px;\n}\n.pay-type .row .left uni-image[data-v-a0855d94] {\r\n  width: 31px;\r\n  height: 31px;\r\n  margin-right: 10px;\n}\r\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -17803,7 +17879,7 @@ if(false) {}
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../../HBuilderX/plugins/uniapp-cli/node_modules/css-loader/dist/runtime/api.js */ 10);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "@charset \"UTF-8\";\r\n/**\r\n * 这里是uni-app内置的常用样式变量\r\n *\r\n * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量\r\n * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App\r\n *\r\n */\r\n/**\r\n * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能\r\n *\r\n * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件\r\n */\r\n/* 颜色变量 */\r\n/* 行为相关颜色 */\r\n/* 文字基本颜色 */\r\n/* 背景颜色 */\r\n/* 边框颜色 */\r\n/* 尺寸变量 */\r\n/* 文字尺寸 */\r\n/* 图片尺寸 */\r\n/* Border Radius */\r\n/* 水平间距 */\r\n/* 垂直间距 */\r\n/* 透明度 */\r\n/* 文章场景相关 */\r\n/* 页面左右间距 */\r\n/* 页面背景色 */\r\n/* 主题色 */\r\n/* 提示文字颜色 */\r\n/* 文字尺寸 */\r\n/*文字颜色*/\r\n/* 边框颜色 */\r\n/* 图片加载中颜色 */\n.no-pay {\r\n  width: 100%;\r\n  height: 80vh;\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n  -webkit-flex-direction: column;\r\n          flex-direction: column;\r\n  -webkit-box-pack: center;\r\n  -webkit-justify-content: center;\r\n          justify-content: center;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\n}\n.no-pay .button {\r\n  margin-top: 20px;\n}\n.no-pay .has-pay {\r\n  margin-top: 20px;\r\n  color: #5eb6aa;\r\n  border-bottom: 1px solid #5eb6aa;\n}\n.pay-type {\r\n  background-color: white;\r\n  position: fixed;\r\n  bottom: 0;\r\n  left: 0;\r\n  width: 100vw;\n}\n.pay-type .row {\r\n  padding: 20px;\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  -webkit-box-pack: justify;\r\n  -webkit-justify-content: space-between;\r\n          justify-content: space-between;\r\n  width: 100%;\n}\n.pay-type .row .left {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  font-size: 16px;\n}\n.pay-type .row .left uni-image {\r\n  width: 31px;\r\n  height: 31px;\r\n  margin-right: 10px;\n}\n.view-panel .agreement {\r\n  height: 80vh;\r\n  width: 90vw;\r\n  background-color: white;\r\n  border-radius: 4px;\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n  -webkit-flex-direction: column;\r\n          flex-direction: column;\n}\n.view-panel .agreement uni-textarea {\r\n  -webkit-box-flex: 1;\r\n  -webkit-flex: 1;\r\n          flex: 1;\r\n  padding: 10px;\r\n  width: 100%;\n}\n.view-panel .agreement .buttons {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-justify-content: space-around;\r\n          justify-content: space-around;\r\n  padding-bottom: 10px;\n}\n.view-panel .content {\r\n  height: 80vh;\r\n  width: 90vw;\r\n  background-color: white;\r\n  border-radius: 4px;\r\n  overflow: hidden;\n}\n.view-panel .content .little-title {\r\n  color: #5eb6aa;\r\n  font-size: 16px;\n}\n.view-panel .content .item-content {\r\n  padding: 10px 10px;\r\n  font-size: 14px;\r\n  height: auto;\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  -webkit-box-pack: justify;\r\n  -webkit-justify-content: space-between;\r\n          justify-content: space-between;\r\n  border-bottom: 1px solid #e5e5e5;\n}\n.view-panel .content .item-content .left {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n  -webkit-flex-direction: column;\r\n          flex-direction: column;\r\n  -webkit-justify-content: space-around;\r\n          justify-content: space-around;\r\n  height: 100%;\n}\n.view-panel .content .item-content .left .name {\r\n  width: 55vw;\r\n  white-space: nowrap;\r\n  overflow: hidden;\r\n  text-overflow: ellipsis;\n}\n.view-panel .content .item-content .left .bottom-row {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-pack: justify;\r\n  -webkit-justify-content: space-between;\r\n          justify-content: space-between;\n}\n.view-panel .content .item-content .icon {\r\n  color: #5eb6aa !important;\n}\n.view-panel .content .item-content:first-of-type {\r\n  border-top: 1px solid #e5e5e5;\n}\r\n", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\r\n/**\r\n * 这里是uni-app内置的常用样式变量\r\n *\r\n * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量\r\n * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App\r\n *\r\n */\r\n/**\r\n * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能\r\n *\r\n * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件\r\n */\r\n/* 颜色变量 */\r\n/* 行为相关颜色 */\r\n/* 文字基本颜色 */\r\n/* 背景颜色 */\r\n/* 边框颜色 */\r\n/* 尺寸变量 */\r\n/* 文字尺寸 */\r\n/* 图片尺寸 */\r\n/* Border Radius */\r\n/* 水平间距 */\r\n/* 垂直间距 */\r\n/* 透明度 */\r\n/* 文章场景相关 */\r\n/* 页面左右间距 */\r\n/* 页面背景色 */\r\n/* 主题色 */\r\n/* 提示文字颜色 */\r\n/* 文字尺寸 */\r\n/*文字颜色*/\r\n/* 边框颜色 */\r\n/* 图片加载中颜色 */\n.no-pay {\r\n  width: 100%;\r\n  height: 80vh;\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n  -webkit-flex-direction: column;\r\n          flex-direction: column;\r\n  -webkit-box-pack: center;\r\n  -webkit-justify-content: center;\r\n          justify-content: center;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\n}\n.no-pay .button {\r\n  margin-top: 20px;\n}\n.no-pay .has-pay {\r\n  margin-top: 20px;\r\n  color: #5eb6aa;\r\n  border-bottom: 1px solid #5eb6aa;\n}\n.pay-type {\r\n  background-color: white;\r\n  position: fixed;\r\n  bottom: 0;\r\n  left: 0;\r\n  width: 100vw;\n}\n.pay-type .row {\r\n  padding: 20px;\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  -webkit-box-pack: justify;\r\n  -webkit-justify-content: space-between;\r\n          justify-content: space-between;\r\n  width: 100%;\n}\n.pay-type .row .left {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  font-size: 16px;\n}\n.pay-type .row .left uni-image {\r\n  width: 31px;\r\n  height: 31px;\r\n  margin-right: 10px;\n}\n.view-panel .agreement {\r\n  height: 80vh;\r\n  width: 90vw;\r\n  background-color: white;\r\n  border-radius: 4px;\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n  -webkit-flex-direction: column;\r\n          flex-direction: column;\n}\n.view-panel .agreement uni-textarea {\r\n  -webkit-box-flex: 1;\r\n  -webkit-flex: 1;\r\n          flex: 1;\r\n  padding: 10px;\r\n  width: 100%;\n}\n.view-panel .agreement .buttons {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-justify-content: space-around;\r\n          justify-content: space-around;\r\n  padding-bottom: 10px;\n}\n.view-panel .content {\r\n  height: 100%;\r\n  width: 100%;\r\n  background-color: white;\r\n  border-radius: 4px;\r\n  overflow: hidden;\n}\n.view-panel .content .little-title {\r\n  color: #5eb6aa;\r\n  font-size: 16px;\n}\n.view-panel .content .item-content {\r\n  padding: 10px 10px;\r\n  font-size: 14px;\r\n  height: auto;\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  -webkit-box-pack: justify;\r\n  -webkit-justify-content: space-between;\r\n          justify-content: space-between;\r\n  border-bottom: 1px solid #e5e5e5;\n}\n.view-panel .content .item-content .left {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n  -webkit-flex-direction: column;\r\n          flex-direction: column;\r\n  -webkit-justify-content: space-around;\r\n          justify-content: space-around;\r\n  height: 100%;\n}\n.view-panel .content .item-content .left .name {\r\n  width: 55vw;\r\n  white-space: nowrap;\r\n  overflow: hidden;\r\n  text-overflow: ellipsis;\n}\n.view-panel .content .item-content .left .bottom-row {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-pack: justify;\r\n  -webkit-justify-content: space-between;\r\n          justify-content: space-between;\n}\n.view-panel .content .item-content .icon {\r\n  color: #5eb6aa !important;\n}\n.view-panel .content .item-content:first-of-type {\r\n  border-top: 1px solid #e5e5e5;\n}\r\n", ""]);
 // Exports
 module.exports = exports;
 

@@ -58,7 +58,7 @@
 			</view>
 		</view>
 		<view class="button" @click="chat">
-			在线问诊
+			在线问诊<text v-if="patientCard">(已选就诊卡：{{patientCard.p_name}})</text>
 		</view>
 		<uni-popup ref="payType">
 			<radio-group class="pay-type">
@@ -79,6 +79,29 @@
 					<!-- <radio id="pay-wx"></radio> -->
 				</label>
 			</radio-group>
+		</uni-popup>
+		<uni-popup ref="order">
+			<view class="more-handle">
+				<view class="row">
+					<view class="left">
+						查询到您有正在进行中的问诊，您可以：
+					</view>
+					<!-- <uni-icons type="arrowright"></uni-icons> -->
+				</view>
+				<view class="row" @click="createNewOrder">
+					<view class="left">
+						新建问诊
+					</view>
+					<uni-icons type="arrowright"></uni-icons>
+				</view>
+				<view class="row" @click="onOldOrder">
+					<view class="left">
+						继续问诊
+					</view>
+					<uni-icons type="arrowright"></uni-icons>
+				</view>
+			</view>
+
 		</uni-popup>
 	</view>
 </template>
@@ -102,6 +125,7 @@
 				payResult: false,
 				order_no: '', //生成的订单号
 				record_id: '', //生成的病历id
+				oldOrder:null
 			}
 		},
 		onLoad(e) {
@@ -141,29 +165,32 @@
 			...mapGetters(['hasLogin'])
 		},
 		methods: {
-			pay(type) {
-				// 查询最近一次问诊是否结束
-				request_recordLast({uni,data:{card_id:this.patientCard.id}}).then(res=>{
-					
+			onOldOrder(){
+				// 跳转聊天窗口
+				this.$refs.order.close()
+				this.$pageTo({
+					url: '/pages/doctor/chat',
+					options: {
+						im_username: this.oldOrder.d_im_name,
+						record_id: this.oldOrder.id,
+						d_name: this.oldOrder.d_name,
+						d_avatar: this.oldOrder.d_avatar,
+					}
 				})
-				// this.$refs.payType.close()
+			},
+			createNewOrder(){
+				this.$refs.order.close()
 				request_recordAdd({
 					uni,
 					data: {
 						p_card_id: this.patientCard.id,
-						doctor_id: this.doctor_id,
-						pay_type: type
+						doctor_id: this.doctor_id
 					}
 				}).then(res => {
 					if (res.code === 0) {
 						this.patientCard = null
-						// const on = res.data.order_no
 						this.order_no = res.data.order_no
-						// const ri = res.data.record_id
 						this.record_id = res.data.record_id
-						// this.order_no = on
-						// this.record_id = ri
-						// console.log('病例id：', ri);
 						// 跳转聊天窗口
 						this.$pageTo({
 							url: '/pages/doctor/chat',
@@ -174,39 +201,33 @@
 								d_avatar: this.info.d_avatar
 							}
 						})
-						// uni.requestPayment({
-						// 	provider: res.data.provider,
-						// 	orderInfo: res.data.orderInfo,
-						// 	success: (res) => {
-
-						// 		this.payResult = true
-
-						// 		// 跳转聊天窗口
-						// 		this.$pageTo({
-						// 			url: '/pages/doctor/chat',
-						// 			options: {
-						// 				im_username: this.info.im_username,
-						// 				// order_no:on,
-						// 				record_id: ri,
-						// 				d_name: this.info.user_name,
-						// 				d_avatar: this.info.d_avatar
-						// 			}
-						// 		})
-						// 	},
-						// 	fail: (err) => {
-						// 		this.$api.msg('支付失败')
-						// 	}
-						// })
 					} else {
 						this.$api.msg(res.err)
 					}
 				})
 			},
+			pay(type) {
+				// 查询最近一次问诊是否结束
+				request_recordLast({
+					uni,
+					data: {
+						card_id: this.patientCard.id
+					}
+				}).then(res => {
+					console.log(res)
+					if (res.status == 2) {
+						this.createNewOrder()
+					} else {
+						this.oldOrder = res.data
+						this.$refs.order.open()
+					}
+				})
+			},
 			chat(e, im_username, price) {
 				if (this.hasLogin) {
-					if(this.patientCard){
-						this.pay()
-					}else{
+					if (this.patientCard) {
+						this.pay(1)
+					} else {
 						this.$pageTo({
 							url: '/pages/card/list',
 							options: {
@@ -261,6 +282,34 @@
 <style lang="scss" scoped>
 	page {
 		background-color: $page-color-base;
+	}
+
+	.more-handle {
+		background-color: white;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100vw;
+
+		.row {
+			padding: 20px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			width: 100%;
+
+			.left {
+				display: flex;
+				align-items: center;
+				font-size: 16px;
+
+				image {
+					width: 31px;
+					height: 31px;
+					margin-right: 10px;
+				}
+			}
+		}
 	}
 
 	.header {

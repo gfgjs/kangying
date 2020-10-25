@@ -19,7 +19,7 @@
 		
 		<div class="common-place" v-if="isNeedEvidence"></div>
 		<div class="common-place" v-if="isNeedEvidence"></div>
-		<view class="imgs-box" v-if="isNeedEvidence">
+		<!-- <view class="imgs-box" v-if="isNeedEvidence">
 			<view class="title">
 				上传处方凭证
 			</view>
@@ -29,6 +29,14 @@
 				<view class="add-button" @click="upImg()">
 					<uni-icons type="plusempty" size="24" color="#cccccc"></uni-icons>
 				</view>
+			</view>
+		</view> -->
+		<view class="imgs-box" v-if="isNeedEvidence" @click="$pageTo({url:'/pages/doctor/list'})">
+			<view class="title">
+				问诊对话
+			</view>
+			<view class="imgs-row" style="padding-bottom: 15px;display: flex;align-items: center;justify-content: space-between;">
+				<view>前往询问医生</view> <uni-icons type="arrowright" style="margin-top: 3px;"></uni-icons>
 			</view>
 		</view>
 
