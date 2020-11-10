@@ -59,7 +59,7 @@
 					<image src="../../static/index/3.png" mode=""></image>
 					<view class="name">药房</view>
 				</view>
-				<view class="row-item"  @click="$api.msg('暂未开放')">
+				<view class="row-item"  @click="$pageTo({url:'/pages/doctor/telephone'})">
 					<image src="../../static/index/4.png"></image>
 					<view class="name">随访计划</view>
 				</view>

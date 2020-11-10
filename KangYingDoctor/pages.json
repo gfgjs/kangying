@@ -158,6 +158,16 @@
             "path" : "pages/mine/balance",
             "style" : {}
         }
+		,{
+		    "path" : "pages/doctor/telephone",
+		    "style": {
+		    	"app-plus": {
+		    		"titleNView": {
+		    			"type": "transparent"
+		    		}
+		    	}
+		    }
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",

@@ -62,6 +62,18 @@
 					</view>
 					<uni-icons type="arrowright"></uni-icons>
 				</view>
+				<view class="row" @click="telephone('audio')">
+					<view class="left">
+						语音通话
+					</view>
+					<uni-icons type="arrowright"></uni-icons>
+				</view>
+				<view class="row" @click="telephone('video')">
+					<view class="left">
+						视频通话
+					</view>
+					<uni-icons type="arrowright"></uni-icons>
+				</view>
 				<view class="row" @click="finishChat">
 					<view class="left">
 						结束问诊
@@ -90,6 +102,7 @@
 				imageList: {},
 				targetInfo: {},
 				record_id: '',
+				pageScrollLength: 100,
 			};
 		},
 		watch: {
@@ -98,12 +111,14 @@
 				this.messageList.push(e)
 			},
 			jimMsgs(e) {
-				// console.log(e);
 				this.messageList = this.jimMsgs[this.targetUser]
 				setTimeout(() => {
-					uni.pageScrollTo({
-						scrollTop: 9999,
-						duration: 200
+					this.getRect('#chat').then(res => {
+						this.pageScrollLength += res.height
+						uni.pageScrollTo({
+							scrollTop: this.pageScrollLength,
+							duration: 0
+						})
 					})
 				}, 100)
 			},
@@ -119,22 +134,85 @@
 			}
 		},
 		onLoad(e) {
+			console.log(e)
 			this.targetUser = e.im_username
 			this.record_id = e.record_id
 			this.targetInfo = e
 
 			uni.setNavigationBarTitle({
-				title: e.d_name
+				title: e.p_name
 			})
 
 			setTimeout(() => {
-				uni.pageScrollTo({
-					scrollTop: 9999,
-					duration: 200
+				this.getRect('#chat').then(res => {
+					this.pageScrollLength += res.height
+					uni.pageScrollTo({
+						scrollTop: this.pageScrollLength,
+						duration: 100
+					})
 				})
 			}, 600)
 		},
+		onShow() {
+			const res = this.$jim.isLogin()
+			if(!res){
+				uni.showModal({
+					title:'IM掉线提示',
+					content:'IM系统已离线，将无法发送/接收信息、无法音/视频聊天',
+					confirmText:'点击重连',
+					cancelText:'返回',
+					success:e=>{
+						if(e.confirm){
+							getApp().globalData.jimInit()
+						}else{
+							uni.navigateBack()
+						}
+					}
+				})
+			}
+		},
 		methods: {
+			getRect(selector) {
+				return new Promise((resolve) => {
+					let view = uni.createSelectorQuery().select(selector);
+					view.fields({
+						size: true,
+						rect: true,
+						scrollOffset: true
+					}, (res) => {
+						resolve(res);
+					}).exec();
+				})
+			},
+			telephone(telType) {
+				this.$refs.moreHandle.close()
+				const info = {
+					calling: true, // 主叫
+					callingId: this.userInfo.im_username,
+					callingAvatar: this.userInfo.avatar,
+
+					called: false, //被叫
+					calledId: this.targetInfo.im_username,
+					calledAvatar: this.targetInfo.avatar,
+
+					recordId: this.targetInfo.record_id,
+					timestamp: Date.now(),
+					callto: true,
+					callStatus: 1, // 呼入阶段。0-空闲 1-呼入中/呼出中 2-通话中
+					messageType: 'telephone',
+					answerType: 'calling',
+					telephoneType: telType, // video audio
+
+					role: 'calling',
+					remoteRole: 'called',
+				}
+				this.$pageTo({
+					url: '/pages/doctor/telephone',
+					options: info
+				})
+
+				this.sendMessage('发起通话', info)
+			},
 			finishChat() {
 				this.$refs.moreHandle.close()
 				uni.showModal({
@@ -170,17 +248,23 @@
 			},
 			messageInputFocus() {
 				setTimeout(() => {
-					uni.pageScrollTo({
-						scrollTop: 9999,
-						duration: 200
+					this.getRect('#chat').then(res=>{
+						this.pageScrollLength += res.height
+						uni.pageScrollTo({
+							scrollTop: this.pageScrollLength,
+							duration: 100
+						})
 					})
 				}, 100)
 			},
 			messageInputBlur() {
 				setTimeout(() => {
-					uni.pageScrollTo({
-						scrollTop: 9999,
-						duration: 100
+					this.getRect('#chat').then(res=>{
+						this.pageScrollLength += res.height
+						uni.pageScrollTo({
+							scrollTop: this.pageScrollLength,
+							duration: 100
+						})
 					})
 				}, 200)
 			},
@@ -237,11 +321,14 @@
 							'image': tempFilePaths //设置图片参数
 						}).onSuccess((data, msg) => {
 							setTimeout(() => {
-								uni.pageScrollTo({
-									scrollTop: 9999,
-									duration: 200
+								this.getRect('#chat').then(res=>{
+									this.pageScrollLength += res.height
+									uni.pageScrollTo({
+										scrollTop: this.pageScrollLength,
+										duration: 100
+									})
 								})
-							}, 300)
+							}, 100)
 							this.UPDATE_JIMMSGS({
 								from_username: data.target_username,
 								msgs: msg.content
@@ -287,27 +374,21 @@
 						...obj
 					}
 				}).onSuccess((data, msg) => {
+					this.messageInput = ''
 					// 医生首次向患者发送消息时，改变status为3
 					if (this.targetInfo.status == 1) {
 						this.changeRecordStatus(3)
 					}
 					callback && callback()
-					setTimeout(() => {
-						uni.pageScrollTo({
-							scrollTop: 9999,
-							duration: 200
-						})
-					}, 300)
 					this.UPDATE_JIMMSGS({
 						from_username: data.target_username,
 						msgs: msg.content
 					})
-					this.messageInput = ''
 				}).onFail((data) => {
 					console.log(data)
 					//data.code 返回码
 					//data.message 描述
-				});
+				})
 			},
 			...mapActions(['UPDATE_IMASSAGELIST', 'UPDATE_JIMMSGS'])
 		},

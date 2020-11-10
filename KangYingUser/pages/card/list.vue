@@ -11,7 +11,7 @@
 			</view>
 		</view>
 		<view class="common-place" style="height: 65px;background: none;"></view>
-		<view class="button" @click="$pageTo({url:'/pages/card/create'})">新增</view>
+		<view class="button" @click="$pageTo({url:'/pages/card/create'})">新增病历卡</view>
 	</view>
 </template>
 

@@ -377,15 +377,6 @@
             "style" : {}
         }
         ,{
-            "path" : "pages/test/test",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
             "path" : "pages/doctor/prescript",
             "style" :                                                                                    
             {
@@ -393,6 +384,20 @@
                 "enablePullDownRefresh": true
             }
             
+        }
+        ,{
+            "path" : "pages/test/test",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/doctor/telephone",
+            "style": {
+            	"app-plus": {
+            		"titleNView": {
+            			"type": "transparent"
+            		}
+            	}
+            }
         }
     ],
 	"globalStyle": {

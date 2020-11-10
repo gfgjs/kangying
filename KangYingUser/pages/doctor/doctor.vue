@@ -192,13 +192,14 @@
 						this.order_no = res.data.order_no
 						this.record_id = res.data.record_id
 						// 跳转聊天窗口
+						console.log(this.info)
 						this.$pageTo({
 							url: '/pages/doctor/chat',
 							options: {
 								im_username: this.info.im_username,
 								record_id: this.record_id,
 								d_name: this.info.user_name,
-								d_avatar: this.info.d_avatar
+								d_avatar: this.info.avatar
 							}
 						})
 					} else {
@@ -214,8 +215,7 @@
 						card_id: this.patientCard.id
 					}
 				}).then(res => {
-					console.log(res)
-					if (res.status == 2) {
+					if (!res.data) {
 						this.createNewOrder()
 					} else {
 						this.oldOrder = res.data
@@ -228,10 +228,19 @@
 					if (this.patientCard) {
 						this.pay(1)
 					} else {
-						this.$pageTo({
-							url: '/pages/card/list',
-							options: {
-								pageFrom: 'doctor'
+						uni.showModal({
+							title:'提示',
+							content:'需要先选择病历卡，是否继续',
+							confirmText:'前往',
+							success:(e)=> {
+								if(e.confirm){
+									this.$pageTo({
+										url: '/pages/card/list',
+										options: {
+											pageFrom: 'doctor'
+										}
+									})
+								}
 							}
 						})
 					}

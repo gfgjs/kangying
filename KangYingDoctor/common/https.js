@@ -58,7 +58,6 @@ export const request_version = e => {
 // 上传图片
 
 export const request_uploadImg = e => {
-
 	return new Promise((resolve, reject) => {
 		e.uni.chooseImage({
 			success: (chooseImageRes) => {
@@ -81,6 +80,28 @@ export const request_uploadImg = e => {
 		})
 	})
 }
+
+//通用上传图片
+
+export const uploadImg = e => {
+	return new Promise((resolve, reject) => {
+		e.uni.uploadFile({
+			url: HOST + '/v1/p/upload_img', //仅为示例，非真实的接口地址
+			filePath: e.filePath,
+			name: 'img',
+			formData: {
+				'user': 'kangying'
+			},
+			success: (uploadFileRes) => {
+				resolve(JSON.parse(uploadFileRes.data))
+			},
+			fail: (err) => {
+				reject(err)
+			}
+		})
+	})
+}
+
 // 即时通讯im
 export const request_imInit = e => {
 	return request(e, '/v1/p/im/init')
@@ -111,6 +132,9 @@ export const request_upUserInfo = e => {
 // 用户相关
 export const request_getAddressList = e => {
 	return request(e, '/v1/u/address/list', 'GET')
+}
+export const request_getUserSig = e => {
+	return request(e, '/v1/p/im/getUserSig','GET')
 }
 // 地址相关 获取区域列表
 export const request_getAreaList = e => {

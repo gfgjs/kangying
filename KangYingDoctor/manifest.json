@@ -2,8 +2,8 @@
     "name" : "医生端",
     "appid" : "__UNI__7157718",
     "description" : "",
-    "versionName" : "1.0.3",
-    "versionCode" : 103,
+    "versionName" : "1.0.9",
+    "versionCode" : 109,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -104,6 +104,31 @@
                         "portrait-896h@2x" : "unpackage/res/splash.png",
                         "landscape-896h@2x" : "unpackage/res/splash.png",
                         "iphonex" : "unpackage/res/splash.png"
+                    },
+                    "storyboard" : "C:/Users/gf/Desktop/CustomStoryboard.zip"
+                },
+                "iosStyle" : "storyboard"
+            }
+        },
+        "nativePlugins" : {
+            "TXTRTC-SdkWX" : {
+                "插件KEY" : "n1CibCivDX0JofS",
+                "__plugin_info__" : {
+                    "name" : "腾讯云TRTC实时音视频插件",
+                    "description" : "腾讯云TRTC实时音视频插件",
+                    "platforms" : "Android,iOS",
+                    "url" : "",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
+                    "parameters" : {
+                        "插件KEY" : {
+                            "des" : "插件的key",
+                            "key" : "tx_trtc_key",
+                            "value" : ""
+                        }
                     }
                 }
             }

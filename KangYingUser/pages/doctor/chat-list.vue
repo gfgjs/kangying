@@ -35,7 +35,7 @@
 				<view class="text">病例id：{{item.id}}</view>
 			</view>
 		</view>
-		<view class="no-data" v-if="!list.length">暂无数据</view>
+		<view class="no-data" v-if="!list || !list.length">暂无数据</view>
 
 
 		<!-- <view class="row-title">测试用</view>
@@ -134,20 +134,23 @@
 				})
 			},
 			jimfun() {
-				this.$jim.getConversation().onSuccess(e => {
-					this.chatList = e.conversations
-					this.showNewMsg()
-				})
-				this.$jim.onSyncConversation(data => {
-					data.forEach(item => {
-						this.UPDATE_JIMMSGS({
-							from_username: item.from_username,
-							msgs: item.msgs.map(i => {
-								return i.content
+				const res = this.$jim.isLogin()
+				if(res){
+					this.$jim.getConversation().onSuccess(e => {
+						this.chatList = e.conversations
+						this.showNewMsg()
+					})
+					this.$jim.onSyncConversation(data => {
+						data.forEach(item => {
+							this.UPDATE_JIMMSGS({
+								from_username: item.from_username,
+								msgs: item.msgs.map(i => {
+									return i.content
+								})
 							})
 						})
 					})
-				})
+				}
 			},
 			// 在消息列表上显示最新消息
 			showNewMsg() {

@@ -1,0 +1,82 @@
+{
+	"name": "腾讯云TRTC实时音视频插件",  
+	"id": "TXTRTC-SdkWX",  
+	"version": "1.0",  
+	"description": "腾讯云TRTC实时音视频插件",  
+	"_dp_type":"nativeplugin",  
+	"_dp_nativeplugin":{ 
+		"android": {
+			"plugins": [  
+				{
+					"type": "module",  
+					"name": "TXTRTC-SdkWX",  
+					"class": "com.yam.txtrtcsdkwx.TXTRTCModule"  
+				}
+			],  
+			"hooksClass": "com.yam.txtrtcsdkwx.TXTRTCAppProxy",  
+			"integrateType": "aar",  
+			"dependencies": [
+				"com.tencent.imsdk:imsdk:4.8.50",
+				"com.squareup.retrofit2:retrofit:2.3.0",
+				"com.squareup.retrofit2:converter-gson:2.3.0"
+			],
+			"abis": [
+				"armeabi-v7a",
+				"arm64-v8a"
+			], 
+			"minSdkVersion": "19",
+			"parameters": {
+				"插件KEY": {
+					"des": "插件的key",
+					"key": "tx_trtc_key"
+				}
+			}
+		},
+		"ios": {
+			"plugins": [
+				{
+					"type": "module",
+					"name": "TXTRTC-SdkWX",
+					"class": "TXTRTCModule"
+				}
+			],
+			"hooksClass": "TXTRTCAppProxy",
+			"integrateType": "library",
+			"frameworks": [
+				"libz.tbd",
+				"libc++.tbd",
+				"libresolv.tbd",
+				"libsqlite3.tbd",
+				"Accelerate.framework",
+				"OpenAL.framework",
+				"ImSDK.framework"
+			],
+			"embedFrameworks": [
+				"ImSDK.framework"
+			],
+			"capabilities": {
+				"UIBackgroundModes":[
+					"audio"
+				]
+			},
+			"headers": [
+			], 
+			"resources": [
+			], 
+			"privacies": [
+				"NSCameraUsageDescription",
+				"NSMicrophoneUsageDescription"
+			],  
+			"validArchitectures": [
+				"arm64"
+			],
+			"deploymentTarget": "9.0",
+			"parameters": {
+				"插件KEY": {
+					"des": "插件的key",
+					"key": "tx_trtc_key"
+				}
+			}
+		}
+	}
+}

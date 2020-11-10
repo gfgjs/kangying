@@ -9,22 +9,20 @@
 			</view>
 		</view>
 
-		<view class="row " v-for="(item,index) in jimMsgs[targetUser]" :key='index' v-if="item.msg_body.extras.record_id== targetInfo.record_id"
+		<view class="row " v-for="(item,index) in jimMsgs[targetUser]" :key='index' v-if="item.msg_body.extras.record_id == targetInfo.record_id"
 		 :class="item.from_id === targetUser?'doctor-row':'user-row'">
 
-			{{log(item)}}
-			
+			<!-- {{log(item.msg_body.extras)}} -->
+
 			<image style="border-radius: 5px;" v-if="item.from_id === targetUser" :src="targetInfo.d_avatar" mode=""></image>
-			
-			<view class="message link" v-if="item.msg_type==='text'&&item.msg_body.extras.messageType==='prescript'"
-			 @click="$pageTo({url:item.msg_body.extras.url,options:item.msg_body.extras.options})"
-			>
+
+			<view class="message link" v-if="item.msg_type==='text'&&item.msg_body.extras.messageType==='prescript'" @click="$pageTo({url:item.msg_body.extras.url,options:item.msg_body.extras.options})">
 				{{item.msg_body[item.msg_type]}}
 			</view>
 			<view class="message" v-else-if="item.msg_type==='text'">
 				{{item.msg_body[item.msg_type]}}
 			</view>
-			
+
 			<view class="message" v-if="item.msg_type==='image'">
 				<view v-if="!imageList[item.msg_body.media_id]" @click="reLoadImage(item.msg_body.media_id)" class="little-title image-tips">
 					<uni-icons type="refreshempty" color="white" size="24" style="position: relative;top: 2px;"></uni-icons>
@@ -33,7 +31,7 @@
 				<image v-if="imageList[item.msg_body.media_id]" :src="imageList[item.msg_body.media_id]" @error='imageLoadError($event,item.msg_body.media_id)'
 				 @click="viewImage([imageList[item.msg_body.media_id]])" mode=""></image>
 			</view>
-			
+
 			<image style="border-radius: 5px;margin-left: 4px;" v-if="item.from_id !== targetUser" :src="userInfo.avatar" mode=""></image>
 		</view>
 		<!-- <view class="row time-row">22:33</view> -->
@@ -46,7 +44,7 @@
 					 v-model="messageInput"></textarea>
 				</view>
 				<uni-icons type="camera" class="icon" size="28" @click="sendMore"></uni-icons>
-				<view v-if="messageInput" @touchend.prevent="sendMessage" class="button">
+				<view v-if="messageInput" @touchend.prevent="sendMessage()" class="button">
 					<text>发送</text>
 				</view>
 				<uni-icons v-else type="plus" @click="moreHandle" class="icon" size="28"></uni-icons>
@@ -66,9 +64,15 @@
 					</view>
 					<uni-icons type="arrowright"></uni-icons>
 				</view>
-				<view class="row" for="pay-wx" @click="moreClick('/pages/doctor/case?tab=2')">
+				<view class="row" @click="telephone('audio')">
 					<view class="left">
-						语音/视频通话
+						语音通话
+					</view>
+					<uni-icons type="arrowright"></uni-icons>
+				</view>
+				<view class="row" @click="telephone('video')">
+					<view class="left">
+						视频通话
 					</view>
 					<uni-icons type="arrowright"></uni-icons>
 				</view>
@@ -91,23 +95,25 @@
 				imageList: {},
 				targetInfo: {},
 				record_id: '',
-				log: console.log
+				log: console.log,
+				pageScrollLength:100,
 			};
 		},
 		watch: {
 			iMessageList(e) {
-				// console.log((JSON.stringify(e)).length);
 				this.messageList.push(e)
 			},
 			jimMsgs(e) {
-				// console.log(e);
 				this.messageList = this.jimMsgs[this.targetUser]
 				setTimeout(() => {
-					uni.pageScrollTo({
-						scrollTop: 9999,
-						duration: 200
+					this.getRect('#chat').then(res=>{
+						this.pageScrollLength += res.height
+						uni.pageScrollTo({
+							scrollTop: this.pageScrollLength,
+							duration: 0
+						})
 					})
-				}, 100)
+				},100)
 			},
 			jimHasLogin(e) {
 				if (e) {
@@ -130,11 +136,33 @@
 			})
 
 			setTimeout(() => {
-				uni.pageScrollTo({
-					scrollTop: 9999,
-					duration: 200
+				this.getRect('#chat').then(res=>{
+					this.pageScrollLength += res.height
+					uni.pageScrollTo({
+						scrollTop: this.pageScrollLength,
+						duration: 100
+					})
 				})
 			}, 600)
+		},
+		onShow() {
+			const res = getApp().globalData.$jim.isLogin()
+			if(!res){
+				uni.showModal({
+					title:'IM掉线提示',
+					content:'IM系统已离线，将无法发送/接收信息、无法音/视频聊天',
+					confirmText:'点击重连',
+					cancelText:'返回',
+					success:e=>{
+						if(e.confirm){
+							console.log(23333)
+							getApp().globalData.jimInit()
+						}else{
+							uni.navigateBack()
+						}
+					}
+				})
+			}
 		},
 		onPullDownRefresh() {
 			setTimeout(() => {
@@ -142,6 +170,50 @@
 			}, 500)
 		},
 		methods: {
+			getRect(selector) {
+				return new Promise((resolve) => {
+					let view = uni.createSelectorQuery().select(selector);
+					view.fields({
+						size: true,
+						rect: true,
+						scrollOffset: true
+					}, (res) => {
+						resolve(res);
+					}).exec();
+				})
+			},
+			telephone(telType) {
+				this.$refs.moreHandle.close()
+				const info = {
+					calling: true, // 主叫
+					callingId: this.userInfo.im_username,
+					callingAvatar: this.userInfo.avatar,
+
+					called: false, //被叫
+					calledId: this.targetInfo.im_username,
+					calledAvatar: this.targetInfo.avatar,
+
+					recordId: this.targetInfo.record_id,
+					timestamp: Date.now(),
+					callOut: true,
+					callStatus: 1, // 呼入阶段。0-空闲 1-呼入中/呼出中 2-通话中
+					messageType: 'telephone',
+					answerType: 'calling',
+					telephoneType: telType, // video audio
+
+					role: 'calling',
+					remoteRole: 'called',
+				}
+				this.$pageTo({
+					url: '/pages/doctor/telephone',
+					options: { ...info,
+						role: 'calling',
+						remoteRole: 'called'
+					}, // 本地角色 主叫，远端角色 被叫
+				})
+
+				this.sendMessage('发起通话', info)
+			},
 			moreClick(target) {
 				this.$pageTo({
 					url: target
@@ -150,17 +222,24 @@
 			},
 			messageInputFocus() {
 				setTimeout(() => {
-					uni.pageScrollTo({
-						scrollTop: 9999,
-						duration: 200
+					this.getRect('#chat').then(res=>{
+						this.pageScrollLength += res.height
+						uni.pageScrollTo({
+							scrollTop: this.pageScrollLength,
+							duration: 100
+						})
 					})
 				}, 100)
 			},
 			messageInputBlur() {
 				setTimeout(() => {
-					uni.pageScrollTo({
-						scrollTop: 9999,
-						duration: 100
+					this.getRect('#chat').then(res=>{
+						res = res || {height:0}
+						this.pageScrollLength += res.height
+						uni.pageScrollTo({
+							scrollTop: this.pageScrollLength,
+							duration: 100
+						})
 					})
 				}, 200)
 			},
@@ -217,11 +296,14 @@
 							'image': tempFilePaths //设置图片参数
 						}).onSuccess((data, msg) => {
 							setTimeout(() => {
-								uni.pageScrollTo({
-									scrollTop: 9999,
-									duration: 200
+								this.getRect('#chat').then(res=>{
+									this.pageScrollLength += res.height
+									uni.pageScrollTo({
+										scrollTop: this.pageScrollLength,
+										duration: 100
+									})
 								})
-							}, 300)
+							}, 100)
 							this.UPDATE_JIMMSGS({
 								from_username: data.target_username,
 								msgs: msg.content
@@ -247,29 +329,26 @@
 			emoji() {
 				// this.$jim.loginOut()
 			},
-			sendMessage() {
+			sendMessage(text, obj, callback) {
 				this.$jim.sendSingleMsg({
 					'target_username': this.targetUser,
-					'content': this.messageInput,
+					'content': text || this.messageInput,
 					'extras': {
-						record_id: this.record_id
+						record_id: this.record_id,
+						...obj
 					}
 				}).onSuccess((data, msg) => {
-					setTimeout(() => {
-						uni.pageScrollTo({
-							scrollTop: 9999,
-							duration: 200
-						})
-					}, 300)
+					this.messageInput = ''
+					callback && callback()
 					this.UPDATE_JIMMSGS({
 						from_username: data.target_username,
 						msgs: msg.content
 					})
-					this.messageInput = ''
-				}).onFail(function(data) {
+				}).onFail((data) => {
+					console.log(data)
 					//data.code 返回码
 					//data.message 描述
-				});
+				})
 			},
 			...mapActions(['UPDATE_IMASSAGELIST', 'UPDATE_JIMMSGS'])
 		},
@@ -298,11 +377,12 @@
 			font-size: 14px;
 			padding: 10px 20px;
 		}
-		
-		.link{
+
+		.link {
 			color: $base-color;
 			text-decoration: underline;
 		}
+
 		image {
 			width: 50px;
 			height: 50px;

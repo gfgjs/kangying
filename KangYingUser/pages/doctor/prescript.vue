@@ -18,7 +18,7 @@
 			</scroll-view>
 		</view>
 		<view v-else class="no-pay">
-			<view>此药方可能未支付</view>
+			<view>需要付费查看此药方</view>
 			<view class="button" @click="toPay">去支付</view>
 			<view class="has-pay" @click="getInfo">已支付？点此刷新</view>
 		</view>

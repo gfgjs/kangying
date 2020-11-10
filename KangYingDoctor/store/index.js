@@ -10,6 +10,7 @@ const store = new Vuex.Store({
 		userInfo: {},
 		iMessageList: [], // 
 		jimMsgs: {}, // jim 消息漫游 {username:array}
+		callState:0, //0-空闲 1-呼出中/呼入中 2-通话中
 	},
 	mutations: {
 		LOGIN(state, e) {
@@ -45,6 +46,9 @@ const store = new Vuex.Store({
 		},
 		CLEAR_JIMMSGS(state,e){
 			state.jimMsgs = {}
+		},
+		UPDATE_CALLSTATE(state,e){
+			state.callState = e
 		}
 	},
 	actions: {
@@ -68,6 +72,9 @@ const store = new Vuex.Store({
 		},
 		CLEAR_JIMMSGS(store, e) {
 			store.commit('CLEAR_JIMMSGS', e)
+		},
+		UPDATE_CALLSTATE(store,e){
+			store.commit('UPDATE_CALLSTATE',e)
 		}
 	},
 	getters: {
@@ -85,6 +92,9 @@ const store = new Vuex.Store({
 		},
 		jimMsgs(state) {
 			return state.jimMsgs
+		},
+		callState(state){
+			return state.callState
 		}
 	}
 })

@@ -4937,7 +4937,11 @@ var render = function() {
             [
               _c(
                 "v-uni-view",
-                { staticClass: _vm._$g(15, "sc"), attrs: { _i: 15 } },
+                {
+                  staticClass: _vm._$g(15, "sc"),
+                  staticStyle: { padding: "14px 0 10px" },
+                  attrs: { _i: 15 }
+                },
                 [_vm._v("电子签名（请在框内签名）")]
               ),
               _c(
@@ -4992,13 +4996,19 @@ var render = function() {
             ],
             1
           )
-        : _c(
+        : _vm._e(),
+      _vm._$g(20, "i")
+        ? _c(
             "v-uni-view",
             { attrs: { _i: 20 } },
             [
               _c(
                 "v-uni-view",
-                { staticClass: _vm._$g(21, "sc"), attrs: { _i: 21 } },
+                {
+                  staticClass: _vm._$g(21, "sc"),
+                  staticStyle: { padding: "14px 0 10px" },
+                  attrs: { _i: 21 }
+                },
                 [_vm._v("电子签名")]
               ),
               _c(
@@ -5007,14 +5017,19 @@ var render = function() {
                 [
                   _c("v-uni-image", {
                     staticStyle: { "max-width": "100%" },
-                    attrs: { src: _vm._$g(23, "a-src"), mode: "", _i: 23 }
+                    attrs: {
+                      src: _vm._$g(23, "a-src"),
+                      mode: "widthFix",
+                      _i: 23
+                    }
                   })
                 ],
                 1
               )
             ],
             1
-          ),
+          )
+        : _vm._e(),
       _c("v-uni-view", { staticClass: _vm._$g(24, "sc"), attrs: { _i: 24 } }),
       _c("v-uni-view", { staticClass: _vm._$g(25, "sc"), attrs: { _i: 25 } }),
       _c("v-uni-view", { staticClass: _vm._$g(26, "sc"), attrs: { _i: 26 } }, [
@@ -5344,7 +5359,7 @@ if(false) {}
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../../HBuilderX/plugins/uniapp-cli/node_modules/css-loader/dist/runtime/api.js */ 10);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "@charset \"UTF-8\";\r\n/**\r\n * 这里是uni-app内置的常用样式变量\r\n *\r\n * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量\r\n * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App\r\n *\r\n */\r\n/**\r\n * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能\r\n *\r\n * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件\r\n */\r\n/* 颜色变量 */\r\n/* 行为相关颜色 */\r\n/* 文字基本颜色 */\r\n/* 背景颜色 */\r\n/* 边框颜色 */\r\n/* 尺寸变量 */\r\n/* 文字尺寸 */\r\n/* 图片尺寸 */\r\n/* Border Radius */\r\n/* 水平间距 */\r\n/* 垂直间距 */\r\n/* 透明度 */\r\n/* 文章场景相关 */\nbody[data-v-f03d221e],\r\n.page[data-v-f03d221e] {\r\n  padding: 0 20px;\n}\n.row-title[data-v-f03d221e] {\r\n  padding-left: 0;\r\n  font-size: 20px;\n}\n.medicine[data-v-f03d221e] {\r\n  margin-bottom: 20px;\n}\n.row[data-v-f03d221e] {\r\n  border-bottom: 1px solid #F8F5F5;\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  height: 54px;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\n}\n.row .title[data-v-f03d221e] {\r\n  min-width: 5rem;\r\n  font-weight: 400;\r\n  color: black;\n}\n.row .title[data-v-f03d221e]:after {\r\n  content: ' :';\n}\n.row .little-title[data-v-f03d221e] {\r\n  font-size: 16px;\r\n  color: #363636;\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  width: 100%;\n}\n.row .little-title .icon-button[data-v-f03d221e] {\r\n  padding: 6px;\n}\n.row .little-title .number[data-v-f03d221e] {\r\n  padding: 0 10px;\n}\n.row .little-title .uni-icons[data-v-f03d221e] {\r\n  color: #5EB6AA !important;\n}\n.row .little-title .row[data-v-f03d221e] {\r\n  margin-right: 20px;\n}\n.row .little-title uni-input[data-v-f03d221e] {\r\n  height: 40px;\r\n  width: 100%;\r\n  background-color: #F5F5F5;\r\n  padding-left: 4px;\r\n  border-radius: 2px;\n}\n.row .little-title .other[data-v-f03d221e] {\r\n  width: 100%;\r\n  height: 40px;\n}\n.med-title[data-v-f03d221e] {\r\n  font-weight: 600;\n}\n.buttons[data-v-f03d221e] {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-pack: center;\r\n  -webkit-justify-content: center;\r\n          justify-content: center;\n}\n.buttons .button[data-v-f03d221e] {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  margin: 30px 5px 50px;\r\n  font-size: 16px;\n}\n.buttons .button .uni-icons[data-v-f03d221e] {\r\n  margin-top: 2px;\n}\n.sign-row[data-v-f03d221e] {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n  -webkit-flex-direction: column;\r\n          flex-direction: column;\r\n  -webkit-box-align: start;\r\n  -webkit-align-items: flex-start;\r\n          align-items: flex-start;\r\n  height: auto;\n}\n.sign-row .hand-center[data-v-f03d221e] {\r\n  width: 100%;\r\n  height: 150px;\r\n  border: 1px solid #5EB6AA;\r\n  margin: 10px 0;\n}\r\n", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\r\n/**\r\n * 这里是uni-app内置的常用样式变量\r\n *\r\n * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量\r\n * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App\r\n *\r\n */\r\n/**\r\n * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能\r\n *\r\n * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件\r\n */\r\n/* 颜色变量 */\r\n/* 行为相关颜色 */\r\n/* 文字基本颜色 */\r\n/* 背景颜色 */\r\n/* 边框颜色 */\r\n/* 尺寸变量 */\r\n/* 文字尺寸 */\r\n/* 图片尺寸 */\r\n/* Border Radius */\r\n/* 水平间距 */\r\n/* 垂直间距 */\r\n/* 透明度 */\r\n/* 文章场景相关 */\nbody[data-v-f03d221e],\r\n.page[data-v-f03d221e] {\r\n  padding: 0 20px;\n}\n.row-title[data-v-f03d221e] {\r\n  padding-left: 0;\r\n  font-size: 20px;\n}\n.medicine[data-v-f03d221e] {\r\n  margin-bottom: 20px;\n}\n.row[data-v-f03d221e] {\r\n  border-bottom: 1px solid #F8F5F5;\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  height: 54px;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\n}\n.row .title[data-v-f03d221e] {\r\n  min-width: 5rem;\r\n  font-weight: 400;\r\n  color: black;\n}\n.row .title[data-v-f03d221e]:after {\r\n  content: ' :';\n}\n.row .little-title[data-v-f03d221e] {\r\n  font-size: 16px;\r\n  color: #363636;\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  width: 100%;\n}\n.row .little-title .icon-button[data-v-f03d221e] {\r\n  padding: 6px;\n}\n.row .little-title .number[data-v-f03d221e] {\r\n  padding: 0 10px;\n}\n.row .little-title .uni-icons[data-v-f03d221e] {\r\n  color: #5EB6AA !important;\n}\n.row .little-title .row[data-v-f03d221e] {\r\n  margin-right: 20px;\n}\n.row .little-title uni-input[data-v-f03d221e] {\r\n  height: 40px;\r\n  width: 100%;\r\n  background-color: #F5F5F5;\r\n  padding-left: 4px;\r\n  border-radius: 2px;\n}\n.row .little-title .other[data-v-f03d221e] {\r\n  width: 100%;\r\n  height: 40px;\n}\n.med-title[data-v-f03d221e] {\r\n  font-weight: 600;\n}\n.buttons[data-v-f03d221e] {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-pack: center;\r\n  -webkit-justify-content: center;\r\n          justify-content: center;\n}\n.buttons .button[data-v-f03d221e] {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n  -webkit-align-items: center;\r\n          align-items: center;\r\n  margin: 30px 5px 50px;\r\n  font-size: 16px;\n}\n.buttons .button .uni-icons[data-v-f03d221e] {\r\n  margin-top: 2px;\n}\n.sign-row[data-v-f03d221e] {\r\n  display: -webkit-box;\r\n  display: -webkit-flex;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n  -webkit-flex-direction: column;\r\n          flex-direction: column;\r\n  -webkit-box-align: start;\r\n  -webkit-align-items: flex-start;\r\n          align-items: flex-start;\r\n  height: auto;\n}\n.sign-row .hand-center[data-v-f03d221e] {\r\n  width: 100%;\r\n  height: 150px;\r\n  border: 1px solid #5EB6AA;\r\n  margin: 10px 0;\n}\n.sign-row .hand-center .handWriting[data-v-f03d221e] {\r\n  height: 100%;\r\n  width: 100%;\n}\r\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -10006,9 +10021,51 @@ var render = function() {
                   _c(
                     "v-uni-view",
                     { staticClass: _vm._$g(33, "sc"), attrs: { _i: 33 } },
-                    [_vm._v("结束问诊")]
+                    [_vm._v("语音通话")]
                   ),
                   _c("uni-icons", { attrs: { _i: 34 } })
+                ],
+                1
+              ),
+              _c(
+                "v-uni-view",
+                {
+                  staticClass: _vm._$g(35, "sc"),
+                  attrs: { _i: 35 },
+                  on: {
+                    click: function($event) {
+                      return _vm.$handleViewEvent($event)
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "v-uni-view",
+                    { staticClass: _vm._$g(36, "sc"), attrs: { _i: 36 } },
+                    [_vm._v("视频通话")]
+                  ),
+                  _c("uni-icons", { attrs: { _i: 37 } })
+                ],
+                1
+              ),
+              _c(
+                "v-uni-view",
+                {
+                  staticClass: _vm._$g(38, "sc"),
+                  attrs: { _i: 38 },
+                  on: {
+                    click: function($event) {
+                      return _vm.$handleViewEvent($event)
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "v-uni-view",
+                    { staticClass: _vm._$g(39, "sc"), attrs: { _i: 39 } },
+                    [_vm._v("结束问诊")]
+                  ),
+                  _c("uni-icons", { attrs: { _i: 40 } })
                 ],
                 1
               )

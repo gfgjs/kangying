@@ -63,7 +63,7 @@ export const request_uploadImg = e => {
 			success: (chooseImageRes) => {
 				const tempFilePaths = chooseImageRes.tempFilePaths;
 				e.uni.uploadFile({
-					url: HOST + '/v1/p/upload_img', //仅为示例，非真实的接口地址
+					url: HOST + '/v1/p/upload_img',
 					filePath: tempFilePaths[0],
 					name: 'img',
 					formData: {
@@ -109,6 +109,9 @@ export const request_upUserInfo = e => {
 // 用户相关
 export const request_getAddressList = e => {
 	return request(e, '/v1/u/address/list','GET')
+}
+export const request_getUserSig = e => {
+	return request(e, '/v1/p/im/getUserSig','GET')
 }
 // 查询购物车
 export const request_cartList = e => {

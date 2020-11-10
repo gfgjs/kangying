@@ -2,8 +2,8 @@
     "name" : "康盈医疗用户端",
     "appid" : "__UNI__D0A0EF1",
     "description" : "康盈医疗用户端",
-    "versionName" : "1.0.4",
-    "versionCode" : 104,
+    "versionName" : "1.0.9",
+    "versionCode" : 109,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -51,7 +51,7 @@
                     "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ],
-                "abiFilters" : [ "arm64-v8a" ]
+                "abiFilters" : [ "armeabi-v7a", "arm64-v8a" ]
             },
             /* ios打包配置 */
             "ios" : {
@@ -64,8 +64,11 @@
                     "unipush" : {}
                 },
                 "payment" : {
-                    "alipay" : {}
-                }
+                    "alipay" : {
+                        "__platform__" : [ "ios", "android" ]
+                    }
+                },
+                "geolocation" : {}
             },
             "icons" : {
                 "android" : {
@@ -113,12 +116,35 @@
                         "landscape-896h@2x" : "unpackage/res/splash.png",
                         "iphonex" : "unpackage/res/splash.png",
                         "iphonexl" : ""
-                    }
+                    },
+                    "storyboard" : "C:/Users/gf/Desktop/CustomStoryboard.zip"
                 },
-                "iosStyle" : "default"
+                "iosStyle" : "storyboard"
             }
         },
-        "nativePlugins" : {}
+        "nativePlugins" : {
+            "TXTRTC-SdkWX" : {
+                "插件KEY" : "QH6Grpi4pwfjVu2",
+                "__plugin_info__" : {
+                    "name" : "腾讯云TRTC实时音视频插件",
+                    "description" : "腾讯云TRTC实时音视频插件",
+                    "platforms" : "Android,iOS",
+                    "url" : "",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
+                    "parameters" : {
+                        "插件KEY" : {
+                            "des" : "插件的key",
+                            "key" : "tx_trtc_key",
+                            "value" : ""
+                        }
+                    }
+                }
+            }
+        }
     },
     /* 快应用特有相关 */
     "quickapp" : {},

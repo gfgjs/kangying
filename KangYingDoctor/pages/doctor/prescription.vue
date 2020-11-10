@@ -22,7 +22,7 @@
 			<view class="little-title">{{info.diagnosis}}</view>
 		</view>
 		<view class="row sign-row" v-if="!medHasBeen">
-			<view class="title">
+			<view class="title" style="padding: 14px 0 10px;">
 				电子签名（请在框内签名）
 			</view>
 			<view class="hand-center handCenter">
@@ -36,12 +36,12 @@
 			</view>
 			<!-- <image :src="signimg" mode=""></image> -->
 		</view>
-		<view v-else>
-			<view class="title">
+		<view v-if="medHasBeen">
+			<view class="title" style="padding: 14px 0 10px;">
 				电子签名
 			</view>
 			<view class="hand-center handCenter">
-				<image style="max-width: 100%;" :src="nowRecord.doctor_sign" mode=""></image>
+				<image style="max-width: 100%;" :src="nowRecord.doctor_sign" mode="widthFix"></image>
 			</view>
 		</view>
 
@@ -102,7 +102,8 @@
 <script>
 	import {
 		request_recordUp,
-		request_recordInfo
+		request_recordInfo,
+		uploadImg
 	} from '../../common/https.js'
 	import Handwriting from '../../common/signature.js'
 	export default {
@@ -155,10 +156,9 @@
 							return newObj
 						})
 
-						console.log(JSON.parse(res.data.now_record.goods));
+						// console.log(JSON.parse(res.data.now_record.goods));
 					}
 				}
-				console.log(res.data);
 			})
 		},
 		methods: {
@@ -166,7 +166,7 @@
 				let pages = getCurrentPages(); //获取页面栈
 				if (pages.length > 1) {
 					var beforePage = pages[pages.length - 2]; //获取上一个页面实例对象 
-					beforePage.sendPrescript(this.nowRecord.PreId); //触发父页面中的方法  
+					beforePage.$vm.sendPrescript(this.nowRecord.PreId); //触发父页面中的方法  
 				}
 			},
 			clearSign() {
@@ -179,56 +179,93 @@
 				this.handwriting.uploadScaleMove(event)
 			},
 			uploadScaleEnd(event) {
-				this.subCanvas()
+				// this.subCanvas()
 				this.handwriting.uploadScaleEnd(event)
 			},
 			subCanvas() {
-				this.handwriting.saveCanvas().then(res => {
-					this.signimg = res;
-					// console.log(res.length);
-				}).catch(err => {
-					// console.log(err);
-				});
+				return new Promise((resolve, reject) => {
+					this.handwriting.saveCanvas().then(res => {
+						uni.getFileInfo({
+							filePath: res,
+							success: e => {
+								if (e.size > 1500) {
+									this.signimg = res
+									uploadImg({
+										uni,
+										filePath: res
+									}).then(res => {
+										resolve(res)
+									})
+								} else {
+									reject('签名可能不正确，请重试')
+								}
+							},
+							fail:e=>{
+								reject('签名可能不正确，请重试')
+							}
+						})
+					}).catch(err => {
+						// console.log(err);
+					});
+				})
 			},
 			submit() {
-				let array = []
-				for (let i in this.medList) {
-					array.push(this.medList[i])
-				}
 				if (this.medHasBeen) {
 					this.$api.msg('不能修改药方')
 					return
 				}
-
-				if (this.signimg.length <= 1594) {
-					this.$api.msg('您必须签名，方可提交处方')
+				let array = []
+				for (let i in this.medList) {
+					array.push(this.medList[i])
+				}
+				
+				if(array.length<1){
+					this.$api.msg('请添加药品')
 					return
 				}
-				// if(!array.length){
+				
+				uni.showLoading()
+				this.subCanvas().then(res => { // 上传签名到服务器，得到图片路径
 
-				// 	return
-				// }
-
-				request_recordUp({
-					uni,
-					data: {
-						record_id: this.info.record_id * 1, //（病历ID）、
-						doctor_sign: this.signimg,
-						goods: array, //（开的药 数组
-					}
-				}).then(res => {
-					if (res.code === 0) {
-						this.sendPrescript()
-						this.$api.msg(res.data)
-						setTimeout(() => {
-							array.forEach(item => {
-								getApp().globalData.tempMedicineList[this.record_id] = {}
+					request_recordUp({
+						uni,
+						data: {
+							record_id: this.info.record_id * 1, //（病历ID）、
+							doctor_sign: res.data,
+							goods: array, //（开的药 数组
+						}
+					}).then(res => {
+						uni.hideLoading()
+						if (res.code === 0) {
+							this.$api.msg(res.data)
+							
+							// 调用chat页面发送药方链接
+							request_recordInfo({
+								uni,
+								data: {
+									id: this.record_id
+								}
+							}).then(res => {
+								if (res.code === 0) {
+									this.nowRecord = res.data.now_record
+									this.sendPrescript()
+									setTimeout(() => {
+										array.forEach(item => {
+											getApp().globalData.tempMedicineList[this.record_id] = {}
+										})
+										uni.navigateBack()
+									}, 500)
+								}
 							})
-							uni.navigateBack()
-						}, 1000)
-					} else {
-						this.$api.msg(res.err)
-					}
+						} else {
+							this.$api.msg(res.err)
+						}
+					}).catch(e=>{
+						uni.hideLoading()
+					})
+				}).catch(err => {
+					uni.hideLoading()
+					this.$api.msg(err)
 				})
 			},
 			addMed(item) {
@@ -405,8 +442,14 @@
 			width: 100%;
 			// height: 100%;
 			height: 150px;
+
 			border: 1px solid $base-color;
 			margin: 10px 0;
+
+			.handWriting {
+				height: 100%;
+				width: 100%;
+			}
 		}
 	}
 </style>

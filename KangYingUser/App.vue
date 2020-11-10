@@ -16,6 +16,9 @@
 	} from 'vuex'
 	// let STATUS = false
 
+	let imOfflineTipsTimer // IM离线轮询
+	let imOfflineTipsStatus = false // IM离线轮询
+
 	export default {
 		globalData: {
 			verifyCodeCountDown: 0,
@@ -30,13 +33,17 @@
 			},
 			tempOrderGoods: [], // 在购物车点击结算时，临时保存商品信息
 			tempOrderAddress: null, // 选择地址时用到 {}
-		},
-		computed: {
-			...mapGetters(['hasLogin', 'userInfo', 'jimMsgs', 'jimHasLogin'])
+
+			$jim: {}, // nvue页面中使用
+
+			imOfflineTipsTimer: null,
+			imOfflineTipsFun: null,
+			jimInit: null
 		},
 		data() {
 			return {
-				hasHide: false
+				hasHide: false,
+				onCalling: false,
 			}
 		},
 		onPullDownRefresh() {
@@ -61,6 +68,7 @@
 			}
 		},
 		onLaunch: function() {
+
 			// 启动时尝试登录获取用户信息
 			// 如果失败，则在手机号登录后或手机号注册后再次尝试
 			this.login()
@@ -93,20 +101,68 @@
 				}
 			});
 			// #endif
+			imOfflineTipsTimer = setInterval(() => {
+				const res = this.$jim.isLogin()
+				if (!res && !this.hasHide && !imOfflineTipsStatus) {
+					imOfflineTipsStatus = true
+					uni.showModal({
+						title: 'IM掉线提示',
+						content: 'IM系统已离线，将无法发送/接收信息、无法音/视频聊天',
+						confirmText: '点击重连',
+						cancelText: '5分钟后提醒我',
+						success: e => {
+							imOfflineTipsStatus = false
+							if (e.confirm) {
+								this.jimInit()
+							}
+						}
+					})
+				}
+			}, 300000)
 		},
-		onShow(){
+		onShow() {
+			getApp().globalData.$jim = this.$jim
+			getApp().globalData.jimInit = this.jimInit
+			getApp().globalData.jimLogin = this.jimLogin
+			this.hasHide = false
+			window.$jim = this.$jim
+
+			if (this.hasLogin && !this.jimHasLogin) {
+				this.jimInit()
+			}
 			// 网络变化后重新登录极光IM
 			uni.onNetworkStatusChange((res) => {
-				if(res.isConnected){
+				if (res.isConnected) {
 					this.jimInit()
-				}else{
+				} else {
 					this.JIMLOGOUT()
 				}
 				// console.log(res.isConnected); //当前是否有网络连接
 				// console.log(res.networkType); //网络类型
 			})
+
+
+			// setInterval(()=>{
+			// 	// #ifdef APP-PLUS
+			// 	var webView = this.$mp.page.$getAppWebview();  
+
+			// 	// 修改buttons  
+			// 	// index: 按钮索引, style {WebviewTitleNViewButtonStyles }  
+			// 	webView.setTitleNViewButtonStyle(0, {  
+			// 	    redDot: STATUS,  
+			// 	});  
+			// 	STATUS = !STATUS
+			// 	// #endif
+			// },1000)
+		},
+		onHide: function() {
+			this.hasHide = true
+			console.log('App Hide')
 		},
 		methods: {
+			checkImStatus() {
+
+			},
 			checkJimStatus() {
 				return new Promise((resolve, reject) => {
 					if (this.$jim.isLogin()) {
@@ -155,7 +211,9 @@
 					request_imInit({
 						uni
 					}).then(res => {
-						this.$jim.init({ ...(res.data),
+						console.log(33333, res.data)
+						this.$jim.init({
+							...(res.data),
 							flag: 1
 						}).onSuccess((data) => {
 							console.log('极光im初始化成功，hasLogin')
@@ -176,17 +234,14 @@
 					// jim断线监听
 					this.$jim.onDisconnect(() => {
 						this.JIMLOGOUT()
-						setTimeout(() => {
-							this.jimInit()
-						}, 3000)
 						console.log('JIMLOGOUT，断网等情况:', this.$jim.isInit());
 					});
 
 					console.log('极光im登录成功', e);
-					
+
 					// 先清除store中的所有消息
 					this.CLEAR_JIMMSGS()
-					
+
 					// 获取消息漫游
 					this.$jim.onSyncConversation(data => {
 						data.forEach(item => {
@@ -205,10 +260,32 @@
 							msgs: data.messages[0].content
 						}
 						this.UPDATE_JIMMSGS(msg)
+						console.log(JSON.parse(JSON.stringify(msg)))
+
+						const msgType = msg.msgs.msg_body.extras.messageType
+						const answerType = msg.msgs.msg_body.extras.answerType
+						const callingId = msg.msgs.msg_body.extras.callingId // 呼入方ID
+
+						if (msgType === 'telephone' && this.callState == 0 && answerType === 'calling' && (msg.from_username ===
+								callingId)) {
+							console.log('APP跳转接听')
+							this.UPDATE_CALLSTATE(1)
+							this.$pageTo({
+								url: '/pages/doctor/telephone',
+								options: { ...(msg.msgs.msg_body.extras),
+									role: 'called',
+									remoteRole: 'calling'
+								}, // 本地角色 被叫，远端角色 主叫
+							})
+						}
 
 						//#ifdef APP-PLUS
 						// if (this.hasHide) {
-						plus.push.createMessage(msg.msgs.from_name + '：' + msg.msgs.msg_body.text)
+						if (msgType === 'telephone') {
+							plus.push.createMessage(msg.msgs.from_name + '邀请您进行语音/视频通话')
+						} else {
+							plus.push.createMessage(msg.msgs.from_name + '：' + msg.msgs.msg_body.text)
+						}
 						// }
 						//#endif
 
@@ -262,32 +339,12 @@
 					}
 				})
 			},
-			...mapActions(['LOGIN', 'LOGOUT', 'JIMLOGIN', 'JIMLOGOUT', 'UPDATE_IMASSAGELIST', 'UPDATE_JIMMSGS', 'CLEAR_JIMMSGS'])
+			...mapActions(['LOGIN', 'LOGOUT', 'JIMLOGIN', 'JIMLOGOUT', 'UPDATE_IMASSAGELIST', 'UPDATE_JIMMSGS', 'CLEAR_JIMMSGS',
+				'UPDATE_CALLSTATE'
+			])
 		},
-		onShow: function() {
-
-			this.hasHide = false
-
-			if (this.hasLogin && !this.jimHasLogin) {
-				this.jimInit()
-			}
-
-			// setInterval(()=>{
-			// 	// #ifdef APP-PLUS
-			// 	var webView = this.$mp.page.$getAppWebview();  
-
-			// 	// 修改buttons  
-			// 	// index: 按钮索引, style {WebviewTitleNViewButtonStyles }  
-			// 	webView.setTitleNViewButtonStyle(0, {  
-			// 	    redDot: STATUS,  
-			// 	});  
-			// 	STATUS = !STATUS
-			// 	// #endif
-			// },1000)
-		},
-		onHide: function() {
-			this.hasHide = true
-			console.log('App Hide')
+		computed: {
+			...mapGetters(['hasLogin', 'userInfo', 'jimMsgs', 'jimHasLogin', 'callState'])
 		}
 	}
 </script>
