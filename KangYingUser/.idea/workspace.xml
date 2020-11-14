@@ -1,136 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4b174e75-ad7f-45df-a5c5-7d9365da09b3" name="Default Changelist" comment="" />
-    <ignored path="$PROJECT_DIR$/.tmp/" />
-    <ignored path="$PROJECT_DIR$/temp/" />
-    <ignored path="$PROJECT_DIR$/tmp/" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <list default="true" id="4b174e75-ad7f-45df-a5c5-7d9365da09b3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../KangYingDoctor/.idea/KangYingDoctor.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/tim.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/store/modules/timStore.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Json.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/common/config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/https.js" beforeDir="false" afterPath="$PROJECT_DIR$/common/https.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/jim.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/jmessage-sdk-web.2.6.0.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/jmessage-wxapplet-sdk-1.4.3.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages.json" beforeDir="false" afterPath="$PROJECT_DIR$/pages.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/doctor/chat-list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/doctor/chat-list.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/doctor/chat.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/doctor/chat.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/doctor/doctor.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/doctor/doctor.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/doctor/telephone.nvue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/doctor/telephone.nvue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/index/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/test/test.nvue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/test/test.nvue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/debug/android_debug.apk" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/debug/android_debug.apk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/build/app-plus/__uniappscan.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/build/app-plus/__uniappscan.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/build/app-plus/app-config-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/build/app-plus/app-config-service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/build/app-plus/app-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/build/app-plus/app-service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/build/app-plus/app-view.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/build/app-plus/app-view.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/build/app-plus/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/build/app-plus/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/build/app-plus/pages/doctor/telephone.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/build/app-plus/pages/doctor/telephone.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/build/app-plus/pages/test/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/build/app-plus/pages/test/test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/build/app-plus/view.css" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/build/app-plus/view.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/build/app-plus/view.umd.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/build/app-plus/view.umd.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/app-config-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/app-config-service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/app-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/app-service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/app-view.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/app-view.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/pages/doctor/telephone.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/pages/doctor/telephone.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/pages/test/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/pages/test/test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/view.umd.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/view.umd.min.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="-1187210348">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="2" />
-          <entry key="project.open.time.0" value="1" />
-          <entry key="project.open.time.3" value="1" />
-          <entry key="project.opened" value="2" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.open">
-        <counts>
-          <entry key="vue" value="2" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="Vue.js" value="2" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="vue" value="24" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="Vue.js" value="24" />
-        </counts>
-      </usages-collector>
-    </session>
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/doctor/doctor.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="945">
-              <caret line="156" column="14" selection-start-line="156" selection-start-column="14" selection-end-line="156" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/App.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="836">
-              <caret line="118" column="41" selection-start-line="118" selection-start-column="41" selection-end-line="118" selection-end-column="41" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
-  </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
       <list>
-        <option value="$PROJECT_DIR$/pages/doctor/doctor.vue" />
-        <option value="$PROJECT_DIR$/App.vue" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsGulpfileManager">
-    <detection-done>true</detection-done>
-    <sorting>DEFINITION_ORDER</sorting>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="-7" />
-    <option name="width" value="1734" />
-    <option name="height" value="1407" />
-  </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="KangYingUser" type="b2602c69:ProjectViewProjectNode" />
-              <item name="KangYingUser" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="KangYingUser" type="b2602c69:ProjectViewProjectNode" />
-              <item name="KangYingUser" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="KangYingUser" type="b2602c69:ProjectViewProjectNode" />
-              <item name="KangYingUser" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="doctor" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-    </panes>
+  <component name="ProjectId" id="1kBeYm4h0edT8ONdpiIJkJJOYIC" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/common" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="preferences.fileTypes" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2020.2.1\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\GF\Work\kangying\KangYingUser\common" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\GF\Work\kangying\KangYingUser\store\modules" />
+    </key>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -143,55 +102,32 @@
       <updated>1590900153576</updated>
       <workItem from="1590900156419" duration="715000" />
       <workItem from="1591008906962" duration="633000" />
+      <workItem from="1605178466042" duration="16809000" />
+      <workItem from="1605205940001" duration="6845000" />
+      <workItem from="1605259241718" duration="33738000" />
+      <workItem from="1605301357565" duration="8000" />
+      <workItem from="1605363268595" duration="15380000" />
     </task>
     <servers />
   </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1348000" />
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="3456" height="1416" extended-state="7" />
-    <editor active="true" />
-    <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24956115" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-    </layout>
-  </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pages/doctor/doctor.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="945">
-          <caret line="156" column="14" selection-start-line="156" selection-start-column="14" selection-end-line="156" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="836">
-          <caret line="118" column="41" selection-start-line="118" selection-start-column="41" selection-end-line="118" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
+  <component name="WindowStateProjectService">
+    <state x="971" y="171" key="SettingsEditor" timestamp="1605367064860">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state x="971" y="171" key="SettingsEditor/0.0.3440.1400@0.0.3440.1400" timestamp="1605367064860" />
+    <state x="1196" y="214" width="863" height="810" key="find.popup" timestamp="1605292745619">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state x="1196" y="214" width="863" height="810" key="find.popup/0.0.3440.1400@0.0.3440.1400" timestamp="1605292745619" />
+    <state x="1703" y="-2" width="1009" height="1470" key="search.everywhere.popup" timestamp="1605187532270">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state x="1703" y="-2" width="1009" height="1470" key="search.everywhere.popup/0.0.3440.1400@0.0.3440.1400" timestamp="1605187532270" />
   </component>
 </project>

@@ -196,10 +196,7 @@
 						this.$pageTo({
 							url: '/pages/doctor/chat',
 							options: {
-								im_username: this.info.im_username,
-								record_id: this.record_id,
-								d_name: this.info.user_name,
-								d_avatar: this.info.avatar
+								userID:this.info.im_username
 							}
 						})
 					} else {

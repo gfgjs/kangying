@@ -1,6 +1,5 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-
 		{
 			"path": "pages/guide/guide",
 			"style": {
@@ -10,9 +9,9 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				// #ifdef MP 
+				// #ifdef MP
 				"navigationBarTitleText": "天心医疗",
-				// #endif 
+				// #endif
 				"app-plus": {
 					"titleNView": {
 						"type": "transparent",
@@ -57,9 +56,9 @@
 		{
 			"path": "pages/doctor/see-the-doctor",
 			"style": {
-				// #ifdef MP 
+				// #ifdef MP
 				"navigationBarTitleText": "网上看病",
-				// #endif 
+				// #endif
 				"app-plus": {
 					"titleNView": {
 						"type": "transparent",
@@ -98,9 +97,9 @@
 			"path": "pages/mall/mall",
 			"style": {
 				"enablePullDownRefresh": true,
-				// #ifdef MP 
+				// #ifdef MP
 				"navigationBarTitleText": "快速购药",
-				// #endif 
+				// #endif
 				"app-plus": {
 					"titleNView": {
 						"type": "transparent",
@@ -125,9 +124,9 @@
 			"path": "pages/mall/search",
 			"style": {
 				"enablePullDownRefresh": true,
-				// #ifdef MP 
+				// #ifdef MP
 				"navigationBarTitleText": "搜索",
-				// #endif 
+				// #endif
 				"app-plus": {
 					"titleNView": {
 						"type": "default",
@@ -152,9 +151,9 @@
 		{
 			"path": "pages/index/online",
 			"style": {
-				// #ifdef MP 
+				// #ifdef MP
 				"navigationBarTitleText": "在线医院",
-				// #endif 
+				// #endif
 				"app-plus": {
 					"bounce": "none",
 					"titleNView": {
@@ -191,9 +190,9 @@
 		{
 			"path": "pages/index/mine",
 			"style": {
-				// #ifdef MP 
+				// #ifdef MP
 				"navigationBarTitleText": "个人中心",
-				// #endif 
+				// #endif
 				"app-plus": {
 					"bounce": "none",
 					"titleNView": {
@@ -236,9 +235,9 @@
 		}, {
 			"path": "pages/doctor/doctor",
 			"style": {
-				// #ifdef MP 
+				// #ifdef MP
 				"navigationBarTitleText": "天心医疗",
-				// #endif 
+				// #endif
 				"app-plus": {
 					"titleNView": {
 						"type": "transparent",
@@ -251,6 +250,8 @@
 		}, {
 			"path": "pages/doctor/chat",
 			"style": {
+				"enablePullDownRefresh": true,
+
 				"app-plus": {
 					"titleNView": {
 						"type": "default",
@@ -302,7 +303,7 @@
 			"style": {
 				// #ifdef MP
 				"navigationBarTitleText": "药品详情",
-				// #endif 
+				// #endif
 				"app-plus": {
 					"titleNView": {
 						"type": "default",
@@ -378,16 +379,22 @@
         }
         ,{
             "path" : "pages/doctor/prescript",
-            "style" :                                                                                    
+            "style" :
             {
                 "navigationBarTitleText": "处方详情",
                 "enablePullDownRefresh": true
             }
-            
+
         }
         ,{
             "path" : "pages/test/test",
-            "style" : {}
+			"style": {
+				"app-plus": {
+					"titleNView": {
+						"type": "transparent"
+					}
+				}
+			}
         }
         ,{
             "path" : "pages/doctor/telephone",

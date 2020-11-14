@@ -1,510 +1,418 @@
 <!-- 聊天页 -->
 <template>
-	<view id="chat">
-		<view class="common-place"></view>
-		<view class="row doctor-row">
-			<view class="message doctor-message">
-				<!-- 请填写您的检查信息以及预约检查的相关时间，方便医生为您安排下一步治疗 -->
-				欢迎使用天心医疗在线问诊服务
-			</view>
-		</view>
+    <view id="chat">
+        <view class="common-place"></view>
+        <view class="row doctor-row">
+            <view class="message doctor-message">
+                <!-- 请填写您的检查信息以及预约检查的相关时间，方便医生为您安排下一步治疗 -->
+                欢迎使用天心医疗在线问诊服务
+            </view>
+        </view>
 
-		<view class="row " v-for="(item,index) in jimMsgs[targetUser]" :key='index' v-if="item.msg_body.extras.record_id == targetInfo.record_id"
-		 :class="item.from_id === targetUser?'doctor-row':'user-row'">
+        <view class="row " v-for="(item,index) in currentMessageList" :key='index'
+              :class="item.from === chatInfo.userID?'doctor-row':'user-row'">
+            <!--对方头像-->
+            <image class="avatar" v-if="item.from === chatInfo.userID" :src="chatInfo.avatar"
+                   mode=""></image>
 
-			<!-- {{log(item.msg_body.extras)}} -->
+            <!--普通文字消息-->
+            <view class="message" v-if="item.type==='TIMTextElem'">
+                {{ item.payload.text }}
+            </view>
 
-			<image style="border-radius: 5px;" v-if="item.from_id === targetUser" :src="targetInfo.d_avatar" mode=""></image>
+            <!--音视频通话消息-->
+            <view class="message" v-if="item.type==='TIMCustomElem' && item.payload.description==='telephone'">
+                {{ item.payload.data }}
+            </view>
 
-			<view class="message link" v-if="item.msg_type==='text'&&item.msg_body.extras.messageType==='prescript'" @click="$pageTo({url:item.msg_body.extras.url,options:item.msg_body.extras.options})">
-				{{item.msg_body[item.msg_type]}}
-			</view>
-			<view class="message" v-else-if="item.msg_type==='text'">
-				{{item.msg_body[item.msg_type]}}
-			</view>
+            <!--图片消息-->
+            <view class="message" v-if="item.type==='TIMCustomElem' && item.payload.description==='image'">
+                <image class="message-image" :src="item.payload.data" @click="viewImage([item.payload.data])"
+                       mode="widthFix"></image>
+            </view>
 
-			<view class="message" v-if="item.msg_type==='image'">
-				<view v-if="!imageList[item.msg_body.media_id]" @click="reLoadImage(item.msg_body.media_id)" class="little-title image-tips">
-					<uni-icons type="refreshempty" color="white" size="24" style="position: relative;top: 2px;"></uni-icons>
-					点击加载图片
-				</view>
-				<image v-if="imageList[item.msg_body.media_id]" :src="imageList[item.msg_body.media_id]" @error='imageLoadError($event,item.msg_body.media_id)'
-				 @click="viewImage([imageList[item.msg_body.media_id]])" mode=""></image>
-			</view>
-
-			<image style="border-radius: 5px;margin-left: 4px;" v-if="item.from_id !== targetUser" :src="userInfo.avatar" mode=""></image>
-		</view>
-		<!-- <view class="row time-row">22:33</view> -->
-		<view id="bottom-place"></view>
-		<view class="bottom-handle">
-			<view class="little">
-				<!-- <uni-icons type="mic" class="icon" size="24"></uni-icons> -->
-				<view class="input-box">
-					<textarea class="input" @focus="messageInputFocus" @blur="messageInputBlur" placeholder="输入想说的话" auto-height fixed
-					 v-model="messageInput"></textarea>
-				</view>
-				<uni-icons type="camera" class="icon" size="28" @click="sendMore"></uni-icons>
-				<view v-if="messageInput" @touchend.prevent="sendMessage()" class="button">
-					<text>发送</text>
-				</view>
-				<uni-icons v-else type="plus" @click="moreHandle" class="icon" size="28"></uni-icons>
-			</view>
-		</view>
-		<uni-popup ref="moreHandle">
-			<view class="more-handle">
-				<view class="row" for="pay-ali" @click="moreClick('/pages/doctor/case?tab=0')">
-					<view class="left">
-						查看病例
-					</view>
-					<uni-icons type="arrowright"></uni-icons>
-				</view>
-				<view class="row" for="pay-wx" @click="moreClick('/pages/doctor/case?tab=2')">
-					<view class="left">
-						电子处方
-					</view>
-					<uni-icons type="arrowright"></uni-icons>
-				</view>
-				<view class="row" @click="telephone('audio')">
-					<view class="left">
-						语音通话
-					</view>
-					<uni-icons type="arrowright"></uni-icons>
-				</view>
-				<view class="row" @click="telephone('video')">
-					<view class="left">
-						视频通话
-					</view>
-					<uni-icons type="arrowright"></uni-icons>
-				</view>
-			</view>
-		</uni-popup>
-	</view>
+            <!--应用内页面跳转，如跳转到电子处方-->
+            <view class="message link" v-if="item.type==='TIMCustomElem' && item.payload.description==='page'">
+                {{ item.payload.text }}
+            </view>
+            <!--本人头像-->
+            <image class="avatar" style="margin-left: 4px;" v-if="item.from !== chatInfo.userID"
+                   :src="userInfo.avatar" mode=""></image>
+        </view>
+        <!-- <view class="row time-row">22:33</view> -->
+        <view id="bottom-place"></view>
+        <view class="bottom-handle">
+            <view class="little">
+                <!-- <uni-icons type="mic" class="icon" size="24"></uni-icons> -->
+                <view class="input-box">
+					<textarea class="input" @focus="messageInputFocus" @blur="messageInputBlur" placeholder="输入想说的话"
+                              auto-height fixed
+                              v-model="messageInput"></textarea>
+                </view>
+                <uni-icons type="camera" class="icon" size="28" @click="sendMore"></uni-icons>
+                <view v-if="messageInput" @touchend.prevent="sendMessage()" class="button">
+                    <text>发送</text>
+                </view>
+                <uni-icons v-else type="plus" @click="moreHandle" class="icon" size="28"></uni-icons>
+            </view>
+        </view>
+        <uni-popup ref="moreHandle">
+            <view class="more-handle">
+                <view class="row" for="pay-ali" @click="moreClick('/pages/doctor/case?tab=0')">
+                    <view class="left">
+                        查看病例
+                    </view>
+                    <uni-icons type="arrowright"></uni-icons>
+                </view>
+                <view class="row" for="pay-wx" @click="moreClick('/pages/doctor/case?tab=2')">
+                    <view class="left">
+                        电子处方
+                    </view>
+                    <uni-icons type="arrowright"></uni-icons>
+                </view>
+                <view class="row" @click="telephone('audio')">
+                    <view class="left">
+                        语音通话
+                    </view>
+                    <uni-icons type="arrowright"></uni-icons>
+                </view>
+                <view class="row" @click="telephone('video')">
+                    <view class="left">
+                        视频通话
+                    </view>
+                    <uni-icons type="arrowright"></uni-icons>
+                </view>
+            </view>
+        </uni-popup>
+    </view>
 </template>
 
 <script>
-	import {
-		mapActions,
-		mapGetters
-	} from 'vuex'
-	export default {
-		data() {
-			return {
-				messageInput: '',
-				targetUser: '',
-				messageList: [],
-				imageList: {},
-				targetInfo: {},
-				record_id: '',
-				log: console.log,
-				pageScrollLength:100,
-			};
-		},
-		watch: {
-			iMessageList(e) {
-				this.messageList.push(e)
-			},
-			jimMsgs(e) {
-				this.messageList = this.jimMsgs[this.targetUser]
-				setTimeout(() => {
-					this.getRect('#chat').then(res=>{
-						this.pageScrollLength += res.height
-						uni.pageScrollTo({
-							scrollTop: this.pageScrollLength,
-							duration: 0
-						})
-					})
-				},100)
-			},
-			jimHasLogin(e) {
-				if (e) {
-					this.jimfun()
-				}
-			},
-			messageList(e) {
-				e && e.forEach(item => {
-					this.getMessageImage(item.msg_body.media_id)
-				})
-			}
-		},
-		onLoad(e) {
-			this.targetUser = e.im_username
-			this.record_id = e.record_id
-			this.targetInfo = e
+import {
+    mapActions,
+    mapGetters,
+    mapState
+} from 'vuex'
+import IM from '../../common/im.js'
+import store from "../../store";
+import TIM from "../../common/tim-js";
 
-			uni.setNavigationBarTitle({
-				title: e.d_name
-			})
+export default {
+    data() {
+        return {
+            messageInput: '',
+            pageScrollLength: 100, // 页面滚动长度
+            chatInfo: {},
+            disableAutoScroll: false, // 当用户下拉加载历史消息时禁止自动滚动
+        };
+    },
+    watch: {
+        isSDKReady(e) {
+            if (e) {
+                this.afterSDKReady()
+            }
+        },
+        currentMessageList() {
+            this.scrollToBottom()
+        }
+    },
+    onLoad(e) {
+        this.chatInfo = e
 
-			setTimeout(() => {
-				this.getRect('#chat').then(res=>{
-					this.pageScrollLength += res.height
-					uni.pageScrollTo({
-						scrollTop: this.pageScrollLength,
-						duration: 100
-					})
-				})
-			}, 600)
-		},
-		onShow() {
-			const res = getApp().globalData.$jim.isLogin()
-			if(!res){
-				uni.showModal({
-					title:'IM掉线提示',
-					content:'IM系统已离线，将无法发送/接收信息、无法音/视频聊天',
-					confirmText:'点击重连',
-					cancelText:'返回',
-					success:e=>{
-						if(e.confirm){
-							console.log(23333)
-							getApp().globalData.jimInit()
-						}else{
-							uni.navigateBack()
-						}
-					}
-				})
-			}
-		},
-		onPullDownRefresh() {
-			setTimeout(() => {
-				uni.stopPullDownRefresh()
-			}, 500)
-		},
-		methods: {
-			getRect(selector) {
-				return new Promise((resolve) => {
-					let view = uni.createSelectorQuery().select(selector);
-					view.fields({
-						size: true,
-						rect: true,
-						scrollOffset: true
-					}, (res) => {
-						resolve(res);
-					}).exec();
-				})
-			},
-			telephone(telType) {
-				this.$refs.moreHandle.close()
-				const info = {
-					calling: true, // 主叫
-					callingId: this.userInfo.im_username,
-					callingAvatar: this.userInfo.avatar,
+        uni.setNavigationBarTitle({
+            title: e.nick
+        })
 
-					called: false, //被叫
-					calledId: this.targetInfo.im_username,
-					calledAvatar: this.targetInfo.avatar,
+        if (this.isSDKReady) {
+            this.afterSDKReady()
+        }
 
-					recordId: this.targetInfo.record_id,
-					timestamp: Date.now(),
-					callOut: true,
-					callStatus: 1, // 呼入阶段。0-空闲 1-呼入中/呼出中 2-通话中
-					messageType: 'telephone',
-					answerType: 'calling',
-					telephoneType: telType, // video audio
+        setTimeout(() => {
+            this.scrollToBottom()
+        }, 300)
+    },
+    onShow() {
 
-					role: 'calling',
-					remoteRole: 'called',
-				}
-				this.$pageTo({
-					url: '/pages/doctor/telephone',
-					options: { ...info,
-						role: 'calling',
-						remoteRole: 'called'
-					}, // 本地角色 主叫，远端角色 被叫
-				})
+    },
+    onPullDownRefresh() {
+        this.disableAutoScroll = true
+        store.dispatch('getMessageList', this.chatInfo.conversationID)
+        setTimeout(() => {
+            uni.stopPullDownRefresh()
+        }, 400)
+    },
+    onReachBottom() {
+        this.disableAutoScroll = false
+    },
+    methods: {
+        afterSDKReady() {
+            let ID = this.chatInfo.conversationID
+            ID = ID || ('C2C' + this.chatInfo.userID)
+            store.commit('updateCurrentConversation', {conversationID: ID})
+            store.dispatch('getMessageList', ID)
 
-				this.sendMessage('发起通话', info)
-			},
-			moreClick(target) {
-				this.$pageTo({
-					url: target
-				})
-				this.$refs.moreHandle.close()
-			},
-			messageInputFocus() {
-				setTimeout(() => {
-					this.getRect('#chat').then(res=>{
-						this.pageScrollLength += res.height
-						uni.pageScrollTo({
-							scrollTop: this.pageScrollLength,
-							duration: 100
-						})
-					})
-				}, 100)
-			},
-			messageInputBlur() {
-				setTimeout(() => {
-					this.getRect('#chat').then(res=>{
-						res = res || {height:0}
-						this.pageScrollLength += res.height
-						uni.pageScrollTo({
-							scrollTop: this.pageScrollLength,
-							duration: 100
-						})
-					})
-				}, 200)
-			},
-			moreHandle() {
-				this.$refs.moreHandle.open()
-			},
-			viewImage(urls) {
-				uni.previewImage({
-					urls,
-					longPressActions: {
-						itemList: ['保存图片'],
-						success: (data) => {
-							uni.saveImageToPhotosAlbum({
-								filePath: urls[0],
-								success: () => {
-									this.$api.msg('图片已保存至相册！')
-								}
-							})
-							// console.log('选中了第' + (data.tapIndex + 1) + '个按钮,第' + (data.index + 1) + '张图片');
-						},
-						fail: function(err) {
-							console.log(err.errMsg);
-						}
-					}
-				})
-			},
-			imageLoadError(e, id) {
-				this.$set(this.imageList, id, '')
-			},
-			reLoadImage(id) {
-				this.getMessageImage(id)
-			},
-			getMessageImage(id) {
-				this.$jim.getResource({
-					media_id: id
-				}).onSuccess(e => {
-					if (!this.imageList[id]) {
-						this.$set(this.imageList, id, e.url)
-					}
-				})
-			},
-			sendMore() {
-				uni.chooseImage({
-					count: 1, //
-					sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-					sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-					success: (res) => {
-						var tempFilePaths = res.tempFilePaths[0]; //获取成功，读取文件路径
-						this.$jim.sendSinglePic({
-							'target_username': this.targetUser,
-							'extras': {
-								record_id: this.record_id
-							},
-							'image': tempFilePaths //设置图片参数
-						}).onSuccess((data, msg) => {
-							setTimeout(() => {
-								this.getRect('#chat').then(res=>{
-									this.pageScrollLength += res.height
-									uni.pageScrollTo({
-										scrollTop: this.pageScrollLength,
-										duration: 100
-									})
-								})
-							}, 100)
-							this.UPDATE_JIMMSGS({
-								from_username: data.target_username,
-								msgs: msg.content
-							})
-						}).onFail(function(data) {
-							//TODO
-						});
-					}
-				})
-			},
-			jimfun() {
-				this.$jim.onSyncConversation(data => {
-					data.forEach(item => {
-						this.UPDATE_JIMMSGS({
-							from_username: item.from_username,
-							msgs: item.msgs.map(i => {
-								return i.content
-							})
-						})
-					})
-				})
-			},
-			emoji() {
-				// this.$jim.loginOut()
-			},
-			sendMessage(text, obj, callback) {
-				this.$jim.sendSingleMsg({
-					'target_username': this.targetUser,
-					'content': text || this.messageInput,
-					'extras': {
-						record_id: this.record_id,
-						...obj
-					}
-				}).onSuccess((data, msg) => {
-					this.messageInput = ''
-					callback && callback()
-					this.UPDATE_JIMMSGS({
-						from_username: data.target_username,
-						msgs: msg.content
-					})
-				}).onFail((data) => {
-					console.log(data)
-					//data.code 返回码
-					//data.message 描述
-				})
-			},
-			...mapActions(['UPDATE_IMASSAGELIST', 'UPDATE_JIMMSGS'])
-		},
-		computed: {
-			...mapGetters(['iMessageList', 'userInfo', 'jimMsgs', 'jimHasLogin'])
-		}
-	}
+            // 未传入对面用户头像等信息时需要从tim后台获取
+            IM.tim.getUserProfile({
+                userIDList: [this.chatInfo.userID] // 请注意：即使只拉取一个用户的资料，也需要用数组类型，例如：userIDList: ['user1']
+            }).then((imResponse) => {
+                const info = imResponse.data[0]
+                this.chatInfo = {...this.chatInfo, ...info}
+                console.log(imResponse.data); // 存储用户资料的数组 - [Profile]
+            }).catch(function (imError) {
+                console.warn('getUserProfile error:', imError); // 获取其他用户资料失败的相关信息
+            });
+        },
+        scrollToBottom() {
+            if (!this.disableAutoScroll) {
+                setTimeout(() => {
+                    this.getRect('#chat').then(res => {
+                        this.pageScrollLength += res.height
+                        uni.pageScrollTo({
+                            scrollTop: this.pageScrollLength,
+                            duration: 100
+                        })
+                    })
+                })
+            }
+        },
+        // 获取页面某个元素的高度等信息
+        getRect(selector) {
+            return new Promise((resolve) => {
+                let view = uni.createSelectorQuery().select(selector);
+                view.fields({
+                    size: true,
+                    rect: true,
+                    scrollOffset: true
+                }, (res) => {
+                    resolve(res);
+                }).exec();
+            })
+        },
+        // 拨打电话
+        telephone(type) {
+            this.$refs.moreHandle.close()
+
+            this.UPDATE_CURRENT_CALL({
+                targetUserID: this.chatInfo.userID, // 被叫
+                callingID: this.userID, // 主叫
+                type,
+                roomId: Number(Math.random().toString().slice(2, 11))
+            }).then(() => {
+                this.UPDATE_CALL_STATE(1) // 切换本地为等待状态
+            })
+        },
+        moreClick(target) {
+            this.$pageTo({
+                url: target
+            })
+            this.$refs.moreHandle.close()
+        },
+        // 点击输入框时，滚动页面到最底部
+        messageInputFocus() {
+            setTimeout(() => {
+                this.scrollToBottom()
+            }, 100)
+        },
+        messageInputBlur() {
+
+        },
+        // 打开更多弹框
+        moreHandle() {
+            this.$refs.moreHandle.open()
+        },
+        viewImage(urls) {
+            uni.previewImage({
+                urls,
+                longPressActions: {
+                    itemList: ['保存图片'],
+                    success: (data) => {
+                        uni.saveImageToPhotosAlbum({
+                            filePath: urls[0],
+                            success: () => {
+                                this.$api.msg('图片已保存至相册！')
+                            }
+                        })
+                        // console.log('选中了第' + (data.tapIndex + 1) + '个按钮,第' + (data.index + 1) + '张图片');
+                    },
+                    fail: function (err) {
+                        console.log(err.errMsg);
+                    }
+                }
+            })
+        },
+        sendMore() {
+            IM.sendImage(this.chatInfo.userID).then(res => {
+
+            })
+        },
+        emoji() {
+            // this.$jim.loginOut()
+        },
+        sendMessage() {
+            IM.sendText(this.chatInfo.userID, this.messageInput)
+            this.messageInput = ''
+        },
+        ...mapActions(['UPDATE_CURRENT_CALL', 'UPDATE_CALL_STATE'])
+    },
+    computed: {
+        ...mapGetters(['userID', 'userInfo', 'isSDKReady', 'currentConversation', 'currentMessageList', "conversationList"])
+    }
+}
 </script>
 
 <style lang="scss">
-	page {
-		background-color: #fbfdfe;
-		height: 100%;
-	}
+page {
+    background-color: #fbfdfe;
+    height: 100%;
+}
 
-	.row {
-		margin-bottom: 20px;
-		padding: 0 20px;
-		width: 100%;
-		display: flex;
-		align-items: center;
+.row {
+    margin-bottom: 20px;
+    padding: 0 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
 
-		.message {
-			/* 去掉头像所占宽度 */
-			max-width: calc(100% - 70px);
-			font-size: 14px;
-			padding: 10px 20px;
-		}
+    .message {
+        /* 去掉头像所占宽度 */
+        max-width: calc(100% - 70px);
+        font-size: 14px;
+        padding: 10px 20px;
 
-		.link {
-			color: $base-color;
-			text-decoration: underline;
-		}
+        .message-image {
+            max-height: 100%;
+            max-width: 100%;
+        }
+    }
 
-		image {
-			width: 50px;
-			height: 50px;
-			margin-right: 10px;
-		}
-	}
+    .link {
+        color: $base-color;
+        text-decoration: underline;
+    }
 
-	.time-row {
-		justify-content: center;
-		padding: 20px;
-		color: #383838;
-		font-size: 14px;
-	}
+    .avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 5px;
+        margin-right: 10px;
+    }
+}
 
-	.doctor-row {
-		justify-content: flex-start;
+.time-row {
+    justify-content: center;
+    padding: 20px;
+    color: #383838;
+    font-size: 14px;
+}
 
-		.message {
-			background: rgba(255, 255, 255, 1);
-			box-shadow: 0px 0px 4px 1px rgba(11, 125, 255, 0.14);
-			border-radius: 3px 12px 3px 12px;
+.doctor-row {
+    justify-content: flex-start;
 
-			.image-tips {
-				color: $base-color;
-				display: flex;
-				align-items: center;
-			}
-		}
-	}
+    .message {
+        background: rgba(255, 255, 255, 1);
+        box-shadow: 0px 0px 4px 1px rgba(11, 125, 255, 0.14);
+        border-radius: 3px 12px 3px 12px;
 
-	.user-row {
-		justify-content: flex-end;
+        .image-tips {
+            color: $base-color;
+            display: flex;
+            align-items: center;
+        }
+    }
+}
 
-		.message {
-			background: $base-color;
-			box-shadow: 0px 0px 4px 1px rgba(11, 125, 255, 0.24);
-			border-radius: 12px 3px 12px 3px;
-			color: white;
+.user-row {
+    justify-content: flex-end;
 
-			.image-tips {
-				color: white;
-				display: flex;
-				align-items: center;
-			}
-		}
-	}
+    .message {
+        background: $base-color;
+        box-shadow: 0px 0px 4px 1px rgba(11, 125, 255, 0.24);
+        border-radius: 12px 3px 12px 3px;
+        color: white;
 
-	.bottom-handle {
-		width: 100%;
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		padding: 0 10px;
-		background-color: white;
-		box-shadow: 0 0 12px #efefef;
+        .image-tips {
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+    }
+}
 
-		.little {
-			width: 100%;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			min-height: 50px;
-			padding: 5px 0;
+.bottom-handle {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: 0 10px;
+    background-color: white;
+    box-shadow: 0 0 12px #efefef;
 
-			.input-box {
-				flex: 1;
-				background-color: white;
-				width: 82%;
-				border-radius: 2px;
-				margin-right: 14px;
+    .little {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 50px;
+        padding: 5px 0;
 
-				.input {
-					box-sizing: content-box;
-					padding: 5px 0 5px 10px;
-					width: 100%;
-					background-color: #F6F6F6;
-					font-size: 18px;
-				}
-			}
+        .input-box {
+            flex: 1;
+            background-color: white;
+            width: 82%;
+            border-radius: 2px;
+            margin-right: 14px;
 
-			.button {
-				height: 32px;
-				padding: 0 4px;
-				width: 3rem;
-				transition: all 1s linear;
-			}
+            .input {
+                box-sizing: content-box;
+                padding: 5px 0 5px 10px;
+                width: 100%;
+                background-color: #F6F6F6;
+                font-size: 18px;
+            }
+        }
 
-			.icon {
-				width: 40px;
-			}
-		}
-	}
+        .button {
+            height: 32px;
+            padding: 0 4px;
+            width: 3rem;
+            transition: all 1s linear;
+        }
 
-	#bottom-place {
-		height: 60px;
-	}
+        .icon {
+            width: 40px;
+        }
+    }
+}
 
-	.more-handle {
-		background-color: white;
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		width: 100vw;
+#bottom-place {
+    height: 60px;
+}
 
-		.row {
-			padding: 20px;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			width: 100%;
+.more-handle {
+    background-color: white;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
 
-			.left {
-				display: flex;
-				align-items: center;
-				font-size: 16px;
+    .row {
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
 
-				image {
-					width: 31px;
-					height: 31px;
-					margin-right: 10px;
-				}
-			}
-		}
-	}
+        .left {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+
+            image {
+                width: 31px;
+                height: 31px;
+                margin-right: 10px;
+            }
+        }
+    }
+}
 </style>

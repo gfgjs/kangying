@@ -1,519 +1,437 @@
 <template>
-	<view class="box">
-		<view v-if="callState==2" style="flex:1;">
-			<txtrtc_video_view class='video-view remote-view' ref="remoteVideoView"></txtrtc_video_view>
-			<view class="bottom-outer">
-				<txtrtc_video_view class='video-view local-view' ref="videoView"></txtrtc_video_view>
-				<view class="handle-outer">
-					<view class="handle-buttons">
-						<view class="button" @click="hungupCalling">
-							<text class="button-text" style="color: red;">挂断</text>
-						</view>
-						<view class="button" @click="muteCalling">
-							<text class="button-text">{{hasMuteCalling?'继续':'暂停'}}通话</text>
-						</view>
-					</view>
-					<view class="handle-buttons">
-						<view class="button" @click="muteLocalVideo">
-							<text class="button-text">{{hasMuteVideo?'开启':'关闭'}}摄像头</text>
-						</view>
-						<view class="button" @click="muteLocalAudio">
-							<text class="button-text">{{hasMuteAudio?'开启':'关闭'}}话筒</text>
-						</view>
-					</view>
-				</view>
-			</view>
-		</view>
-		<view class="wating" v-if="callState==1 && callInfo.role==='called'">
-			<view class="w-button wating-tips" :style="`left:${watingWidth/2}px;`"><text class="w-b-text">等待接听...</text></view>
-			<view class="w-button answer" @click="answerCalling"><text class="w-b-text">接听</text></view>
-			<view class="w-button refuse" @click="refuseCalling"><text class="w-b-text">拒绝</text></view>
-		</view>
-		<view class="wating" v-if="callState==1 && callInfo.role==='calling'">
-			<view class="w-button wating-tips" :style="`left:${watingWidth/2}px;`"><text class="w-b-text">正在呼叫中...</text></view>
-			<view class="w-button wating-answer" :style="`left:${watingWidth/2}px;`" @click="hungupCalling"><text class="w-b-text">挂断</text></view>
-		</view>
-	</view>
+    <view class="box">
+        <view v-if="CALL_STATE==4" style="flex:1;">
+            <txtrtc_video_view class='video-view remote-view' ref="remoteVideoView"></txtrtc_video_view>
+            <view class="bottom-outer">
+                <txtrtc_video_view class='video-view local-view' ref="videoView"></txtrtc_video_view>
+                <view class="handle-outer">
+                    <view class="handle-buttons">
+                        <view class="button" @click="hungupCalling">
+                            <text class="button-text" style="color: red;">挂断</text>
+                        </view>
+                        <view class="button" @click="muteCalling">
+                            <text class="button-text">{{ hasMuteCalling ? '继续' : '暂停' }}通话</text>
+                        </view>
+                    </view>
+                    <view class="handle-buttons">
+                        <view class="button" @click="muteLocalVideo">
+                            <text class="button-text">{{ hasMuteVideo ? '开启' : '关闭' }}摄像头</text>
+                        </view>
+                        <view class="button" @click="muteLocalAudio">
+                            <text class="button-text">{{ hasMuteAudio ? '开启' : '关闭' }}话筒</text>
+                        </view>
+                    </view>
+                    <view class="handle-buttons">
+                        <view class="button" @click="changeCamera">
+                            <text class="button-text">{{ cameraTypeStatus?'前置':'后置' }}</text>
+                            <text class="button-text">摄像头</text>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="wating" v-else>
+           <view v-if="currentCall.targetUserID===userID">
+               <view class="w-button wating-tips" :style="`left:${watingWidth/2}px;`">
+                   <text class="w-b-text">等待接听...</text>
+               </view>
+               <view class="w-button answer" @click="answerCalling">
+                   <text class="w-b-text">接听</text>
+               </view>
+               <view class="w-button refuse" @click="refuseCalling">
+                   <text class="w-b-text">拒绝</text>
+               </view>
+           </view>
+            <view v-else>
+                <view class="w-button wating-tips" :style="`left:${watingWidth/2}px;`">
+                    <text class="w-b-text">正在呼叫...</text>
+                </view>
+                <view class="w-button wating-answer" :style="`left:${watingWidth/2}px;`" @click="hungupCalling">
+                    <text class="w-b-text">挂断</text>
+                </view>
+            </view>
+        </view>
+    </view>
 </template>
 
 <script>
-	//插件对象
+//插件对象
 
-	var sdkwx = uni.requireNativePlugin('TXTRTC-SdkWX');
-	import {
-		mapGetters,
-		mapActions
-	} from 'vuex'
+import {
+    mapGetters,
+    mapActions
+} from 'vuex'
 
-	import {
-		request_getUserSig
-	} from '../../common/https.js'
+import {
+    request_getUserSig
+} from '../../common/https.js'
+import {SDK_APP_ID} from '../../common/config.js'
+var sdkwx = uni.requireNativePlugin('TXTRTC-SdkWX');
 
-	export default {
-		data() {
-			return {
-				remoteVideoHeight: 0,
-				sdkAppId: 1400440995,
-				roomId: '',
-				vvh: 100,
-				localUserId: '',
-				localUserSig: '',
-				remoteUserId: '',
-				remoteUserSig: '',
-				watingStatus: true,
-				ptop: 0,
-				watingHeight: 0,
-				watingWidth: 0,
+export default {
+    data() {
+        return {
+            // 等待界面
+            watingHeight: 0,
+            watingWidth: 0,
 
-				callInfo: {},
-				innerAudioContext: {},
+            // 铃声用
+            innerAudioContext: {},
 
-				hasMuteAudio: false,
-				hasMuteVideo: false,
-				hasMuteCalling: false
-			}
-		},
-		watch: {
-			jimMsgs(e) {
-				this.messageList = this.jimMsgs[this.remoteUserId]
+            // 通话中控制
+            hasMuteAudio: false,
+            hasMuteVideo: false,
+            hasMuteCalling: false,
 
-				let len = this.messageList.length
+            cameraTypeStatus:true, // true前置 false后置
+        }
+    },
+    watch: {
+        REMOTE_CALL_STATE(state) {
+            const _this = this
+            switch (state) {
+                case 2:
+                    _this.remoteAnswer()
+                    break
+                case 3:
+                    _this.remoteRefuse()
+                    break
+                case 5:
+                    _this.remoteHungup()
+                    break
+                default:
+                    break
+            }
+        }
+    },
+    onLoad() {
+        this.startWatingAudio()
+        uni.getSystemInfo({
+            success: e => {
+                this.watingWidth = e.windowWidth
+                this.watingHeight = e.windowHeight
+            }
+        })
 
-				let newMsg = this.messageList[len - 1]
+        //检查权限
+        this.rePermission()
 
-				if (newMsg) {
-					console.log(newMsg)
-					console.log(this.remoteUserId)
-					if(this.remoteUserId == newMsg.from_id){
-						let msgType = newMsg.msg_body.extras.messageType
-						let anwserType = newMsg.msg_body.extras.answerType
-						if (msgType === 'telephone') {
-							if (anwserType === 'answer') {
-								this.remoteAnswer()
-							} else if (anwserType === 'refuse') {
-								this.remoteRefuse()
-							} else if (anwserType === 'hangup') {
-								this.remoteHungup()
-							}
-						}
-					}
-				}
-			}
-		},
-		onBackPress(options) {
-			if (options.from === 'navigateBack') {
-				return false
-			}
+        //设置事件回调
+        sdkwx.setListener((res) => {
+            if (res.type == "onEnterRoom") {
+                //进入房间回调
+                console.log('进入房间')
+            } else if (res.type == "onExitRoom") {
+                //离开房间回调
+                console.log('离开房间')
+            } else if (res.type == "onUserVideoAvailable") {
+                //远端用户视频可用回调
+                this.onUserVideoAvailable(res.data);
+            }
+        })
+    },
+    onBackPress(options) {
+        if (options.from === 'navigateBack') {
+            return false
+        }
 
-			uni.showModal({
-				title: '提示',
-				content: '将结束通话，是否确定？',
-				success: e => {
-					if (e.confirm) {
-						this.hungupCalling()
-					}
-				}
-			})
+        uni.showModal({
+            title: '提示',
+            content: '将结束通话，是否确定？',
+            success: e => {
+                if (e.confirm) {
+                    this.hungupCalling()
+                }
+            }
+        })
 
-			return true
-		},
-		onLoad(o) {
-			this.startWatingAudio()
-			uni.getSystemInfo({
-				success: e => {
-					this.watingWidth = e.windowWidth
-					this.watingHeight = e.windowHeight
-				}
-			})
+        return true
+    },
+    beforeDestroy() {
+        this.UPDATE_CALL_STATE(0)
+        this.UPDATE_REMOTE_CALL_STATE(0)
+        this.stopWatingAudio()
+    },
+    methods: {
+        startWatingAudio() {
+            const innerAudioContext = uni.createInnerAudioContext();
+            innerAudioContext.autoplay = true;
+            innerAudioContext.loop = true;
+            innerAudioContext.src = 'http://localhost/static/telephone.wav';
+            innerAudioContext.onPlay(() => {
+                console.log('开始播放');
+            });
+            innerAudioContext.onError((res) => {
+                console.log(res.errMsg);
+                console.log(res.errCode);
+            });
+            this.innerAudioContext = innerAudioContext
+        },
+        stopWatingAudio() {
+            try {
+                if (this.innerAudioContext) {
+                    this.innerAudioContext && this.innerAudioContext.stop()
+                    this.innerAudioContext && this.innerAudioContext.destroy()
+                }
+            } catch (e) {
+                console.log('err:', e)
+            }
+        },
+        //远端接听
+        remoteAnswer() {
+            this.UPDATE_CALL_STATE(4) // 设置为通话中
+            this.enterRoom()
+            this.stopWatingAudio()
+        },
+        //远端拒绝
+        remoteRefuse() {
+            // this.exitRoom()
+            uni.navigateBack()
+            this.stopWatingAudio()
+        },
+        //远端挂断
+        remoteHungup() {
+            this.exitRoom()
+        },
+        //本地接听
+        answerCalling() {
+            // 接听电话
+            this.UPDATE_CALL_STATE(2).then(() => {
+                // 应答后设置本地为通话中
+                this.UPDATE_CALL_STATE(4).then(() => {
+                    this.enterRoom()
+                })
+            })
+            this.stopWatingAudio()
+        },
+        //本地拒绝
+        refuseCalling() {
+            this.UPDATE_CALL_STATE(3)
+            uni.navigateBack()
+        },
+        //本地挂断
+        hungupCalling() {
+            this.UPDATE_CALL_STATE(5)
+            this.exitRoom()
+            this.stopWatingAudio()
+        },
+        rePermission() {
+            sdkwx.checkPermission(function (res) {
+                console.log(res);
+            })
+        },
+        onUserVideoAvailable(data) {
+            var userId = data.userId;
+            var available = data.available;
 
-			// 切换为接听/等待接听状态
-			this.UPDATE_CALLSTATE(1)
+            var remoteVideoView = this.$refs.remoteVideoView;
+            if (available) {
+                remoteVideoView.startRemoteView(userId);
+            } else {
+                remoteVideoView.stopRemoteView(userId);
+            }
+        },
+        muteCalling() {
+            this.hasMuteCalling = !this.hasMuteCalling
 
-			this.callInfo = o
+            this.muteLocalAudio()
+            this.muteLocalVideo()
+        },
+        muteLocalVideo() {
+            this.hasMuteVideo = !this.hasMuteVideo
+            sdkwx.muteLocalVideo()
+            if (!this.hasMuteVideo) {
+                //开始视频
+                const videoView = this.$refs.videoView;
+                videoView && videoView.startLocalPreview(true);
+            } else {
+                //开始视频
+                const videoView = this.$refs.videoView;
+                videoView && videoView.stopLocalPreview(true);
+            }
+        },
+        muteLocalAudio() {
+            this.hasMuteAudio = !this.hasMuteAudio
+            sdkwx.muteLocalAudio()
+            if (!this.hasMuteAudio) {
+                sdkwx.startLocalAudio()
+            } else {
+                sdkwx.stopLocalAudio()
+            }
+        },
+        enterRoom() {
+            const scene = 0; //视频通话 = 0;视频互动直播 = 1;语音通话 = 2;语音互动直播 = 3;
+            sdkwx.enterRoom({
+                sdkAppId: SDK_APP_ID,
+                roomId: this.currentCall.roomId, // 主叫ID作为roomId，只能为数字或者可转化为数字
+                role: 20, //20主播 21 观众
+                userId: this.userID,
+                userSig: this.userSig
+            }, scene)
+            this.startVideo()
+        },
+        startVideo() {
+            this.stopVideo()
 
-			this.roomId = o.recordId // 病例Id作为房间Id
-			this.localUserId = o[o.role + 'Id'] // 本机账号
-			this.remoteUserId = o[o.remoteRole + 'Id']
+            setTimeout(() => {
+                // //设置角色主播
+                // sdkwx.switchRole(20); //20主播 21 观众
 
-			//预加载签名
-			this.checkSig()
+                //开启音频
+                sdkwx.startLocalAudio();
 
-			//检查权限
-			sdkwx.checkPermission(function(res) {
-				console.log(res);
-			});
+                //开始视频
+                const videoView = this.$refs.videoView;
+                videoView.startLocalPreview(true);
+            })
+        },
+        changeCamera(){
+            this.cameraTypeStatus = !this.cameraTypeStatus
+            const videoView = this.$refs.videoView;
+            videoView.stopLocalPreview();
+            videoView.startLocalPreview(this.cameraTypeStatus);
+        },
+        stopLocalPreview() {
+            //停止音频
+            sdkwx.stopLocalAudio();
 
-			//设置事件回调
-			sdkwx.setListener((res) => {
+            //停止视频
+            const videoView = this.$refs.videoView;
+            videoView.stopLocalPreview();
+        },
+        stopVideo() {
+            // //设置角色观众
+            // sdkwx.switchRole(20); //20主播 21 观众
 
-				if (res.type == "onEnterRoom") {
-					//进入房间回调
+            //停止音频
+            sdkwx.stopLocalAudio();
 
-				} else if (res.type == "onExitRoom") {
-					//离开房间回调
-
-				} else if (res.type == "onSwitchRole") {
-					//角色转换回调
-
-				} else if (res.type == "onUserVideoAvailable") {
-					//远端用户视频可用回调
-
-					this.onUserVideoAvailable(res.data);
-				}
-			})
-
-		},
-		beforeDestroy() {
-			this.UPDATE_CALLSTATE(0)
-			// this.exitRoom()
-			this.stopWatingAudio()
-		},
-		methods: {
-			startWatingAudio() {
-				const innerAudioContext = uni.createInnerAudioContext();
-				innerAudioContext.autoplay = true;
-				innerAudioContext.loop = true;
-				innerAudioContext.src = 'http://localhost/static/telephone.wav';
-				innerAudioContext.onPlay(() => {
-					console.log('开始播放');
-				});
-				innerAudioContext.onError((res) => {
-					console.log(res.errMsg);
-					console.log(res.errCode);
-				});
-				this.innerAudioContext = innerAudioContext
-			},
-			stopWatingAudio() {
-				try {
-					if (this.innerAudioContext) {
-						this.innerAudioContext && this.innerAudioContext.stop()
-						this.innerAudioContext && this.innerAudioContext.destroy()
-					}
-				} catch (e) {
-					console.log('err:', e)
-				}
-			},
-			//本地接听
-			answerCalling() {
-				// 接听电话
-				this.sendMessage('我已接听', {
-					messageType: 'telephone',
-					answerType: 'answer'
-				})
-				this.UPDATE_CALLSTATE(2)
-				this.checkSig().then(e => {
-					this.enterRoom()
-				})
-				this.stopWatingAudio()
-			},
-			//远端接听
-			remoteAnswer(){
-				this.UPDATE_CALLSTATE(2)
-				this.checkSig().then(e => {
-					this.enterRoom()
-				})
-				this.stopWatingAudio()
-			},
-			//本地拒绝
-			refuseCalling() {
-				this.sendMessage('我已拒绝', {
-					messageType: 'telephone',
-					answerType: 'refuse'
-				})
-				this.exitRoom()
-				this.stopWatingAudio()
-			},
-			//本地挂断
-			hungupCalling() {
-				this.sendMessage('我已挂断', {
-					messageType: 'telephone',
-					answerType: 'hangup'
-				})
-				this.exitRoom()
-				this.stopWatingAudio()
-			},
-			//远端拒绝
-			remoteRefuse(){
-				this.exitRoom()
-				this.stopWatingAudio()
-			},
-			//远端挂断
-			remoteHungup(){
-				this.exitRoom()
-				this.stopWatingAudio()
-			},
-			checkSig() {
-				return new Promise((resolve, reject) => {
-					if (this.localUserSig) {
-						resolve(this.localUserSig)
-					} else {
-						request_getUserSig({
-							uni,
-							data: {
-								userId: this.localUserId
-							}
-						}).then(res => {
-							if (res.code === 0) {
-								this.localUserSig = res.data
-								resolve(res.data)
-							} else {
-								reject(res)
-							}
-						}).catch((e) => {
-							reject(e)
-						})
-					}
-				})
-			},
-			sendMessage(text, obj, callback) {
-				// 向远端角色发送回执
-				const o = this.callInfo
-				const $jim = getApp().globalData.$jim
-				$jim.sendSingleMsg({
-					'target_username': o[o.remoteRole + 'Id'],
-					'content': text,
-					'extras': {
-						record_id: o.recordId,
-						...obj
-					}
-				}).onSuccess((data, msg) => {
-					callback && callback()
-					this.UPDATE_JIMMSGS({
-						from_username: data.target_username,
-						msgs: msg.content
-					})
-				}).onFail((data) => {
-					console.log(data)
-					//data.code 返回码
-					//data.message 描述
-				})
-			},
-			rePermission() {
-				sdkwx.checkPermission(function(res) {
-					console.log(res);
-				});
-			},
-			onUserVideoAvailable(data) {
-
-				var userId = data.userId;
-				var available = data.available;
-
-				var remoteVideoView = this.$refs.remoteVideoView;
-				if (available) {
-					// this.remoteVideoHeight = 300;
-					remoteVideoView.startRemoteView(userId);
-				} else {
-					// this.remoteVideoHeight = 0;
-					remoteVideoView.stopRemoteView(userId);
-				}
-			},
-			muteCalling() {
-				// 总开关操作之后 子开关会取反 因此需先在此取反
-				this.hasMuteAudio = !this.hasMuteCalling
-				this.hasMuteVideo = !this.hasMuteCalling
-
-				this.hasMuteCalling = !this.hasMuteCalling
-
-				this.muteLocalAudio()
-				this.muteLocalVideo()
-			},
-			muteLocalVideo() {
-				this.hasMuteVideo = !this.hasMuteVideo
-				sdkwx.muteLocalVideo()
-				if (!this.hasMuteVideo) {
-					//开始视频
-					var videoView = this.$refs.videoView;
-					videoView && videoView.startLocalPreview(true);
-				} else {
-					//开始视频
-					var videoView = this.$refs.videoView;
-					videoView && videoView.stopLocalPreview(true);
-				}
-			},
-			muteLocalAudio() {
-				this.hasMuteAudio = !this.hasMuteAudio
-				sdkwx.muteLocalAudio()
-				if (!this.hasMuteAudio) {
-					sdkwx.startLocalAudio()
-				} else {
-					sdkwx.stopLocalAudio()
-				}
-			},
-
-			enterRoom() {
-				//加入房间
-				var scene = 0; //视频通话 = 0;视频互动直播 = 1;语音通话 = 2;语音互动直播 = 3;
-				sdkwx.enterRoom({
-					sdkAppId: this.sdkAppId,
-					roomId: this.roomId,
-					role: 20, //20主播 21 观众
-					userId: this.localUserId,
-					userSig: this.localUserSig
-				}, scene);
-
-				this.startVideo()
-			},
-			startVideo() {
-				this.stopVideo()
-
-				setTimeout(() => {
-					// //设置角色主播
-					// sdkwx.switchRole(20); //20主播 21 观众
-
-					//开启音频
-					sdkwx.startLocalAudio();
-
-					//开始视频
-					var videoView = this.$refs.videoView;
-					videoView.startLocalPreview(true);
-				})
-			},
-			stopLocalPreview() {
-				//停止音频
-				sdkwx.stopLocalAudio();
-
-				//停止视频
-				var videoView = this.$refs.videoView;
-				videoView.stopLocalPreview();
-			},
-			stopVideo() {
-				// //设置角色观众
-				// sdkwx.switchRole(20); //20主播 21 观众
-
-				//停止音频
-				sdkwx.stopLocalAudio();
-
-				//停止视频
-				var videoView = this.$refs.videoView;
-				videoView && videoView.stopLocalPreview();
-			},
-			exitRoom() {
-				this.stopVideo()
-				//退出房间
-				sdkwx.exitRoom()
-				uni.navigateBack()
-			},
-			createGroup() {
-
-			},
-			joinGroup() {},
-			...mapActions(['UPDATE_JIMMSGS', 'UPDATE_CALLSTATE'])
-		},
-		computed: {
-			...mapGetters(['userInfo', 'jimMsgs', 'jimHasLogin', 'callState'])
-		}
-	}
+            //停止视频
+            var videoView = this.$refs.videoView;
+            videoView && videoView.stopLocalPreview();
+        },
+        exitRoom() {
+            this.stopVideo()
+            //退出房间
+            sdkwx.exitRoom()
+            uni.navigateBack()
+        },
+        ...mapActions(['UPDATE_CALL_STATE', 'UPDATE_REMOTE_CALL_STATE'])
+    },
+    computed: {
+        ...mapGetters(['userInfo', 'CALL_STATE', 'REMOTE_CALL_STATE', 'userSig', 'userID', 'currentCall'])
+    }
+}
 </script>
 <style lang="scss">
-	.box {
-		flex: 1;
-	}
+.box {
+    flex: 1;
+}
 
-	.buttons {
-		position: fixed;
-		top: 100px;
-	}
+.buttons {
+    position: fixed;
+    top: 100px;
+}
 
-	.button {
-		width: 100px;
-		color: red;
-	}
+.button {
+    width: 100px;
+    color: red;
+}
 
-	.video-view {}
+.video-view {
+}
 
-	.remote-view {
-		// background-color: green;
-		flex: 8;
+.remote-view {
+    // background-color: green;
+    flex: 8;
 
-	}
+}
 
-	.bottom-outer {
-		flex: 2;
-		flex-direction: row;
-	}
+.bottom-outer {
+    flex: 2;
+    flex-direction: row;
+}
 
-	.local-view {
-		// background-color: red;
-		flex: 3;
-		width: 200px;
-	}
+.local-view {
+    // background-color: red;
+    flex: 3;
+    //min-width: 200px;
+}
 
-	.handle-outer {
-		flex: 7;
-		justify-content: center;
-	}
+.handle-outer {
+    flex: 7;
+    justify-content: center;
+    flex-direction: row;
+    //align-items: center;
+}
 
-	.handle-buttons {
-		flex-direction: row;
-	}
+.handle-buttons {
+    flex:1;
+    flex-direction: column;
+    justify-content: center;
+}
 
-	.button {
-		flex: .5;
-		margin: 10px;
-	}
+.button {
+    flex: 1;
+    margin: 4px;
+}
 
-	.button:active {
-		opacity: .5;
-	}
+.button:active {
+    opacity: .5;
+}
 
-	.button-text {
-		font-size: 14px;
-		flex-direction: column;
-	}
+.button-text {
+    font-size: 14px;
+    flex-direction: column;
+}
 
-	.wating {
-		position: fixed;
-		background-color: $base-color;
-		// flex-direction: row;
-		justify-content: center;
-		align-items: center;
-	}
+.wating {
+    position: fixed;
+    background-color: $base-color;
+    // flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
 
-	// .w-buttons {
-	// 	height: 100px;
-	// 	width: 300px;
-	// 	background-color: red;
-	// }
+.w-button {
+    // height: 100px;
+    // width: 300px;
+    position: fixed;
+    bottom: 100px;
+    width: 100px;
+    height: 40px;
+    border-color: white;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 4px;
+    justify-content: center;
+    align-items: center;
+    // background-color: red;
+}
 
-	.w-button {
-		// height: 100px;
-		// width: 300px;
-		position: fixed;
-		bottom: 100px;
-		width: 100px;
-		height: 40px;
-		border-color: white;
-		border-style: solid;
-		border-width: 1px;
-		border-radius: 4px;
-		justify-content: center;
-		align-items: center;
-		// background-color: red;
-	}
+.answer {
+    right: 50px;
+    border-color: green;
+}
 
-	.answer {
-		right: 50px;
-		border-color: green;
-	}
+.refuse {
+    left: 50px;
+    border-color: red;
+}
 
-	.refuse {
-		left: 50px;
-		border-color: red;
-	}
+.wating-answer {
+    transform: translateX(-50%);
+    position: fixed;
+}
 
-	.wating-answer {
-		transform: translateX(-50%);
-		position: fixed;
-	}
+.wating-tips {
+    transform: translateX(-50%);
+    position: fixed;
+    bottom: 400px;
+    border-width: 0;
+}
 
-	.wating-tips {
-		transform: translateX(-50%);
-		position: fixed;
-		bottom: 400px;
-		border-width: 0;
-	}
-
-	.w-b-text {
-		color: white
-	}
+.w-b-text {
+    color: white;
+}
 </style>
