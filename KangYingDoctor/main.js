@@ -1,11 +1,10 @@
 import Vue from 'vue'
 import store from './store'
 import App from './App'
-import JMessage from './common/jmessage-sdk-web.2.6.0.min.js'
-// import Json from './Json' //测试用数据
+import {request_init} from "./common/https";
 
-const jim = new JMessage()
-Vue.prototype.$jim = jim
+request_init({uni}) // 向https注入uni对象
+
 
 const msg = (title, duration = 1500, mask = false, icon = 'none') => {
 	//统一提示方便全局修改
@@ -18,15 +17,6 @@ const msg = (title, duration = 1500, mask = false, icon = 'none') => {
 		mask,
 		icon
 	});
-}
-
-const json = type => {
-	//模拟异步请求数据
-	return new Promise(resolve => {
-		setTimeout(() => {
-			resolve(Json[type]);
-		}, 500)
-	})
 }
 
 const prePage = () => {
@@ -43,7 +33,6 @@ Vue.prototype.$fire = new Vue();
 Vue.prototype.$store = store;
 Vue.prototype.$api = {
 	msg,
-	json,
 	prePage
 };
 
@@ -55,7 +44,7 @@ let lastPage = null
 const __pageTo = (e) => {
 	e = e || {}
 
-	/* 
+	/*
 	 e = {
 		 needLogin: true，需要登录
 		 needCurrentPage: true, 需要保持当前页面，否则登录后跳转到传入的url
@@ -142,46 +131,8 @@ const __pageTo = (e) => {
 		})
 	}
 }
-const __updateLastPage = (e = {}) => {
-	Vue.prototype.$lastPage = e
-}
-// const __pageTo = (e = {}) => {
-// 	e.navigateType = '$pageTo'
-	
-// 	// e.disrecord 默认false，为true则不记录，例如跳转到login页时
-// 	if (!e.disrecord) {
-// 		Vue.prototype.$lastPage = e
-// 	}
-	
-// 	if(e.needLogin && !Vue.prototype.$store.state.hasLogin){
-// 		uni.showModal({
-// 			content: "是否前往登录？",
-// 			success: (res) => {
-// 				if (res.confirm) {
-// 					uni.navigateTo({
-// 						url:'/pages/login/login'
-// 					})
-// 				} else if (res.cancel) {
-					
-// 				}
-// 			}
-// 		})
-// 	}else{
-		
-// 		uni.navigateTo(e)
-// 	}
-// }
-const __switchTab = (e = {}) => {
-	e.navigateType = '$switchTab'
-	if (!e.disrecord) {
-		Vue.prototype.$lastPage = e
-	}
-	uni.switchTab(e)
-}
-Vue.prototype.$lastPage = {}
+
 Vue.prototype.$pageTo = __pageTo
-Vue.prototype.$switchTab = __switchTab
-Vue.prototype.$updateLastPage = __updateLastPage
 
 Vue.prototype.log = e=>{
 	if(typeof e === 'object'){

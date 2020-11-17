@@ -2,45 +2,87 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="87e86a6a-921c-4459-8540-e961edfc506a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/KangYingDoctor.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../KangYingUser/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../KangYingUser/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../KangYingUser/common/tim.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../KangYingUser/store/modules/timStore.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/im.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/tim-js.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/tim.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/doctor/chat-view.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/doctor/chat.old.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/test/test.nvue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/test/test.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/store/modules/timStore.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/common/config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/https.js" beforeDir="false" afterPath="$PROJECT_DIR$/common/https.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/jmessage-sdk-web.2.6.0.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/jmessage-wxapplet-sdk-1.4.3.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/signature.js" beforeDir="false" afterPath="$PROJECT_DIR$/common/signature.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages.json" beforeDir="false" afterPath="$PROJECT_DIR$/pages.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/doctor/chat.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/doctor/chat.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/doctor/consulting-desk.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/doctor/consulting-desk.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/doctor/elec-case.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/doctor/elec-case.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/doctor/prescription.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/doctor/prescription.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/doctor/telephone.nvue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/doctor/telephone.nvue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/index/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/index/patient.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index/patient.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/debug/android_debug.apk" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/debug/android_debug.apk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/build/app-plus/__uniappscan.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/build/app-plus/__uniappscan.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/build/app-plus/app-config-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/build/app-plus/app-config-service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/build/app-plus/app-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/build/app-plus/app-service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/build/app-plus/app-view.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/build/app-plus/app-view.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/build/app-plus/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/build/app-plus/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/build/app-plus/pages/doctor/telephone.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/build/app-plus/pages/doctor/telephone.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/build/app-plus/view.css" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/build/app-plus/view.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/build/app-plus/view.umd.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/build/app-plus/view.umd.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/__uniappscan.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/__uniappscan.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/app-config-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/app-config-service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/app-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/app-service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/app-view.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/app-view.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/pages/doctor/telephone.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/pages/doctor/telephone.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/view.css" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/view.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/view.umd.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/unpackage/dist/dev/app-plus/view.umd.min.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/App.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../KangYingUser/Json.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/common/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/common/config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/common/https.js" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/common/https.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../KangYingUser/common/jim.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../KangYingUser/common/jmessage-sdk-web.2.6.0.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../KangYingUser/common/jmessage-wxapplet-sdk-1.4.3.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../KangYingUser/common/im.js" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/common/im.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../KangYingUser/common/tim-wx.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../KangYingUser/components/mine-case-list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/components/mine-case-list.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../KangYingUser/components/product-list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/components/product-list.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../KangYingUser/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/pages.json" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/pages.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../KangYingUser/pages/card/list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/pages/card/list.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../KangYingUser/pages/doctor/case.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/pages/doctor/case.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/pages/doctor/chat-list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/pages/doctor/chat-list.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/pages/doctor/chat.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/pages/doctor/chat.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/pages/doctor/doctor.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/pages/doctor/doctor.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../KangYingUser/pages/doctor/list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/pages/doctor/list.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/pages/doctor/telephone.nvue" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/pages/doctor/telephone.nvue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../KangYingUser/pages/guide/guide.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/pages/guide/guide.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/pages/index/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/pages/index/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../KangYingUser/pages/test/test.nvue" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/pages/test/test.nvue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../KangYingUser/pages/index/online.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/pages/index/online.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../KangYingUser/pages/login/login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/pages/login/login.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../KangYingUser/pages/mall/mall.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/pages/mall/mall.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../KangYingUser/pages/mall/search.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/pages/mall/search.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/store/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/store/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../KangYingUser/store/modules/timStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/store/modules/timStore.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/unpackage/debug/android_debug.apk" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/unpackage/debug/android_debug.apk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/build/app-plus/__uniappscan.js" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/build/app-plus/__uniappscan.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/build/app-plus/app-config-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/build/app-plus/app-config-service.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/build/app-plus/app-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/build/app-plus/app-service.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/build/app-plus/app-view.js" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/build/app-plus/app-view.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/build/app-plus/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/build/app-plus/manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/build/app-plus/pages/doctor/telephone.js" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/build/app-plus/pages/doctor/telephone.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/build/app-plus/pages/test/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/build/app-plus/pages/test/test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/build/app-plus/view.css" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/build/app-plus/view.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/build/app-plus/view.umd.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/build/app-plus/view.umd.min.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/dev/app-plus/app-config-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/dev/app-plus/app-config-service.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/dev/app-plus/app-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/dev/app-plus/app-service.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/dev/app-plus/app-view.js" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/dev/app-plus/app-view.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/dev/app-plus/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/dev/app-plus/manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/dev/app-plus/pages/doctor/telephone.js" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/dev/app-plus/pages/doctor/telephone.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/dev/app-plus/pages/test/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/dev/app-plus/pages/test/test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/dev/app-plus/view.umd.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/../KangYingUser/unpackage/dist/dev/app-plus/view.umd.min.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +93,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectId" id="1kIGLa1HuiJDm5a33ysA5nYtPjv" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -59,7 +103,22 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/pages" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\GF\Work\kangying\KangYingDoctor\pages" />
+      <recent name="C:\GF\Work\kangying\KangYingDoctor\pages\doctor" />
+      <recent name="C:\GF\Work\kangying\KangYingDoctor\store" />
+      <recent name="C:\GF\Work\kangying\KangYingDoctor\common" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -70,10 +129,21 @@
       <option name="presentableId" value="Default" />
       <updated>1605380636257</updated>
       <workItem from="1605380637308" duration="630000" />
+      <workItem from="1605424721641" duration="4290000" />
+      <workItem from="1605457992483" duration="13603000" />
+      <workItem from="1605545097189" duration="2493000" />
+      <workItem from="1605610289620" duration="29000" />
+      <workItem from="1605621243845" duration="10512000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="899" y="93" width="2046" height="1015" key="find.popup" timestamp="1605635405493">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state x="899" y="93" width="2046" height="1015" key="find.popup/0.0.3440.1400@0.0.3440.1400" timestamp="1605635405493" />
   </component>
 </project>

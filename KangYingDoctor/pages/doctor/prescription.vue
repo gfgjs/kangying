@@ -3,15 +3,15 @@
 		<view class="row-title row">就诊人信息</view>
 		<view class="row">
 			<view class="title">患者姓名</view>
-			<view class="little-title">{{info.p_name}}</view>
+			<view class="little-title">{{recordInfo.patientInfo.p_name}}</view>
 		</view>
 		<view class="row">
 			<view class="title">性别</view>
-			<view class="little-title">{{info.p_gender}}</view>
+			<view class="little-title">{{recordInfo.gender}}</view>
 		</view>
 		<view class="row">
 			<view class="title">年龄</view>
-			<view class="little-title">25</view>
+			<view class="little-title">{{recordInfo.age}}</view>
 		</view>
 		<!-- <view class="row">
 			<view class="title">既往病史</view>
@@ -19,7 +19,7 @@
 		</view> -->
 		<view class="row">
 			<view class="title">临床诊断</view>
-			<view class="little-title">{{info.diagnosis}}</view>
+			<view class="little-title">{{recordInfo.now_record.diagnosis || '暂无'}}</view>
 		</view>
 		<view class="row sign-row" v-if="!medHasBeen">
 			<view class="title" style="padding: 14px 0 10px;">
@@ -106,6 +106,7 @@
 		uploadImg
 	} from '../../common/https.js'
 	import Handwriting from '../../common/signature.js'
+	import IM from '../../common/im.js'
 	export default {
 		data() {
 			return {
@@ -117,11 +118,12 @@
 				handwriting: {},
 				lineColor: 'black',
 				slideValue: 50,
-				signimg: ''
-			};
+				signimg: '',
+
+                recordInfo:null,
+			}
 		},
 		onLoad(e) {
-			// this.log(e)
 			this.info = e
 			this.record_id = e.record_id
 		},
@@ -132,9 +134,10 @@
 					slideValue: this.slideValue,
 					canvasName: 'eSignCanvas'
 				})
+
+                this.sendPrescript()
 			})
-			this.medList = { ...(getApp().globalData.tempMedicineList[this.record_id] || {})
-			}
+			this.medList = { ...(getApp().globalData.tempMedicineList[this.record_id] || {})}
 
 			request_recordInfo({
 				uni,
@@ -143,6 +146,7 @@
 				}
 			}).then(res => {
 				if (res.code === 0) {
+				    this.recordInfo = res.data
 					this.nowRecord = res.data.now_record
 					if (res.data.now_record.goods) {
 
@@ -163,11 +167,17 @@
 		},
 		methods: {
 			sendPrescript() {
-				let pages = getCurrentPages(); //获取页面栈
-				if (pages.length > 1) {
-					var beforePage = pages[pages.length - 2]; //获取上一个页面实例对象 
-					beforePage.$vm.sendPrescript(this.nowRecord.PreId); //触发父页面中的方法  
-				}
+			    IM.sendCustomMessage({
+                    data:'请查看处方信息',
+                    description:'PAGE_LINK',
+                    extension: JSON.stringify({record_id:this.record_id,tab:2})
+                },this.info.targetUserID)
+
+				// let pages = getCurrentPages(); //获取页面栈
+				// if (pages.length > 1) {
+				// 	var beforePage = pages[pages.length - 2]; //获取上一个页面实例对象
+				// 	beforePage.$vm.sendPrescript(this.nowRecord.PreId); //触发父页面中的方法
+				// }
 			},
 			clearSign() {
 				this.handwriting.retDraw()
@@ -182,6 +192,9 @@
 				// this.subCanvas()
 				this.handwriting.uploadScaleEnd(event)
 			},
+            mouseDown(){
+
+            },
 			subCanvas() {
 				return new Promise((resolve, reject) => {
 					this.handwriting.saveCanvas().then(res => {
@@ -218,15 +231,14 @@
 				for (let i in this.medList) {
 					array.push(this.medList[i])
 				}
-				
+
 				if(array.length<1){
 					this.$api.msg('请添加药品')
 					return
 				}
-				
+
 				uni.showLoading()
 				this.subCanvas().then(res => { // 上传签名到服务器，得到图片路径
-
 					request_recordUp({
 						uni,
 						data: {
@@ -238,7 +250,7 @@
 						uni.hideLoading()
 						if (res.code === 0) {
 							this.$api.msg(res.data)
-							
+
 							// 调用chat页面发送药方链接
 							request_recordInfo({
 								uni,

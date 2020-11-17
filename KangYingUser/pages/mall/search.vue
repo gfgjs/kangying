@@ -4,7 +4,7 @@
 			<view class="row-title" v-if="historyKeys.length">搜索历史 <uni-icons type="trash" @click="clearHistoryKeys"></uni-icons>
 			</view>
 			<view class="list">
-				<view class="item" v-for="item in historyKeys" @click="clickKey(item)">{{item}}</view>
+				<view class="item" v-for="(item,index) in historyKeys" :key="index" @click="clickKey(item)">{{item}}</view>
 			</view>
 			<view class="row-title" v-if="hotKeys.length">热门搜索</view>
 			<view class="list">
@@ -101,27 +101,27 @@
 				})
 			},
 			clickKey(key) {
-				// #ifdef APP-PLUS  
+				// #ifdef APP-PLUS
 				var webView = this.$mp.page.$getAppWebview();
 
-				// 修改buttons  
-				// index: 按钮索引, style {WebviewTitleNViewButtonStyles }  
-				// webView.setTitleNViewButtonStyle(0, {  
-				//     text: 'hello',  
-				// });  
+				// 修改buttons
+				// index: 按钮索引, style {WebviewTitleNViewButtonStyles }
+				// webView.setTitleNViewButtonStyle(0, {
+				//     text: 'hello',
+				// });
 
-				// 修改按钮上的角标  
-				// index: 按钮索引, text: 角标文本内容  
-				// webView.setTitleNViewButtonBadge({  
-				//     index: 0,  
-				//     text: 10,  
-				// });  
+				// 修改按钮上的角标
+				// index: 按钮索引, text: 角标文本内容
+				// webView.setTitleNViewButtonBadge({
+				//     index: 0,
+				//     text: 10,
+				// });
 
-				// 设置 searchInput的 focus  
-				// focus: true | false  
+				// 设置 searchInput的 focus
+				// focus: true | false
 				webView.setTitleNViewSearchInputFocus(true)
 
-				// 设置 searchInput的 text  
+				// 设置 searchInput的 text
 				webView.setTitleNViewSearchInputText(key)
 				this.searchInput = key
 				// #endif

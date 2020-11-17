@@ -4,7 +4,7 @@ import tim from './tim'
 import {request_uploadImg} from './https'
 import {SDK_APP_ID} from './config'
 
-let uni, userId, request_getUserSig, userSig, userInfo
+let uni, userID, request_getUserSig, userSig, userInfo
 
 function init(e) {
     uni = e.uni
@@ -56,19 +56,19 @@ function onReadyStateUpdate({name}) {
 
 function login(info) {
     userInfo = info
-    userId = userInfo.im_username
-    getUserSig(userId).then(res => {
+    userID = userInfo.im_username
+    getUserSig(userID).then(res => {
         store.commit('SAVE_USER_SIG', res)
-        store.commit('SAVE_USER_ID', userId)
+        store.commit('SAVE_USER_ID', userID)
         tim.login({
-            userID: userId,
+            userID,
             userSig: res
         }).then((imResponse) => {
             // console.log(imResponse.data, 'im登录成功'); // 登录成功
 
             if (imResponse.data.repeatLogin === true) {
                 // 标识账号已登录，本次登录操作为重复登录。v2.5.1 起支持
-                console.log('标识账号已登录:',imResponse.data.errorInfo);
+                console.log('标识账号已登录:', imResponse.data.errorInfo);
             }
         }).catch((imError) => {
             console.warn('登录失败:', imError); // 登录失败的相关信息
@@ -85,13 +85,17 @@ function onReceiveMessage({data: messageList}) {
 
     //#ifdef APP-PLUS
     messageList.map(message => {
+        const {conversationID} = message
+        const payload = JSON.stringify({
+            conversationID
+        })
         if (message.type === TIM.TYPES.MSG_TEXT) {
-            plus.push.createMessage(message.nick + '：' + message.payload.text)
+            plus.push.createMessage(message.nick + '：' + message.payload.text, payload)
         } else if (message.type === TIM.TYPES.MSG_CUSTOM) {
             if (message.payload.description === 'image') {
-                plus.push.createMessage(message.nick + '：' + '[ 图片消息 ]')
+                plus.push.createMessage(message.nick + '：' + '[ 图片消息 ]', payload)
             } else if (message.payload.description === 'telephone') {
-                plus.push.createMessage(message.nick + ' 邀请您进行语音/视频通话')
+                plus.push.createMessage(message.nick + ' 邀请您进行语音/视频通话', payload)
             }
         }
     })
@@ -113,12 +117,13 @@ function handleVideoMessage(messageList) {
 
     // 本机进入待接听状态
     if (videoPayload.state === 1) {
-        store.dispatch('UPDATE_CALL_STATE', 1)
         store.dispatch('UPDATE_CURRENT_CALL', {
             callingID: videoMessageList[0].from, // 主叫方
             targetUserID: videoMessageList[0].to, // 被叫方，即本机
             type: videoPayload.type,
             roomId: videoPayload.roomId
+        }).then(() => {
+            store.dispatch('UPDATE_CALL_STATE', 1)
         })
     }
 }
@@ -132,7 +137,7 @@ function isJsonStr(str) {
     }
 }
 
-function getUserSig(userId) {
+function getUserSig(userID) {
     return new Promise((resolve, reject) => {
         if (userSig) {
             resolve(userSig)
@@ -140,7 +145,7 @@ function getUserSig(userId) {
             request_getUserSig({
                 uni,
                 data: {
-                    userId
+                    userId: userID
                 }
             }).then(res => {
                 if (res.code === 0) {
@@ -162,9 +167,7 @@ function sendText(targetUserID, text) {
     let message = tim.createTextMessage({
         to: targetUserID,
         conversationType: TIM.TYPES.CONV_C2C,
-        payload: {
-            text
-        }
+        payload: {text}
     })
 
     sendMessage(message)
@@ -209,6 +212,22 @@ function telephone({state, data}) {
     sendMessage(message)
 }
 
+function sendCustomMessage(payload, targetUserID) {
+    let message = tim.createCustomMessage({
+        to: targetUserID,
+        conversationType: TIM.TYPES.CONV_C2C,
+        payload
+    })
+    /*
+    * payload:{
+            data, // String
+            description, // String
+            extension // String
+        }
+    * */
+    sendMessage(message)
+}
+
 function phone(e) {
     switch (e) {
         case 1:
@@ -237,10 +256,13 @@ function phone(e) {
 }
 
 function sendMessage(message, success, failed) {
+    // 消息上屏
+    store.commit('pushCurrentMessageList', message)
+
     // 发送消息
     tim.sendMessage(message).then(function (imResponse) {
         // 发送成功
-        console.log(store.state.timStore.currentConversation)
+        // console.log(store.state.timStore.currentConversation)
         console.log(imResponse, '发送成功');
         // if (typeof success === 'function') {
         //     success()
@@ -252,8 +274,6 @@ function sendMessage(message, success, failed) {
         //     failed()
         // }
     })
-
-    store.commit('pushCurrentMessageList', message)
 }
 
 export default {
@@ -264,6 +284,7 @@ export default {
     init,
     sendText,
     sendImage,
+    sendCustomMessage,
     phone,
     getUserSig
 }

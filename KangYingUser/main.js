@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import store from './store'
 import App from './App'
+import {request_init} from './common/https'
+
+request_init({uni}) // 向https注入uni对象
 
 const msg = (title, duration = 1500, mask = false, icon = 'none') => {
 	//统一提示方便全局修改
@@ -12,15 +15,6 @@ const msg = (title, duration = 1500, mask = false, icon = 'none') => {
 		duration,
 		mask,
 		icon
-	})
-}
-
-const json = type => {
-	//模拟异步请求数据
-	return new Promise(resolve => {
-		setTimeout(() => {
-			resolve(Json[type]);
-		}, 500)
 	})
 }
 
@@ -38,7 +32,6 @@ Vue.prototype.$fire = new Vue();
 Vue.prototype.$store = store;
 Vue.prototype.$api = {
 	msg,
-	json,
 	prePage
 }
 
@@ -50,7 +43,7 @@ let lastPage = null
 const __pageTo = (e) => {
 	e = e || {}
 
-	/* 
+	/*
 	 e = {
 		 needLogin: true，需要登录
 		 needCurrentPage: true, 需要保持当前页面，否则登录后跳转到传入的url
@@ -137,6 +130,7 @@ const __pageTo = (e) => {
 		})
 	}
 }
+
 Vue.prototype.$pageTo = __pageTo
 
 App.mpType = 'app'

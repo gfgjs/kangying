@@ -140,6 +140,7 @@
 				this.getCaseList()
 			},
 			viewMed(item) {
+			    console.log(item)
 				this.$pageTo({
 					url:'/pages/doctor/prescript',
 					options:{id:item.Id,PayStatus:item.PayStatus}

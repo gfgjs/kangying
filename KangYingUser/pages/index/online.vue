@@ -25,9 +25,9 @@
 
 <script>
 	let isUserTap // 右侧scrollView的滚动是用户滑动还是js滚动（js控制滚动时不需要触发@scroll事件，否则会出现bug），由此变量控制
-	import {
-		request_cates
-	} from '../../common/https.js'
+    import {
+        request_cates, request_searchHome
+    } from '../../common/https.js'
 	export default {
 		data() {
 			return {
@@ -63,6 +63,12 @@
 				uni.stopPullDownRefresh()
 			}, 500)
 		},
+        onNavigationBarSearchInputConfirmed(e) {
+            this.$pageTo({
+                url:'/pages/doctor/list',
+                options:{text:e.text}
+            })
+        },
 		methods: {
 			loadData() {
 				request_cates({
@@ -144,7 +150,7 @@
 					this.currentId = tabs[0].pid;
 				}
 			},
-			// 
+			//
 			tapScrollView() {
 				// 用户触摸右侧后
 				isUserTap = true

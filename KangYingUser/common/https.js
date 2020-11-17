@@ -1,19 +1,15 @@
 import {
     HOST
 } from './config.js'
-import store from '../store/index.js'
-
-export const test = () => {
-    // console.log(fetch)
-}
 
 let __token = ''
+let uni
 
 export const request = (e = {}, api, method, contentType) => {
     method = method || 'POST'
     contentType = contentType || 'application/x-www-form-urlencoded'
 
-    let uni = e.uni
+    // let uni = e.uni
 
     if (!__token) {
         __token = uni.getStorageSync('LOGIN_MESSAGE').token
@@ -51,6 +47,10 @@ export const request = (e = {}, api, method, contentType) => {
         return e
     })
 }
+// 初始化https
+export const request_init = e=>{
+    uni = e.uni
+}
 // 清除token
 export const request_clearToken = () => {
     __token = ''
@@ -62,7 +62,6 @@ export const request_version = e => {
 // 上传图片
 
 export const request_uploadImg = e => {
-    console.log(e)
     return new Promise((resolve, reject) => {
         e.uni.chooseImage({
             success: (chooseImageRes) => {
@@ -197,7 +196,10 @@ export const request_editAddress = e => {
 export const request_delAddress = e => {
     return request(e, '/v1/u/address/del')
 }
-
+// 主页搜索
+export const request_searchHome = e => {
+    return request(e, '/v1/p//search/home', 'GET')
+}
 
 // 文章
 export const request_articleList = e => {

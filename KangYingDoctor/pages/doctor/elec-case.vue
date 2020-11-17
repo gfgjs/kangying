@@ -4,7 +4,7 @@
 		<view class="row-title">就诊人信息</view>
 		<view class="row border-bottom">
 			<view class="title">患者姓名:</view>
-			<view class="little-title">{{info.p_name}}</view>
+			<view class="little-title">{{recordInfo.patientInfo.p_name}}</view>
 		</view>
 		<view class="row border-bottom">
 			<view class="title">性别:</view>
@@ -59,11 +59,12 @@
 
 <script>
 	import {request_recordUp,request_recordInfo} from '../../common/https.js'
+    import IM from "../../common/im";
 	export default {
 		data() {
 			return {
 				info:{},
-				recordInfo:{},
+				recordInfo:null,
 				p_narrate:'',
 				diagnosis:''
 			};
@@ -83,9 +84,13 @@
 					this.diagnosis = this.recordInfo.now_record.diagnosis
 				}
 			})
+            IM.sendCustomMessage({
+                data:'请查看病例信息',
+                description:'PAGE_LINK',
+                extension: JSON.stringify({record_id:this.info.record_id,tab:0})
+            },this.info.targetUserID)
 		},
 		methods:{
-			
 			update(){
 				request_recordUp({
 					uni,
@@ -190,7 +195,7 @@
 		margin-right: 20px;
 	}
 	.save-button{
-		margin: 0 auto;	
+		margin: 0 auto;
 		position: fixed;
 		bottom: 0;
 		left: 0;

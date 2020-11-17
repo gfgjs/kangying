@@ -62,7 +62,7 @@
 		</view>
 		<uni-popup ref="payType">
 			<radio-group class="pay-type">
-				<label class="row" for="pay-ali" @click="pay(1)">
+				<label class="row" @click="pay(1)">
 					<view class="left">
 						<image src="../../static/imgs/alipay.png" mode=""></image>
 						<view>支付宝支付</view>
@@ -70,7 +70,7 @@
 					<uni-icons type="arrowright"></uni-icons>
 					<!-- <radio  checked=""  id="pay-ali"></radio> -->
 				</label>
-				<label class="row" for="pay-wx" @click="pay(2)">
+				<label class="row" @click="pay(2)">
 					<view class="left">
 						<image src="../../static/imgs/weixin.png" mode=""></image>
 						<view>微信支付</view>
@@ -101,7 +101,6 @@
 					<uni-icons type="arrowright"></uni-icons>
 				</view>
 			</view>
-
 		</uni-popup>
 	</view>
 </template>
@@ -143,33 +142,33 @@
 			}
 		},
 		onShow() {
-			// if(this.patientCard){
-			// 	this.$refs.payType.open()
-			// }
-			// if(this.payResult){
-			// 	this.$pageTo({
-			// 		url:'/pages/doctor/chat',
-			// 		options:{
-			// 			im_username:this.info.im_username,
-			// 			order_no:this.order_no
-			// 		}
-			// 	})
-			// }
+			if(this.currentPatientCard){
+                // 跳转聊天窗口
+                this.$pageTo({
+                    url:'/pages/doctor/chat-view',
+                    options:{
+                        userID:this.info.im_username
+                    }
+                })
+			}
 		},
+        beforeDestroy(){
+		  this.patientCard = null
+        },
 		onPullDownRefresh() {
 			setTimeout(() => {
 				uni.stopPullDownRefresh()
 			}, 500)
 		},
 		computed: {
-			...mapGetters(['hasLogin'])
+			...mapGetters(['hasLogin',"currentPatientCard"])
 		},
 		methods: {
 			onOldOrder(){
 				// 跳转聊天窗口
 				this.$refs.order.close()
 				this.$pageTo({
-					url: '/pages/doctor/chat',
+					url: '/pages/doctor/chat-view',
 					options: {
 						im_username: this.oldOrder.d_im_name,
 						record_id: this.oldOrder.id,
@@ -194,7 +193,7 @@
 						// 跳转聊天窗口
 						console.log(this.info)
 						this.$pageTo({
-							url: '/pages/doctor/chat',
+							url: '/pages/doctor/chat-view',
 							options: {
 								userID:this.info.im_username
 							}
@@ -220,64 +219,29 @@
 					}
 				})
 			},
-			chat(e, im_username, price) {
+			chat() {
 				if (this.hasLogin) {
-					if (this.patientCard) {
-						this.pay(1)
-					} else {
-						uni.showModal({
-							title:'提示',
-							content:'需要先选择病历卡，是否继续',
-							confirmText:'前往',
-							success:(e)=> {
-								if(e.confirm){
-									this.$pageTo({
-										url: '/pages/card/list',
-										options: {
-											pageFrom: 'doctor'
-										}
-									})
-								}
-							}
-						})
-					}
-
-					// if (this.payResult) {
-					// 	this.$pageTo({
-					// 		url: '/pages/doctor/chat',
-					// 		options: {
-					// 			im_username: im_username || this.info.im_username,
-					// 			// order_no:this.order_no,
-					// 			record_id: this.record_id
-					// 		}
-					// 	})
-					// } else {
-					// 	uni.showModal({
-					// 		title: '收费问诊提示',
-					// 		content: `您选择的问诊服务需收取 ￥${price||this.info.fee} 元 服务费，是否确认使用此服务？`,
-					// 		success: (e) => {
-					// 			if (e.confirm) {
-					// 				this.$pageTo({
-					// 					url: '/pages/card/list',
-					// 					options: {
-					// 						pageFrom: 'doctor'
-					// 					}
-					// 				})
-					// 			}
-					// 		}
-					// 	})
-					// }
+                    uni.showModal({
+                        title:'提示',
+                        content:'需要先选择病历卡，是否继续',
+                        confirmText:'前往',
+                        success:(e)=> {
+                            if(e.confirm){
+                                this.$pageTo({
+                                    url: '/pages/card/list',
+                                    options: {
+                                        pageFrom: 'doctor'
+                                    }
+                                })
+                            }
+                        }
+                    })
 				} else {
 					this.$pageTo({
-						// url:'/pages/doctor/chat',
 						needLogin: true,
 						lastPage: {
 							back: true
 						}
-						// options:{
-						// 	im_username:im_username||this.info.im_username,
-						// 	order_no:this.order_no
-						// }
 					})
 				}
 			}

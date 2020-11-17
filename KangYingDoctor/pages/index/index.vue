@@ -6,7 +6,7 @@
 		<view class="menus-box">
 			<view class="row-title">
 				医生诊疗室
-				<label for="" style="display: flex;align-items: center;">
+				<label style="display: flex;align-items: center;">
 					<switch class="" color="#5EB6AA" :checked="!!patientCount.work_status" @change="changeWordStatus"></switch>
 					<view style="margin-left: 6px;">{{workTextStatus?'出诊':'休息'}}</view>
 				</label>
@@ -47,7 +47,7 @@
 		<view class="menus-box">
 			<view class="row-title">服务中心</view>
 			<view class="row" style="border: none;">
-				<view class="row-item" @click="switchTab('/pages/index/patient')">
+				<view class="row-item" @click="toPage('/pages/doctor/consulting-desk')">
 					<image src="../../static/index/1.png" mode=""></image>
 					<view class="name">服务台</view>
 				</view>
@@ -59,17 +59,20 @@
 					<image src="../../static/index/3.png" mode=""></image>
 					<view class="name">药房</view>
 				</view>
-				<view class="row-item"  @click="$pageTo({url:'/pages/doctor/telephone'})">
-					<image src="../../static/index/4.png"></image>
-					<view class="name">随访计划</view>
-				</view>
+<!--				<view class="row-item"  @click="$api.msg('暂未开放，敬请期待')">-->
+<!--					<image src="../../static/index/4.png"></image>-->
+<!--					<view class="name">随访计划</view>-->
+<!--				</view>-->
+                <view class="row-item"  @click="$pageTo({url:'/pages/test/test'})">
+                    <image src="../../static/index/4.png"></image>
+                    <view class="name">随访计划</view>
+                </view>
 			</view>
 		</view>
 		<view class="common-place"></view>
 		<view class="common-place"></view>
 		<view class="common-place"></view>
 		<view class="common-place"></view>
-		<!-- <view v-for="i in pages" @click="$pageTo({url:'/'+i.path})" style="padding: 10px;">{{i.path}}</view> -->
 	</view>
 </template>
 
@@ -80,16 +83,11 @@
 		request_version,
 		request_imInit,
 		request_patientData,request_changeWorkStatus
-	} from '@/common/https.js'
+	} from '../../common/https.js'
 	import {
 		saveLoginMessage,
 		readLoginMessage
-	} from '@/common/util.js'
-	import {
-		mapGetters,
-		mapActions
-	} from 'vuex'
-	import pages from '@/pages.json'
+	} from '../../common/util.js'
 	export default {
 		data() {
 			return {
@@ -139,7 +137,7 @@
 					url
 				})
 			},
-			
+
 		}
 	}
 </script>

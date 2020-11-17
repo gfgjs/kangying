@@ -109,7 +109,7 @@
 					this.$api.msg('请输入验证码')
 					return
 				}
-				request_codeLogin({
+                request_codeLogin({
 					uni,
 					data: {
 						sms_code: this.code,
@@ -180,16 +180,26 @@
 					return
 				}
 				this.cutdown = 60;
-				uni.showToast({
-					title: '发送成功',
-					icon: 'none'
-				})
+                request_sendLoginSms({data:{mobile:this.mobile}}).then(res=>{
+                    console.log(res)
+                    if(res.code===0){
+                        uni.showToast({
+                            title: '发送成功',
+                            icon: 'none'
+                        })
+                    }else{
+                        uni.showToast({
+                            title: res.err,
+                            icon: 'none'
+                        })
+                    }
+                })
 				this.codeTips = '60 秒后可再次获取';
 				clearInterval(timer)
 				timer = setInterval(() => {
 					if (this.cutdown >= 1) {
-						this.cutdown--;
-						this.codeTips = this.cutdown + ' 秒后可再次获取';
+						this.cutdown--
+						this.codeTips = this.cutdown + ' 秒后可再次获取'
 					} else {
 						this.codeTips = '获取验证码'
 					}

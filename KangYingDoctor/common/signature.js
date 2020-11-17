@@ -37,8 +37,13 @@ class Handwriting {
     var query = uni.createSelectorQuery();
     query.select('.handCenter').boundingClientRect(rect => {
       // console.log(rect)
-      this.canvasWidth = rect.width;
-      this.canvasHeight = rect.height;
+      if(rect){
+        this.canvasWidth = rect.width;
+        this.canvasHeight = rect.height;
+      }else{
+        this.canvasWidth = 300;
+        this.canvasHeight = 200;
+      }
     }).exec();
     this.selectSlideValue(this.slideValue);
   }
@@ -129,7 +134,7 @@ class Handwriting {
       x: e.changedTouches[0].x,
       y: e.changedTouches[0].y
     }
-		
+
     this.lastPoint = this.currentPoint;
     this.currentPoint = point
     this.currentLine.unshift({
@@ -375,7 +380,7 @@ class Handwriting {
         break;
     }
   }
-	
+
 	saveCanvas(){
 		 return new Promise((resolve,rej) => {
 			uni.canvasToTempFilePath({
@@ -389,8 +394,8 @@ class Handwriting {
 					 rej(err);
 				 }
 			})
-		})	
-	}	
+		})
+	}
 }
 
 export default Handwriting;

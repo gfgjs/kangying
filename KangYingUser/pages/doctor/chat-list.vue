@@ -8,32 +8,36 @@
         </view> -->
         <!-- <view class="header-place"></view> -->
 
-<!--        <view class="row-title" style="display: flex;justify-content: space-between;">筛选就诊卡-->
-<!--            <picker class="left" :range="cardListNames" @change="cardChange">-->
-<!--                <view>{{ currentCard.p_name || '全部' }}-->
-<!--                    <uni-icons type="arrowdown"></uni-icons>-->
-<!--                </view>-->
-<!--            </picker>-->
-<!--        </view>-->
+        <!--        <view class="row-title" style="display: flex;justify-content: space-between;">筛选就诊卡-->
+        <!--            <picker class="left" :range="cardListNames" @change="cardChange">-->
+        <!--                <view>{{ currentCard.p_name || '全部' }}-->
+        <!--                    <uni-icons type="arrowdown"></uni-icons>-->
+        <!--                </view>-->
+        <!--            </picker>-->
+        <!--        </view>-->
         <view class="item-content" v-for="(item,index) in conversationList" :key='index' @click="toChat(item)">
             <image :src="item.userProfile.avatar" mode=""></image>
             <view class="right">
                 <view class="name">{{ item.userProfile.nick }}</view>
                 <view class="text" v-if="item.lastMessage.payload">
-                    {{ item.lastMessage.payload.text || (item.lastMessage.payload.description === 'image' && '[ 图片 ]') || (item.lastMessage.payload.description === 'telephone'&&'[ 语音/视频电话 ]') }}
+                    {{
+                        item.lastMessage.payload.text
+                        || (item.lastMessage.payload.description === 'image' && '[ 图片 ]')
+                        || (item.lastMessage.payload.description === 'telephone' && '[ 语音/视频电话 ]')
+                        || (item.lastMessage.payload.description === 'patientCard' && '[ 卡片信息 ]')
+                    }}
                 </view>
             </view>
-            <view>{{formatMinute(item.lastMessage.lastTime*1000)}}</view>
+            <view>{{ formatMinute(item.lastMessage.lastTime * 1000) }}</view>
         </view>
-        <view class="no-data" v-if="!conversationList">暂无数据</view>
+        <view class="no-data" v-if="!conversationList.length">暂无数据</view>
     </view>
 </template>
 
 <script>
 import {
     mapGetters,
-    mapActions,
-    mapState
+    mapActions
 } from 'vuex'
 import {
     request_recordList,
@@ -68,7 +72,6 @@ export default {
         conversationList() {
             console.log(this.conversationList)
         },
-
     },
     onLoad() {
         if (this.isSDKReady) {
@@ -98,7 +101,7 @@ export default {
         chatWith(t) {
             this.$pageTo({
                 uni,
-                url: '/pages/doctor/chat',
+                url: '/pages/doctor/chat-view',
                 options: {
                     userID: t
                 }
@@ -141,7 +144,7 @@ export default {
             store.dispatch('getMessageList', conversationID)
             this.$pageTo({
                 uni,
-                url: '/pages/doctor/chat',
+                url: '/pages/doctor/chat-view',
                 options: {
                     conversationID,
                     userID,

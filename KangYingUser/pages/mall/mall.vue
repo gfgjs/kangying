@@ -21,7 +21,7 @@
 			</view>
 		</view>
 		<view class="list tabs">
-			<view class="tab" :class="tabCurr==index&&'tab-curr'" 
+			<view class="tab" :class="tabCurr==index&&'tab-curr'"
 			v-for="(item,index) in medCates"
 			:key="'medCates_'+index"
 			@click="tabChange(item,index)">
@@ -41,7 +41,7 @@
 						<view class="title">{{item.sale_price}}</view>
 						<view class="little-title">{{item.original_price}}</view>
 					</view>
-					<uni-icons type="plus-filled" class="icon" size="24" @click.stop="addToCart(item)"></uni-icons>
+					<uni-icons type="plus-filled" class="icon" size="24" @click.native.stop="addToCart(item)"></uni-icons>
 				</view>
 			</view>
 			<view v-if="!medList.length" class="no-data">
@@ -62,18 +62,22 @@
 				medList:[]
 			};
 		},
-		mounted() {
-			
-			
+		onLoad(e) {
+            if(e.text){
+                this.$pageTo({
+                    url:'/pages/mall/search',
+                    options: {key:e.text}
+                })
+            }
 		},
 		onShow() {
 			this.refresh()
 			// #ifdef APP-PLUS
 			// let webView = this.$mp.page.$getAppWebview()
-			// // 设置 searchInput的 text  
+			// // 设置 searchInput的 text
 			// webView.setTitleNViewSearchInputText('')
 			// #endif
-			
+
 			// #ifdef H5
 			// let inputSearch = document.querySelector('.uni-input-input[type=search]')
 			// var evt = new InputEvent('input', {
@@ -138,7 +142,7 @@
 					}
 				}).then(res=>{
 					this.medList = res.data
-				}) 
+				})
 			}
 		}
 	}
@@ -330,5 +334,5 @@
 	}
 
 
-	
+
 </style>

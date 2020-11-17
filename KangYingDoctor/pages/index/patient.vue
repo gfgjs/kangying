@@ -40,14 +40,15 @@
 		methods:{
 			toChat(item){
 				this.$pageTo({
-					url:'/pages/doctor/chat',
+					url:'/pages/doctor/chat-view',
 					options:{
-						record_id:item.id,
-						im_username:item.user_info.im_username,
-						p_im_name:item.user_info.im_username,
-						p_avatar:item.user_info.avatar,
-						p_gender:item.user_info.gender,
-						...item
+					    userID:item.user_info.im_username,
+						// record_id:item.id,
+						// im_username:item.user_info.im_username,
+						// p_im_name:item.user_info.im_username,
+						// p_avatar:item.user_info.avatar,
+						// p_gender:item.user_info.gender,
+						// ...item
 					}
 				})
 			}
@@ -58,7 +59,7 @@
 <style lang="scss">
 	page{
 		padding: 0 20px;
-		
+
 	}
 	.place{
 		height: 61px;
@@ -72,7 +73,7 @@
 		box-shadow: 0 0 2px #eeeeee;
 		left: 0;
 	}
-	
+
 	.item{
 		display: flex;
 		justify-content: space-between;
@@ -116,6 +117,6 @@
 		}
 	}
 	.image{
-		
+
 	}
 </style>

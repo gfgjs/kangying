@@ -1,18 +1,20 @@
 <script>
 import {
+    mapGetters,
+    mapActions
+} from 'vuex'
+
+import {
+    saveLoginMessage,
+    readLoginMessage
+} from './common/util.js'
+
+import {
     request_userInfo,
     request_version,
     request_clearToken,
     request_getUserSig
 } from './common/https.js'
-import {
-    saveLoginMessage,
-    readLoginMessage
-} from 'common/util.js'
-import {
-    mapGetters,
-    mapActions
-} from 'vuex'
 
 import IM from './common/im.js'
 
@@ -38,8 +40,7 @@ export default {
     },
     data() {
         return {
-            hasHide: false,
-            onCalling: false,
+            hasHide: false
         }
     },
     onPullDownRefresh() {
@@ -53,7 +54,7 @@ export default {
             if (status) {
                 IM.login(this.userInfo)
             } else {
-               IM.logout()
+                IM.logout()
             }
         },
         CALL_STATE(state) {
@@ -63,9 +64,6 @@ export default {
                 })
             }
         },
-        REMOTE_CALL_STATE(state) {
-            // console.log('REMOTE_CALL_STATE:====', state)
-        }
     },
     onLaunch: function () {
         //初始化IM
@@ -82,9 +80,23 @@ export default {
         //#ifdef APP-PLUS
         plus.push.addEventListener('click', e => {
             setTimeout(() => {
-                uni.navigateTo({
-                    url: '/pages/doctor/chat-list'
-                })
+                if(e.payload){
+                    try{
+                        const {conversationID} = JSON.parse(e.payload)
+                        if(conversationID){
+                            this.$pageTo({
+                                url:'/pages/doctor/chat-view',
+                                options:{
+                                    conversationID
+                                }
+                            })
+                        }
+                    }catch {
+                        uni.navigateTo({
+                            url: '/pages/doctor/chat-list'
+                        })
+                    }
+                }
             })
         })
 
@@ -132,11 +144,7 @@ export default {
             return new Promise((resolve) => {
                 const message = readLoginMessage(uni)
                 if (message.token) {
-                    request_userInfo({
-                        uni,
-                        token: message.token,
-                        data: {}
-                    }).then(res => {
+                    request_userInfo().then(res => {
                         if (res.code === 0) {
                             // vuex存储临时登录状态
                             this.LOGIN(res.data)
@@ -216,6 +224,14 @@ view,
 input,
 button {
     box-sizing: border-box;
+}
+
+#page-index-index{
+    /*首页搜索弹框*/
+    .uni-popup__wrapper-box{
+        width: 100%;
+        height: 100%;
+    }
 }
 
 .no-data {

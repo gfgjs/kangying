@@ -3,18 +3,18 @@
 		<view class="item" v-for="(item,index) in list" :key="index" @click="$pageTo({url:'/pages/mall/product?id='+item.id})">
 			<image :src="item.m_thumb" mode=""></image>
 			<view class="right">
-				<view class="name">【买送共发120片】{{item.m_name}} {{item.spec}}</view>
+				<view class="name">{{item.m_name}} {{item.spec}}</view>
 				<view class="row brief">
 					<view class="data">已售出<view class="price">{{item.sale}}</view>份/<view class="price">{{item.stock}}</view>库存</view>
 					<view class="price bold">￥{{item.sale_price}} <text v-if="item.original_price" class="little-title" style="text-decoration: line-through;font-weight: 400;">￥{{item.original_price}}</text></view>
 				</view>
 				<view class="row">
 					<view class="address">{{item.desc}}</view>
-					<uni-icons type="plus-filled" class="plus" size="24" @click.stop="addToCart(item)"></uni-icons>
+					<uni-icons type="plus-filled" class="plus" size="24" @click.native.stop="addToCart(item)"></uni-icons>
 				</view>
 			</view>
 		</view>
-		<view class="no-data" v-if="!list.length">
+		<view class="no-data" v-if="!list||!list.length">
 			请搜索药品名
 		</view>
 	</view>

@@ -1,441 +1,482 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
-			"path": "pages/guide/guide",
-			"style": {
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/index/index",
-			"style": {
-				// #ifdef MP
-				"navigationBarTitleText": "天心医疗",
-				// #endif
-				"app-plus": {
-					"titleNView": {
-						"type": "transparent",
-						"searchInput": {
-							"backgroundColor": "rgba(231, 231, 231,.7)",
-							"borderRadius": "16px",
-							"placeholder": "找医生、找医院、查疾病",
-							"disabled": false,
-							"placeholderColor": "#606266"
-						},
-						"buttons": [{
-								"fontSrc": "/static/yticon.ttf",
-								"text": "\ue744",
-								"fontSize": "27",
-								"color": "#303133",
-								"background": "rgba(0,0,0,0)",
-								"redDot": false
-							},
-							{
-								"fontSrc": "/static/iconfont.ttf",
-								"text": "\ue649",
-								"fontSize": "27",
-								"color": "#303133",
-								"background": "rgba(0,0,0,0)",
-								"float": "left"
-							}
-						]
-					}
-				}
-			}
-		},
+  "pages": [
 
-		{
-			"path": "pages/doctor/case",
-			"style": {
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/article/article"
-		},
-		{
-			"path": "pages/doctor/see-the-doctor",
-			"style": {
-				// #ifdef MP
-				"navigationBarTitleText": "网上看病",
-				// #endif
-				"app-plus": {
-					"titleNView": {
-						"type": "transparent",
-						"backButton": {
-							"background": "rgba(0,0,0,0)"
-						},
-						"searchInput": {
-							"backgroundColor": "rgba(231, 231, 231,.7)",
-							"borderRadius": "16px",
-							"placeholder": "找医生、找医院、查疾病",
-							"disabled": true,
-							"placeholderColor": "#606266"
-						},
-						"buttons": [{
-								"fontSrc": "/static/iconfont.ttf",
-								"text": "\ue649",
-								"fontSize": "27",
-								"color": "#303133",
-								"background": "rgba(0,0,0,0)",
-								"float": "left"
-							},
-							{
-								"fontSrc": "/static/yticon.ttf",
-								"text": "\ue744",
-								"fontSize": "26",
-								"color": "#303133",
-								"background": "rgba(0,0,0,0)",
-								"redDot": false
-							}
-						]
-					}
-				}
-			}
-		},
-		{
-			"path": "pages/mall/mall",
-			"style": {
-				"enablePullDownRefresh": true,
-				// #ifdef MP
-				"navigationBarTitleText": "快速购药",
-				// #endif
-				"app-plus": {
-					"titleNView": {
-						"type": "transparent",
-						"searchInput": {
-							"backgroundColor": "rgb(231, 231, 231)",
-							"placeholder": "药品名称和种类",
-							"disabled": true,
-							"placeholderColor": "#606266"
-						},
-						"buttons": [{
-							"fontSrc": "/static/yticon.ttf",
-							"text": "\ue744",
-							"fontSize": "26",
-							"color": "#303133",
-							"background": "rgba(0,0,0,0)"
-						}]
-					}
-				}
-			}
-		},
-		{
-			"path": "pages/mall/search",
-			"style": {
-				"enablePullDownRefresh": true,
-				// #ifdef MP
-				"navigationBarTitleText": "搜索",
-				// #endif
-				"app-plus": {
-					"titleNView": {
-						"type": "default",
-						"searchInput": {
-							"backgroundColor": "rgb(231, 231, 231)",
-							"placeholder": "药品名称和种类",
-							"disabled": false,
-							"placeholderColor": "#606266"
-						},
-						"buttons": [{
-							"fontSrc": "/static/yticon.ttf",
-							"text": "搜索",
-							"fontSize": "14",
-							"color": "#303133",
-							"background": "rgba(0,0,0,0)"
-						}]
-					}
-				}
-			}
-
-		},
-		{
-			"path": "pages/index/online",
-			"style": {
-				// #ifdef MP
-				"navigationBarTitleText": "在线医院",
-				// #endif
-				"app-plus": {
-					"bounce": "none",
-					"titleNView": {
-						"type": "default",
-
-						"searchInput": {
-							"backgroundColor": "rgba(231, 231, 231,.7)",
-							"borderRadius": "16px",
-							"placeholder": "找医生、找医院、查疾病",
-							"disabled": false,
-							"placeholderColor": "#606266"
-						},
-						"buttons": [{
-								"fontSrc": "/static/yticon.ttf",
-								"text": "\ue744",
-								"fontSize": "27",
-								"color": "#303133",
-								"background": "rgba(0,0,0,0)",
-								"redDot": false
-							},
-							{
-								"fontSrc": "/static/iconfont.ttf",
-								"text": "\ue649",
-								"fontSize": "27",
-								"color": "#303133",
-								"background": "rgba(0,0,0,0)",
-								"float": "left"
-							}
-						]
-					}
-				}
-			}
-		},
-		{
-			"path": "pages/index/mine",
-			"style": {
-				// #ifdef MP
-				"navigationBarTitleText": "个人中心",
-				// #endif
-				"app-plus": {
-					"bounce": "none",
-					"titleNView": {
-						"type": "transparent",
-						"buttons": [{
-							"fontSrc": "/static/yticon.ttf",
-							"text": "\ue744",
-							"fontSize": "27",
-							"color": "#303133",
-							"background": "rgba(0,0,0,0)",
-							"redDot": false
-						}]
-					}
-				}
-			}
-		},
-		{
-			"path": "pages/login/login",
-			"style": {
-				"navigationStyle": "custom"
-			}
-		}, {
-			"path": "pages/login/register",
-			"style": {
-				"navigationBarBackgroundColor": "white"
-			}
-		}
-
-		, {
-			"path": "pages/card/bind",
-			"style": {
-				"navigationBarTitleText": "绑定就诊卡"
-			}
-		}, {
-			"path": "pages/card/create",
-			"style": {}
-		}, {
-			"path": "pages/doctor/list",
-			"style": {}
-		}, {
-			"path": "pages/doctor/doctor",
-			"style": {
-				// #ifdef MP
-				"navigationBarTitleText": "天心医疗",
-				// #endif
-				"app-plus": {
-					"titleNView": {
-						"type": "transparent",
-						"backButton": {
-							"background": "rgba(0,0,0,0)"
-						}
-					}
-				}
-			}
-		}, {
-			"path": "pages/doctor/chat",
-			"style": {
-				"enablePullDownRefresh": true,
-
-				"app-plus": {
-					"titleNView": {
-						"type": "default",
-						"backButton": {
-							"background": "rgba(0,0,0,0)"
-						}
-					},
-					"softinputMode": "adjustResize"
-				}
-			}
-		}, {
-			"path": "pages/mall/cart",
-			"style": {}
-		}, {
-			"path": "pages/doctor/archives",
-			"style": {}
-		}
-
-		, {
-			"path": "pages/mine/message",
-			"style": {}
-		}, {
-			"path": "pages/mall/create-order",
-			"style": {}
-		}, {
-			"path": "pages/mine/address",
-			"style": {}
-		}, {
-			"path": "pages/mall/pay-result",
-			"style": {}
-		}, {
-			"path": "pages/mine/info",
-			"style": {
-				"navigationBarBackgroundColor": "white"
-			}
-		}, {
-			"path": "pages/mall/order",
-			"style": {
-				"enablePullDownRefresh": true
-			}
-		}, {
-			"path": "pages/mall/order-list",
-			"style": {}
-		}, {
-			"path": "pages/mine/check-appoint",
-			"style": {}
-		}, {
-			"path": "pages/mall/product",
-			"style": {
-				// #ifdef MP
-				"navigationBarTitleText": "药品详情",
-				// #endif
-				"app-plus": {
-					"titleNView": {
-						"type": "default",
-						"backButton": {
-							"background": "rgba(0,0,0,0)"
-						},
-						"buttons": [{
-							"fontSrc": "/static/iconfont.ttf",
-							"text": "\ue636",
-							"fontSize": "26",
-							"color": "#303133",
-							"background": "rgba(0,0,0,0)",
-							"redDot": false
-						}]
-					}
-				}
-			}
-		}, {
-			"path": "pages/article/list",
-			"style": {
-				"enablePullDownRefresh": true
-			}
-		}, {
-			"path": "pages/login/verify-code",
-			"style": {}
-		}, {
-			"path": "pages/login/setPassword",
-			"style": {}
-		}, {
-			"path": "pages/card/list",
-			"style": {
-				"enablePullDownRefresh": true
-			}
-		}, {
-			"path": "pages/card/card",
-			"style": {}
-		}
-
-		, {
-			"path": "pages/doctor/chat-list",
-			"style": {
-				"navigationBarBackgroundColor": "#5EB6AA",
-				"navigationBarTextStyle": "white"
-			}
-		}, {
-			"path": "pages/mine/edit-address",
-			"style": {}
-		}, {
-			"path": "pages/mall/order-details",
-			"style": {}
-		}, {
-			"path": "pages/mine/check-details",
-			"style": {}
-		}, {
-			"path": "pages/mine/create-check-order",
-			"style": {}
-		}, {
-			"path": "pages/mine/feedback",
-			"style": {}
-		}, {
-			"path": "pages/doctor/webview",
-			"style": {
-				"app-plus": {
-					"titleNView": {
-						"type": "transparent"
-					}
-				}
-			}
-		}
-	    ,{
-            "path" : "components/agreement",
-            "style" : {}
+    {
+      "path": "pages/index/index",
+      "style": {
+        // #ifdef MP
+        "navigationBarTitleText": "天心医疗",
+        // #endif
+        "app-plus": {
+          "softinput": {
+            "mode": "adjustPan"
+          },
+          "titleNView": {
+            "type": "transparent",
+            "searchInput": {
+              "backgroundColor": "rgba(231, 231, 231,.7)",
+              "borderRadius": "16px",
+              "placeholder": "找医生、找医院、查疾病",
+              "disabled": false,
+              "placeholderColor": "#606266"
+            },
+            "buttons": [
+              {
+                "fontSrc": "/static/yticon.ttf",
+                "text": "\ue744",
+                "fontSize": "27",
+                "color": "#303133",
+                "background": "rgba(0,0,0,0)",
+                "redDot": false
+              },
+              {
+                "fontSrc": "/static/iconfont.ttf",
+                "text": "\ue649",
+                "fontSize": "27",
+                "color": "#303133",
+                "background": "rgba(0,0,0,0)",
+                "float": "left"
+              }
+            ]
+          }
         }
-        ,{
-            "path" : "pages/doctor/prescript",
-            "style" :
-            {
-                "navigationBarTitleText": "处方详情",
-                "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/guide/guide",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/doctor/case",
+      "style": {
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/article/article"
+    },
+    {
+      "path": "pages/doctor/see-the-doctor",
+      "style": {
+        // #ifdef MP
+        "navigationBarTitleText": "网上看病",
+        // #endif
+        "app-plus": {
+          "titleNView": {
+            "type": "transparent",
+            "backButton": {
+              "background": "rgba(0,0,0,0)"
+            },
+            "searchInput": {
+              "backgroundColor": "rgba(231, 231, 231,.7)",
+              "borderRadius": "16px",
+              "placeholder": "找医生、找医院、查疾病",
+              "disabled": true,
+              "placeholderColor": "#606266"
+            },
+            "buttons": [
+              {
+                "fontSrc": "/static/iconfont.ttf",
+                "text": "\ue649",
+                "fontSize": "27",
+                "color": "#303133",
+                "background": "rgba(0,0,0,0)",
+                "float": "left"
+              },
+              {
+                "fontSrc": "/static/yticon.ttf",
+                "text": "\ue744",
+                "fontSize": "26",
+                "color": "#303133",
+                "background": "rgba(0,0,0,0)",
+                "redDot": false
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/mall/mall",
+      "style": {
+        "enablePullDownRefresh": true,
+        // #ifdef MP
+        "navigationBarTitleText": "快速购药",
+        // #endif
+        "app-plus": {
+          "titleNView": {
+            "type": "transparent",
+            "searchInput": {
+              "backgroundColor": "rgb(231, 231, 231)",
+              "placeholder": "药品名称和种类",
+              "disabled": true,
+              "placeholderColor": "#606266"
+            },
+            "buttons": [
+              {
+                "fontSrc": "/static/yticon.ttf",
+                "text": "\ue744",
+                "fontSize": "26",
+                "color": "#303133",
+                "background": "rgba(0,0,0,0)"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/mall/search",
+      "style": {
+        "enablePullDownRefresh": true,
+        // #ifdef MP
+        "navigationBarTitleText": "搜索",
+        // #endif
+        "app-plus": {
+          "titleNView": {
+            "type": "default",
+            "searchInput": {
+              "backgroundColor": "rgb(231, 231, 231)",
+              "placeholder": "药品名称和种类",
+              "disabled": false,
+              "placeholderColor": "#606266"
+            },
+            "buttons": [
+              {
+                "fontSrc": "/static/yticon.ttf",
+                "text": "搜索",
+                "fontSize": "14",
+                "color": "#303133",
+                "background": "rgba(0,0,0,0)"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/index/online",
+      "style": {
+        // #ifdef MP
+        "navigationBarTitleText": "在线医院",
+        // #endif
+        "app-plus": {
+          "bounce": "none",
+          "titleNView": {
+            "type": "default",
+            "searchInput": {
+              "backgroundColor": "rgba(231, 231, 231,.7)",
+              "borderRadius": "16px",
+              "placeholder": "找医生、找医院、查疾病",
+              "disabled": false,
+              "placeholderColor": "#606266"
+            },
+            "buttons": [
+              {
+                "fontSrc": "/static/yticon.ttf",
+                "text": "\ue744",
+                "fontSize": "27",
+                "color": "#303133",
+                "background": "rgba(0,0,0,0)",
+                "redDot": false
+              },
+              {
+                "fontSrc": "/static/iconfont.ttf",
+                "text": "\ue649",
+                "fontSize": "27",
+                "color": "#303133",
+                "background": "rgba(0,0,0,0)",
+                "float": "left"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/index/mine",
+      "style": {
+        // #ifdef MP
+        "navigationBarTitleText": "个人中心",
+        // #endif
+        "app-plus": {
+          "bounce": "none",
+          "titleNView": {
+            "type": "transparent",
+            "buttons": [
+              {
+                "fontSrc": "/static/yticon.ttf",
+                "text": "\ue744",
+                "fontSize": "27",
+                "color": "#303133",
+                "background": "rgba(0,0,0,0)",
+                "redDot": false
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/login/login",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/login/register",
+      "style": {
+        "navigationBarBackgroundColor": "white"
+      }
+    },
+    {
+      "path": "pages/card/bind",
+      "style": {
+        "navigationBarTitleText": "绑定就诊卡"
+      }
+    },
+    {
+      "path": "pages/card/create",
+      "style": {}
+    },
+    {
+      "path": "pages/doctor/list",
+      "style": {}
+    },
+    {
+      "path": "pages/doctor/doctor",
+      "style": {
+        // #ifdef MP
+        "navigationBarTitleText": "天心医疗",
+        // #endif
+        "app-plus": {
+          "titleNView": {
+            "type": "transparent",
+            "backButton": {
+              "background": "rgba(0,0,0,0)"
             }
-
+          }
         }
-        ,{
-            "path" : "pages/test/test",
-			"style": {
-				"app-plus": {
-					"titleNView": {
-						"type": "transparent"
-					}
-				}
-			}
-        }
-        ,{
-            "path" : "pages/doctor/telephone",
-            "style": {
-            	"app-plus": {
-            		"titleNView": {
-            			"type": "transparent"
-            		}
-            	}
+      }
+    },
+    {
+      "path": "pages/doctor/chat",
+      "style": {
+        "enablePullDownRefresh": true,
+        "app-plus": {
+          "titleNView": {
+            "type": "default",
+            "backButton": {
+              "background": "rgba(0,0,0,0)"
             }
+          },
+          "softinputMode": "adjustResize"
         }
-    ],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "天心医疗",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
-	},
-	"tabBar": {
-		"color": "#C2CAD5",
-		"selectedColor": "#5eb6aa",
-		"backgroundColor": "#ffffff",
-		"fontSize": "14",
-		"list": [{
-				"pagePath": "pages/index/index",
-				"iconPath": "static/index/index.png",
-				"selectedIconPath": "static/index/index-curr.png",
-				"text": "首页"
-			},
-			{
-				"pagePath": "pages/index/online",
-				"iconPath": "static/index/online.png",
-				"selectedIconPath": "static/index/online-curr.png",
-				"text": "在线医院"
-			},
-			{
-				"pagePath": "pages/index/mine",
-				"iconPath": "static/index/mine.png",
-				"selectedIconPath": "static/index/mine-curr.png",
-				"text": "我的"
-			}
-		]
-	}
+      }
+    },
+    {
+      "path": "pages/mall/cart",
+      "style": {}
+    },
+    {
+      "path": "pages/doctor/archives",
+      "style": {}
+    },
+    {
+      "path": "pages/mine/message",
+      "style": {}
+    },
+    {
+      "path": "pages/mall/create-order",
+      "style": {}
+    },
+    {
+      "path": "pages/mine/address",
+      "style": {}
+    },
+    {
+      "path": "pages/mall/pay-result",
+      "style": {}
+    },
+    {
+      "path": "pages/mine/info",
+      "style": {
+        "navigationBarBackgroundColor": "white"
+      }
+    },
+    {
+      "path": "pages/mall/order",
+      "style": {
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/mall/order-list",
+      "style": {}
+    },
+    {
+      "path": "pages/mine/check-appoint",
+      "style": {}
+    },
+    {
+      "path": "pages/mall/product",
+      "style": {
+        // #ifdef MP
+        "navigationBarTitleText": "药品详情",
+        // #endif
+        "app-plus": {
+          "titleNView": {
+            "type": "default",
+            "backButton": {
+              "background": "rgba(0,0,0,0)"
+            },
+            "buttons": [
+              {
+                "fontSrc": "/static/iconfont.ttf",
+                "text": "\ue636",
+                "fontSize": "26",
+                "color": "#303133",
+                "background": "rgba(0,0,0,0)",
+                "redDot": false
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/article/list",
+      "style": {
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/login/verify-code",
+      "style": {}
+    },
+    {
+      "path": "pages/login/setPassword",
+      "style": {}
+    },
+    {
+      "path": "pages/card/list",
+      "style": {
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/card/card",
+      "style": {}
+    },
+    {
+      "path": "pages/doctor/chat-list",
+      "style": {
+        "navigationBarBackgroundColor": "#5EB6AA",
+        "navigationBarTextStyle": "white",
+        "navigationBarTitleText": "会话列表"
+      }
+    },
+    {
+      "path": "pages/mine/edit-address",
+      "style": {}
+    },
+    {
+      "path": "pages/mall/order-details",
+      "style": {}
+    },
+    {
+      "path": "pages/mine/check-details",
+      "style": {}
+    },
+    {
+      "path": "pages/mine/create-check-order",
+      "style": {}
+    },
+    {
+      "path": "pages/mine/feedback",
+      "style": {}
+    },
+    {
+      "path": "pages/doctor/webview",
+      "style": {
+        "app-plus": {
+          "titleNView": {
+            "type": "transparent"
+          }
+        }
+      }
+    },
+    {
+      "path": "components/agreement",
+      "style": {}
+    },
+    {
+      "path": "pages/doctor/prescript",
+      "style": {
+        "navigationBarTitleText": "处方详情",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/test/test",
+      "style": {
+        "app-plus": {
+          "titleNView": {
+            "type": "transparent"
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/doctor/telephone",
+      "style": {
+        "app-plus": {
+          "titleNView": {
+            "type": "transparent"
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/doctor/chat-view",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": true
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "天心医疗",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#C2CAD5",
+    "selectedColor": "#5eb6aa",
+    "backgroundColor": "#ffffff",
+    "fontSize": "14",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/index/index.png",
+        "selectedIconPath": "static/index/index-curr.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/index/online",
+        "iconPath": "static/index/online.png",
+        "selectedIconPath": "static/index/online-curr.png",
+        "text": "在线医院"
+      },
+      {
+        "pagePath": "pages/index/mine",
+        "iconPath": "static/index/mine.png",
+        "selectedIconPath": "static/index/mine-curr.png",
+        "text": "我的"
+      }
+    ]
+  }
 }

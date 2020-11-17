@@ -1,203 +1,242 @@
 {
-	"pages": [{
-			"path": "pages/guide/guide",
-			"style": {
-				"navigationStyle": "custom"
-			}
-		}, {
-			"path": "pages/index/index",
-			"style": {
-				// #ifdef MP
-				"navigationBarTitleText": "天心医疗",
-				// #endif 
-				"app-plus": {
-					"titleNView": {
-						"type": "transparent"
-					}
-				}
-			}
-		}, {
-			"path": "pages/index/mine",
-			"style": {
-				// #ifdef MP
-				"navigationBarTitleText": "天心医疗",
-				// #endif 
-				"app-plus": {
-					"titleNView": {
-						"type": "transparent",
-						"buttons": [{
-							"fontSrc": "/static/yticon.ttf",
-							"text": "\ue744",
-							"fontSize": "27",
-							"color": "#303133",
-							"background": "rgba(0,0,0,0)",
-							"redDot": false
-						}]
-					}
-				}
-			}
-		}, {
-			"path": "pages/index/patient",
-			"style": {
-				// #ifdef MP
-				"navigationBarTitleText": "天心医疗",
-				// #endif 
-				"app-plus": {
-					"titleNView": {
-						"type": "default",
-						"titleText": "患者管理"
-					}
-				}
-			}
-		}, {
-			"path": "pages/mine/setting",
-			"style": {}
-		}, {
-			"path": "pages/mine/suggest",
-			"style": {}
-		}, {
-			"path": "pages/doctor/add-medicine",
-			"style": {
-				"app-plus": {
-					"titleNView": {
-						"type": "default",
-						"buttons": [{
-							"text": "下一步",
-							"fontSize": "16",
-							"background": "rgba(0,0,0,0)"
-						}]
-					}
-				}
-			}
-		}, {
-			"path": "pages/doctor/pharmacist-order",
-			"style": {}
-		}, {
-			"path": "pages/doctor/test-order",
-			"style": {}
-		}, {
-			"path": "pages/doctor/drug-audit",
-			"style": {}
-		}, {
-			"path": "pages/doctor/prescription",
-			"style": {}
-		}, {
-			"path": "pages/doctor/set-price",
-			"style": {}
-		}, {
-			"path": "pages/doctor/image-exam",
-			"style": {}
-		}, {
-			"path": "pages/doctor/check-list",
-			"style": {}
-		},{
-			"path": "pages/doctor/patient",
-			"style": {
-				// #ifdef MP
-				"navigationBarTitleText": "天心医疗",
-				// #endif 
-				"app-plus": {
-					"titleNView": {
-						"type": "transparent",
-						"buttons": []
-					}
-				}
-			}
-		}, {
-			"path": "pages/doctor/elec-case",
-			"style": {}
-		}, {
-			"path": "pages/doctor/auxiliary-list",
-			"style": {}
-		},{
-			"path": "pages/doctor/doctor-room",
-			"style": {}
-		},
-		{
-			"path": "pages/doctor/consulting-desk",
-			"style": {}
-		},
-		{
-			"path": "pages/login/register-role",
-			"style": {}
-		}, {
-			"path": "pages/login/login",
-			"style": {
-				"navigationStyle":"custom"
-			}
-		},
-		{
-			"path": "pages/login/register",
-			"style": {}
-		},{
-			"path": "pages/mine/info",
-			"style": {}
-		},{
-			"path": "pages/doctor/chat",
-			"style": {
-				"app-plus": {
-					"titleNView": {
-						"type": "default",
-						"backButton": {
-							"background": "rgba(0,0,0,0)"
-						}
-					},
-					"softinputMode":"adjustResize"
-				}
-			}
-		}
-	    ,{
-            "path" : "pages/mine/feedback",
-            "style" : {}
+  "pages": [
+    {
+      "path": "pages/guide/guide",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/index/index",
+      "style": {
+        // #ifdef MP
+        "navigationBarTitleText": "天心医疗",
+        // #endif
+        "app-plus": {
+          "titleNView": {
+            "type": "transparent"
+          }
         }
-        ,{
-            "path" : "pages/doctor/send-goods",
-            "style" : {}
+      }
+    },
+    {
+      "path": "pages/index/mine",
+      "style": {
+        // #ifdef MP
+        "navigationBarTitleText": "天心医疗",
+        // #endif
+        "app-plus": {
+          "titleNView": {
+            "type": "transparent",
+            "buttons": [
+              {
+                "fontSrc": "/static/yticon.ttf",
+                "text": "\ue744",
+                "fontSize": "27",
+                "color": "#303133",
+                "background": "rgba(0,0,0,0)",
+                "redDot": false
+              }
+            ]
+          }
         }
-        ,{
-            "path" : "pages/mine/balance",
-            "style" : {}
+      }
+    },
+    {
+      "path": "pages/index/patient",
+      "style": {
+        // #ifdef MP
+        "navigationBarTitleText": "天心医疗",
+        // #endif
+        "app-plus": {
+          "titleNView": {
+            "type": "default",
+            "titleText": "患者管理"
+          }
         }
-		,{
-		    "path" : "pages/doctor/telephone",
-		    "style": {
-		    	"app-plus": {
-		    		"titleNView": {
-		    			"type": "transparent"
-		    		}
-		    	}
-		    }
-		}
-    ],
-	"globalStyle": {
-		"navigationBarTextStyle": "white",
-		"navigationBarTitleText": "医生端",
-		"navigationBarBackgroundColor": "#5EB6AA",
-		"backgroundColor": "#FFFFFF"
-	},
-	"tabBar": {
-		"color": "#C2CAD5",
-		"selectedColor": "#5eb6aa",
-		"backgroundColor": "#ffffff",
-		"fontSize": "14",
-		"list": [{
-				"pagePath": "pages/index/index",
-				"iconPath": "static/index/index.png",
-				"selectedIconPath": "static/index/index-curr.png",
-				"text": "首页"
-			},
-			{
-				"pagePath": "pages/index/patient",
-				"iconPath": "static/index/online.png",
-				"selectedIconPath": "static/index/online-curr.png",
-				"text": "诊疗室"
-			},
-			{
-				"pagePath": "pages/index/mine",
-				"iconPath": "static/index/mine.png",
-				"selectedIconPath": "static/index/mine-curr.png",
-				"text": "我的"
-			}
-		]
-	}
+      }
+    },
+    {
+      "path": "pages/mine/setting",
+      "style": {}
+    },
+    {
+      "path": "pages/mine/suggest",
+      "style": {}
+    },
+    {
+      "path": "pages/doctor/add-medicine",
+      "style": {
+        "app-plus": {
+          "titleNView": {
+            "type": "default",
+            "buttons": [
+              {
+                "text": "下一步",
+                "fontSize": "16",
+                "background": "rgba(0,0,0,0)"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/doctor/pharmacist-order",
+      "style": {}
+    },
+    {
+      "path": "pages/doctor/test-order",
+      "style": {}
+    },
+    {
+      "path": "pages/doctor/drug-audit",
+      "style": {}
+    },
+    {
+      "path": "pages/doctor/prescription",
+      "style": {}
+    },
+    {
+      "path": "pages/doctor/set-price",
+      "style": {}
+    },
+    {
+      "path": "pages/doctor/image-exam",
+      "style": {}
+    },
+    {
+      "path": "pages/doctor/check-list",
+      "style": {}
+    },
+    {
+      "path": "pages/doctor/patient",
+      "style": {
+        // #ifdef MP
+        "navigationBarTitleText": "天心医疗",
+        // #endif
+        "app-plus": {
+          "titleNView": {
+            "type": "transparent",
+            "buttons": []
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/doctor/elec-case",
+      "style": {}
+    },
+    {
+      "path": "pages/doctor/auxiliary-list",
+      "style": {}
+    },
+    {
+      "path": "pages/doctor/doctor-room",
+      "style": {}
+    },
+    {
+      "path": "pages/doctor/consulting-desk",
+      "style": {
+        "navigationBarTitleText": "咨询服务台"
+      }
+    },
+    {
+      "path": "pages/login/register-role",
+      "style": {}
+    },
+    {
+      "path": "pages/login/login",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/login/register",
+      "style": {}
+    },
+    {
+      "path": "pages/mine/info",
+      "style": {}
+    },
+    {
+      "path": "pages/doctor/chat",
+      "style": {
+        "app-plus": {
+          "titleNView": {
+            "type": "default",
+            "backButton": {
+              "background": "rgba(0,0,0,0)"
+            }
+          },
+          "softinputMode": "adjustResize"
+        }
+      }
+    },
+    {
+      "path": "pages/mine/feedback",
+      "style": {}
+    },
+    {
+      "path": "pages/doctor/send-goods",
+      "style": {}
+    },
+    {
+      "path": "pages/mine/balance",
+      "style": {}
+    },
+    {
+      "path": "pages/test/test",
+      "style": {}
+    },
+    {
+      "path": "pages/doctor/telephone",
+      "style": {
+        "app-plus": {
+          "titleNView": {
+            "type": "transparent"
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/doctor/chat-view",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": true
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "医生端",
+    "navigationBarBackgroundColor": "#5EB6AA",
+    "backgroundColor": "#FFFFFF"
+  },
+  "tabBar": {
+    "color": "#C2CAD5",
+    "selectedColor": "#5eb6aa",
+    "backgroundColor": "#ffffff",
+    "fontSize": "14",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/index/index.png",
+        "selectedIconPath": "static/index/index-curr.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/index/patient",
+        "iconPath": "static/index/online.png",
+        "selectedIconPath": "static/index/online-curr.png",
+        "text": "诊疗室"
+      },
+      {
+        "pagePath": "pages/index/mine",
+        "iconPath": "static/index/mine.png",
+        "selectedIconPath": "static/index/mine-curr.png",
+        "text": "我的"
+      }
+    ]
+  }
 }

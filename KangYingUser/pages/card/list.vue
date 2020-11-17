@@ -19,6 +19,7 @@
 	import {
 		request_patientList
 	} from '../../common/https.js'
+    import {mapActions} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -50,7 +51,7 @@
 			if (options.from === 'navigateBack') {
 				return false;
 			}
-			
+
 			uni.navigateBack({ //uni.navigateTo跳转的返回，默认1为返回上一级
 				delta: 1
 			})
@@ -59,12 +60,14 @@
 		},
 		methods: {
 			selectCard(e){
-				if(this.pageFrom==='doctor'){
-					let pages = getCurrentPages(); //获取所有页面栈实例列表
-					let nowPage = pages[pages.length - 1]; //当前页页面实例
-					let prevPage = pages[pages.length - 2]; //上一页页面实例
-					
-					prevPage.$vm.patientCard = e; 
+				if(this.pageFrom==='doctor' || this.pageFrom==='chat'){
+					// let pages = getCurrentPages(); //获取所有页面栈实例列表
+					// let nowPage = pages[pages.length - 1]; //当前页页面实例
+					// let prevPage = pages[pages.length - 2]; //上一页页面实例
+                    //
+					// prevPage.$vm.patientCard = e;
+
+					this.UPDATE_CURRENT_PATIENT_CARD(e)
 					uni.navigateBack()
 				}
 			},
@@ -88,6 +91,7 @@
 					}
 				})
 			},
+            ...mapActions(['UPDATE_CURRENT_PATIENT_CARD'])
 		}
 	}
 </script>

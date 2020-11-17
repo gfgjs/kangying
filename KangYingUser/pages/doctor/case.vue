@@ -136,6 +136,10 @@
 				}).then(res => {
 					if (res.code === 0) {
 						this.prescriptionList = res.data || []
+                        if(e.record_id){
+                            // todo 从聊天过来，打开对应的药方
+                            //
+                        }
 					}
 				})
 			}
@@ -181,13 +185,13 @@
 				})
 			},
 			switchTab(index) {
-				this.$pageTo({
-					url: '/pages/doctor/case',
-					options: {
-						tab: index
-					}
-				})
-				// this.currTab = index
+				// this.$pageTo({
+				// 	url: '/pages/doctor/case',
+				// 	options: {
+				// 		tab: index
+				// 	}
+				// })
+				this.currTab = index
 			}
 		}
 	}

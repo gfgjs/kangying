@@ -7,21 +7,22 @@ export const test = () => {
 }
 
 let __token = ''
+let uni
 
 export const request = (e = {}, api, method ,contentType) => {
 	method = method || 'POST'
 	contentType = contentType || 'application/x-www-form-urlencoded'
-	
-	let uni = e.uni
-	
+
+	// let uni = e.uni
+
 	if (!__token) {
 		__token = uni.getStorageSync('LOGIN_MESSAGE').token
 	}
-	
+
 	if (e.token) {
 		__token = e.token
 	}
-	
+
 	if(!e.noLoading){
 		uni.showLoading()
 	}
@@ -46,7 +47,10 @@ export const request = (e = {}, api, method ,contentType) => {
 		return e
 	})
 }
-
+// 初始化https
+export const request_init = e=>{
+	uni = e.uni
+}
 // 清除token
 export const request_clearToken = () => {
 	__token = ''
@@ -181,7 +185,7 @@ export const request_doctorInfo = e => {
 	return request(e, '/v1/p/doctor/info', 'GET')
 }
 
-// 医生首页 
+// 医生首页
 // 设置就诊状态
 export const request_changeWorkStatus = e => {
 	return request(e, '/v1/d/doctor/changeWorkStatus')
@@ -190,9 +194,11 @@ export const request_changeWorkStatus = e => {
 export const request_patientData = e => {
 	return request(e, '/v1/d/patientData', 'GET')
 }
-
 // 医生获取病例
-
+export const request_getUserLast = e => {
+	return request(e, '/v1/d/getUserLast', 'GET')
+}
+// 医生获取病例
 export const request_recordList = e => {
 	return request(e, '/v1/d/recordList', 'GET')
 }

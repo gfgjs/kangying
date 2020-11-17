@@ -45,13 +45,24 @@ const timStore = {
             state.sdkAppID = e
         },
         UPDATE_CALL_STATE(state, e) {
+            if(e === 1){
+                if(state.CALL_STATE===0){
+                    IM.phone(e)
+                }
+            }else{
+                IM.phone(e)
+            }
             state.CALL_STATE = e
         },
         UPDATE_REMOTE_CALL_STATE(state, e) {
             state.REMOTE_CALL_STATE = e
         },
         UPDATE_CURRENT_CALL(state, e) {
-            state.currentCall = {...state.currentCall,...e}
+            if(e){
+                state.currentCall = {...state.currentCall,...e}
+            }else{
+                state.currentCall = {}
+            }
         },
         /**
          * 更新当前会话
@@ -60,7 +71,12 @@ const timStore = {
          * @param {Conversation} conversation
          */
         updateCurrentConversation(state, conversation) {
-            state.currentConversation = conversation
+            // 若是同一会话，则增量更新，解决进入chat页面只有conversationID的问题
+            if(state.currentConversation.conversationID === conversation.conversationID){
+                state.currentConversation = {...state.currentConversation,...conversation}
+            }else{
+                state.currentConversation = conversation
+            }
             state.currentMessageList = []
             state.nextReqMessageID = ''
             state.isCompleted = false
@@ -131,7 +147,6 @@ const timStore = {
             store.commit('CHANGE_SDK_READY', e)
         },
         UPDATE_CALL_STATE(store, e) {
-            IM.phone(e)
             store.commit('UPDATE_CALL_STATE', e)
         },
         UPDATE_REMOTE_CALL_STATE(store, e) {
@@ -193,7 +208,6 @@ const timStore = {
                 return Promise.resolve()
             })
         },
-
     },
     getters: {
         tim(state) {

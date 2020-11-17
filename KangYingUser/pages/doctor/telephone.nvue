@@ -7,43 +7,53 @@
                 <view class="handle-outer">
                     <view class="handle-buttons">
                         <view class="button" @click="hungupCalling">
-                            <text class="button-text" style="color: red;">挂断</text>
+                            <view class="button-style">
+                                <text class="button-text" style="color: red;">挂断</text>
+                            </view>
                         </view>
                         <view class="button" @click="muteCalling">
-                            <text class="button-text">{{ hasMuteCalling ? '继续' : '暂停' }}通话</text>
+                            <view class="button-style">
+                                <text class="button-text">{{ hasMuteCalling ? '继续' : '暂停' }}通话</text>
+                            </view>
                         </view>
                     </view>
                     <view class="handle-buttons">
                         <view class="button" @click="muteLocalVideo">
-                            <text class="button-text">{{ hasMuteVideo ? '开启' : '关闭' }}摄像头</text>
+                            <view class="button-style">
+                                <text class="button-text">{{ hasMuteVideo ? '开启' : '关闭' }}摄像头</text>
+                            </view>
                         </view>
                         <view class="button" @click="muteLocalAudio">
-                            <text class="button-text">{{ hasMuteAudio ? '开启' : '关闭' }}话筒</text>
+                            <view class="button-style">
+                                <text class="button-text">{{ hasMuteAudio ? '开启' : '关闭' }}话筒</text>
+                            </view>
                         </view>
                     </view>
                     <view class="handle-buttons">
                         <view class="button" @click="changeCamera">
-                            <text class="button-text">{{ cameraTypeStatus?'前置':'后置' }}</text>
-                            <text class="button-text">摄像头</text>
+                            <view class="button-style">
+                                <text class="button-text">{{ cameraTypeStatus ? '前置' : '后置' }}</text>
+                                <text class="button-text">摄像头</text>
+                            </view>
                         </view>
                     </view>
                 </view>
             </view>
         </view>
         <view class="wating" v-else>
-           <view v-if="currentCall.targetUserID===userID">
-               <view class="w-button wating-tips" :style="`left:${watingWidth/2}px;`">
-                   <text class="w-b-text">等待接听...</text>
-               </view>
-               <view class="w-button answer" @click="answerCalling">
-                   <text class="w-b-text">接听</text>
-               </view>
-               <view class="w-button refuse" @click="refuseCalling">
-                   <text class="w-b-text">拒绝</text>
-               </view>
-           </view>
+            <view v-if="currentCall.targetUserID===userID">
+                <view class="wating-tips" :style="`left:${watingWidth/2}px;`">
+                    <text class="w-b-text">等待接听...</text>
+                </view>
+                <view class="w-button answer" @click="answerCalling">
+                    <text class="w-b-text">接听</text>
+                </view>
+                <view class="w-button refuse" @click="refuseCalling">
+                    <text class="w-b-text">拒绝</text>
+                </view>
+            </view>
             <view v-else>
-                <view class="w-button wating-tips" :style="`left:${watingWidth/2}px;`">
+                <view class="wating-tips" :style="`left:${watingWidth/2}px;`">
                     <text class="w-b-text">正在呼叫...</text>
                 </view>
                 <view class="w-button wating-answer" :style="`left:${watingWidth/2}px;`" @click="hungupCalling">
@@ -62,10 +72,8 @@ import {
     mapActions
 } from 'vuex'
 
-import {
-    request_getUserSig
-} from '../../common/https.js'
 import {SDK_APP_ID} from '../../common/config.js'
+
 var sdkwx = uni.requireNativePlugin('TXTRTC-SdkWX');
 
 export default {
@@ -83,7 +91,7 @@ export default {
             hasMuteVideo: false,
             hasMuteCalling: false,
 
-            cameraTypeStatus:true, // true前置 false后置
+            cameraTypeStatus: true, // true前置 false后置
         }
     },
     watch: {
@@ -150,6 +158,7 @@ export default {
     beforeDestroy() {
         this.UPDATE_CALL_STATE(0)
         this.UPDATE_REMOTE_CALL_STATE(0)
+        this.UPDATE_CURRENT_CALL({})
         this.stopWatingAudio()
     },
     methods: {
@@ -185,7 +194,6 @@ export default {
         },
         //远端拒绝
         remoteRefuse() {
-            // this.exitRoom()
             uni.navigateBack()
             this.stopWatingAudio()
         },
@@ -225,7 +233,7 @@ export default {
             var available = data.available;
 
             var remoteVideoView = this.$refs.remoteVideoView;
-            if (available) {
+            if (available && remoteVideoView) {
                 remoteVideoView.startRemoteView(userId);
             } else {
                 remoteVideoView.stopRemoteView(userId);
@@ -260,15 +268,19 @@ export default {
             }
         },
         enterRoom() {
-            const scene = 0; //视频通话 = 0;视频互动直播 = 1;语音通话 = 2;语音互动直播 = 3;
-            sdkwx.enterRoom({
-                sdkAppId: SDK_APP_ID,
-                roomId: this.currentCall.roomId, // 主叫ID作为roomId，只能为数字或者可转化为数字
-                role: 20, //20主播 21 观众
-                userId: this.userID,
-                userSig: this.userSig
-            }, scene)
-            this.startVideo()
+            setTimeout(() => {
+                const scene = 0; //视频通话 = 0;视频互动直播 = 1;语音通话 = 2;语音互动直播 = 3;
+                sdkwx.enterRoom({
+                    sdkAppId: SDK_APP_ID,
+                    roomId: this.currentCall.roomId, // 主叫ID作为roomId，只能为数字或者可转化为数字
+                    role: 20, //20主播 21 观众
+                    userId: this.userID,
+                    userSig: this.userSig
+                }, scene)
+                setTimeout(() => {
+                    this.startVideo()
+                })
+            })
         },
         startVideo() {
             this.stopVideo()
@@ -285,7 +297,7 @@ export default {
                 videoView.startLocalPreview(true);
             })
         },
-        changeCamera(){
+        changeCamera() {
             this.cameraTypeStatus = !this.cameraTypeStatus
             const videoView = this.$refs.videoView;
             videoView.stopLocalPreview();
@@ -316,7 +328,7 @@ export default {
             sdkwx.exitRoom()
             uni.navigateBack()
         },
-        ...mapActions(['UPDATE_CALL_STATE', 'UPDATE_REMOTE_CALL_STATE'])
+        ...mapActions(['UPDATE_CALL_STATE', 'UPDATE_REMOTE_CALL_STATE', 'UPDATE_CURRENT_CALL'])
     },
     computed: {
         ...mapGetters(['userInfo', 'CALL_STATE', 'REMOTE_CALL_STATE', 'userSig', 'userID', 'currentCall'])
@@ -366,14 +378,21 @@ export default {
 }
 
 .handle-buttons {
-    flex:1;
-    flex-direction: column;
-    justify-content: center;
+    flex: 1;
 }
 
 .button {
     flex: 1;
-    margin: 4px;
+    padding: 8px 10px;
+}
+
+.button-style {
+    flex: 2;
+    justify-content: center;
+    align-items: center;
+    background-color: $base-color;
+    box-shadow: 0px 0px 19px 1px rgba(112, 216, 201, 0.1);
+    background-image: linear-gradient(114deg, #70d8c9 0%, $base-color 74%);
 }
 
 .button:active {
@@ -382,41 +401,39 @@ export default {
 
 .button-text {
     font-size: 14px;
-    flex-direction: column;
+    color: #666666;
 }
 
 .wating {
     position: fixed;
     background-color: $base-color;
-    // flex-direction: row;
     justify-content: center;
     align-items: center;
 }
 
 .w-button {
-    // height: 100px;
-    // width: 300px;
     position: fixed;
     bottom: 100px;
     width: 100px;
     height: 40px;
-    border-color: white;
+    border-color: rgba(255,255,255,.5);
     border-style: solid;
     border-width: 1px;
     border-radius: 4px;
     justify-content: center;
     align-items: center;
-    // background-color: red;
+    box-shadow: 0px 0px 19px 1px rgba(255, 255, 255, .4);
+    background-color: #E80505;
 }
 
 .answer {
     right: 50px;
-    border-color: green;
+    background-color: #49C628;
 }
 
 .refuse {
     left: 50px;
-    border-color: red;
+    background-color: #E80505;
 }
 
 .wating-answer {
@@ -432,6 +449,7 @@ export default {
 }
 
 .w-b-text {
-    color: white;
+    color: #eeeeee;
+    font-size: 14px;
 }
 </style>
