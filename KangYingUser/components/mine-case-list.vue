@@ -143,7 +143,7 @@
 			    console.log(item)
 				this.$pageTo({
 					url:'/pages/doctor/prescript',
-					options:{id:item.Id,PayStatus:item.PayStatus}
+					options:{id:item.PreId}
 				})
 				return
 				if (item.goods) {

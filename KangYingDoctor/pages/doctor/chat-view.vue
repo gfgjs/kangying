@@ -33,7 +33,7 @@
                     </view>
                     <uni-icons type="arrowright"></uni-icons>
                 </view>
-                <view class="row" @click="">
+                <view class="row" @click="finishChat">
                     <view class="left">
                         结束问诊
                     </view>
@@ -46,7 +46,9 @@
 
 <script>
 import chat from "./chat";
-import {request_getUserLast} from "../../common/https";
+import {request_getUserLast, request_recordNotice} from "../../common/https";
+import IM from '../../common/im'
+import {mapGetters} from 'vuex'
 
 export default {
     name: 'chat-view',
@@ -54,12 +56,22 @@ export default {
     data() {
         return {
             chatInfo: null,
-            record_id: null
+            record_id: null,
+            targetUserID: ''
         }
     },
+    computed:{
+        ...mapGetters(['currentConversation'])
+    },
     onLoad(e) {
+        e.userID = e.userID || (e.conversationID.split('C2C')[1])
         this.chatInfo = e
-        request_getUserLast({uni, data: {user_id: e.userID.split('_')[1]}}).then(res => {
+        
+        this.targetUserID = e.userID
+        request_getUserLast({
+            data: {user_id: this.targetUserID.split('_')[1]},
+            noLoading: true
+        }).then(res => {
             this.record_id = res.data
         })
     },
@@ -70,12 +82,37 @@ export default {
         this.$refs.chat.reachBottom()
     },
     methods: {
+        finishChat() {
+            this.$refs.moreHandle.close()
+            uni.showModal({
+                title: '提示',
+                content: '确定要结束问诊吗？',
+                success: e => {
+                    if (e.confirm) {
+                        IM.sendText(this.targetUserID,'问诊已结束，感谢您的使用！')
+                        this.changeRecordStatus(2)
+                    }
+                }
+            })
+        },
+        changeRecordStatus(status) {
+            request_recordNotice({
+                data: {
+                    record_id: this.record_id,
+                    status
+                }
+            }).then(res => {
+                if (res.code === 0) {
+                    // this.targetInfo.status = res.data
+                }
+            })
+        },
         moreClick(target) {
             this.$pageTo({
                 url: target,
                 options: {
                     record_id: this.record_id,
-                    targetUserID:this.chatInfo.userID
+                    targetUserID: this.targetUserID
                 }
             })
             this.$refs.moreHandle.close()

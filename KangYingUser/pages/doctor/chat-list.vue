@@ -25,6 +25,7 @@
                         || (item.lastMessage.payload.description === 'image' && '[ 图片 ]')
                         || (item.lastMessage.payload.description === 'telephone' && '[ 语音/视频电话 ]')
                         || (item.lastMessage.payload.description === 'patientCard' && '[ 卡片信息 ]')
+                        || (item.lastMessage.payload.description === 'PAGE_LINK' && '[ 链接信息 ]')
                     }}
                 </view>
             </view>

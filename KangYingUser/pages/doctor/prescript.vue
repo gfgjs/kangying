@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="view-panel" v-if="hasAgree&&hasPay&&viewItemList.length">
+		<view class="view-panel" v-if="pid&&hasAgree&&hasPay&&viewItemList.length">
 			<scroll-view scroll-y class="content">
 				<view class="item-content" v-for="(item,index) in viewItemList" :key="'med_'+index">
 					<view class="left">
@@ -17,11 +17,14 @@
 				</view>
 			</scroll-view>
 		</view>
-		<view v-else class="no-pay">
+		<view v-else-if="pid!=0" class="no-pay">
 			<view>需要付费查看此药方</view>
 			<view class="button" @click="toPay">去支付</view>
 			<view class="has-pay" @click="getInfo">已支付？点此刷新</view>
 		</view>
+        <view v-else class="no-data">
+            暂无数据
+        </view>
 		<uni-popup ref="agreement" class="view-panel">
 			<view class="agreement">
 				<view class="title" style="text-align: center;padding: 10px 0;">互联网诊疗风险告知及知情同意书</view>
@@ -34,7 +37,7 @@
 		</uni-popup>
 		<uni-popup ref="payType">
 			<radio-group class="pay-type">
-				<label class="row" for="pay-ali" @click="pay(1)">
+				<label class="row" @click="pay(1)">
 					<view class="left">
 						<image src="../../static/imgs/alipay.png" mode=""></image>
 						<view>支付宝支付</view>
@@ -42,7 +45,7 @@
 					<uni-icons type="arrowright"></uni-icons>
 					<!-- <radio  checked=""  id="pay-ali"></radio> -->
 				</label>
-				<label class="row" for="pay-wx" @click="pay(2)">
+				<label class="row" @click="pay(2)">
 					<view class="left">
 						<image src="../../static/imgs/weixin.png" mode=""></image>
 						<view>微信支付</view>
@@ -119,7 +122,7 @@
 			this.getInfo()
 
 			const status = uni.getStorageSync('USER_AGREEMENT')
-			console.log(status)
+
 			//同意协议的有效期为30分钟
 			if (status) {
 				if (Date.now() - status.time > 3600 * 1000) {
@@ -177,8 +180,12 @@
 						id: this.pid
 					}
 				}).then(res => {
-					this.viewItemList = res.data.Goods
-					this.hasPay = res.data.PayStatus
+				    if(res.code===0){
+                        this.viewItemList = res.data.Goods
+                        this.hasPay = res.data.PayStatus
+                    }else{
+				        this.$api.msg(res.err)
+                    }
 				})
 			},
 			agreement() {

@@ -54,6 +54,7 @@ export default {
         }
     },
     onLoad(e) {
+        e.userID = e.userID || (e.conversationID.split('C2C')[1])
         this.chatInfo = e
     },
     onPullDownRefresh() {

@@ -66,7 +66,6 @@ const timStore = {
          * @param {Conversation} conversation
          */
         updateCurrentConversation(state, conversation) {
-            console.log(state.currentConversation.conversationID , conversation.conversationID)
             // 若是同一会话，则增量更新，解决进入chat页面只有conversationID的问题
             if(state.currentConversation.conversationID === conversation.conversationID){
                 state.currentConversation = {...state.currentConversation,...conversation}

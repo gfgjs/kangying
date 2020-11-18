@@ -18,7 +18,7 @@
 			<mineCaseList @cardChange='cardChange' :list='caseList' v-if='currTab==0'></mineCaseList>
 			<noData v-if='currTab==1'></noData>
 			<view v-if='currTab==2'>
-				<view class='med-list'>
+				<view class='med-list' v-if="prescriptionList.length">
 					<!-- 注意事项: 不能使用 index 作为 key 的唯一标识 -->
 					<view class='med-cell' v-for="(item, index) in prescriptionList" :key="'med_cell_'+item.Record.id+Math.random()"
 					 @click='viewMedList(item)'>
@@ -29,6 +29,7 @@
 						<uni-icons type="arrowright"></uni-icons>
 					</view>
 				</view>
+                <view class="no-data" v-else>暂无数据</view>
 			</view>
 			<noData v-if='currTab==3'></noData>
 		</view>
@@ -115,7 +116,8 @@
 我确认愿意接受医生根据诊疗经验为患者安排的远程医疗服务。
 我确认已经知晓并同意以上全部内容，理解相关的风险，愿意接受互联网医院的服务以及接受疾病诊疗服务，并签署本知情同意书。
 我确认未得到服务结果会百分之百成功的许诺。
-我同意诊疗内容在去除姓名、头像、出生日期等信息后将设置为默认展示，医生给予的指导建议同时也会帮助其他相似情况的患者。`
+我同意诊疗内容在去除姓名、头像、出生日期等信息后将设置为默认展示，医生给予的指导建议同时也会帮助其他相似情况的患者。`,
+                record_id:null
 			};
 		},
 		onPullDownRefresh() {
@@ -127,24 +129,28 @@
 		onLoad(e) {
 			// this.switchTab(e.tab || 0)
 			this.currTab = e.tab
+            this.record_id = e.record_id
 			// this.refresh()
 
 
 			if (e.tab == 2) {
-				request_prescriptionList({
-					uni
-				}).then(res => {
-					if (res.code === 0) {
-						this.prescriptionList = res.data || []
-                        if(e.record_id){
-                            // todo 从聊天过来，打开对应的药方
-                            //
-                        }
-					}
-				})
+				this.loadList()
 			}
 		},
 		methods: {
+		    loadList(){
+                request_prescriptionList({
+                    uni
+                }).then(res => {
+                    if (res.code === 0) {
+                        this.prescriptionList = res.data || []
+                        if(this.record_id){
+                            // todo 从聊天过来，打开对应的药方
+
+                        }
+                    }
+                })
+            },
 			agreement(){
 				this.$refs.agreement.close()
 				this.$refs.viewPanel.open()
@@ -160,7 +166,7 @@
 			viewMedList(item) {
 				this.$pageTo({
 					url:'/pages/doctor/prescript',
-					options:{id:item.Id,PayStatus:item.PayStatus}
+					options:{id:item.PreId}
 				})
 				return
 				this.viewItemList = item.Goods
@@ -192,6 +198,10 @@
 				// 	}
 				// })
 				this.currTab = index
+
+                if(index === 2){
+                    this.loadList()
+                }
 			}
 		}
 	}
