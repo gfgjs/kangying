@@ -342,7 +342,7 @@ page {
 
     .message {
         background: rgba(255, 255, 255, 1);
-        box-shadow: 0px 0px 4px 1px rgba(11, 125, 255, 0.14);
+        box-shadow: 0px 0px 4px 1px rgba(11, 125, 255, 0.04);
         border-radius: 3px 12px 3px 12px;
         color: #444444;
 
@@ -359,7 +359,7 @@ page {
 
     .message {
         background: $base-color;
-        box-shadow: 0px 0px 4px 1px rgba(11, 125, 255, 0.24);
+        box-shadow: 0px 0px 4px 1px rgba(11, 125, 255, 0.14);
         border-radius: 12px 3px 12px 3px;
         color: white;
 

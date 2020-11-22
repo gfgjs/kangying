@@ -1,5 +1,5 @@
 <template>
-	<view class="page">
+	<view class="page" v-if="recordInfo">
 		<view class="row-title row">就诊人信息</view>
 		<view class="row">
 			<view class="title">患者姓名</view>
@@ -134,8 +134,6 @@
 					slideValue: this.slideValue,
 					canvasName: 'eSignCanvas'
 				})
-
-                this.sendPrescript()
 			})
 			this.medList = { ...(getApp().globalData.tempMedicineList[this.record_id] || {})}
 

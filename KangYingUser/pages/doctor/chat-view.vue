@@ -7,13 +7,13 @@
               :initChatInfo="chatInfo"></chat>
         <uni-popup ref="moreHandle">
             <view class="more-handle">
-                <view class="row" @click="moreClick('/pages/doctor/case?tab=0')">
+                <view class="row" @click="moreClick('/pages/doctor/case',{tab:0})">
                     <view class="left">
                         查看病例
                     </view>
                     <uni-icons type="arrowright"></uni-icons>
                 </view>
-                <view class="row" @click="moreClick('/pages/doctor/case?tab=2')">
+                <view class="row" @click="moreClick('/pages/doctor/case',{tab:2})">
                     <view class="left">
                         电子处方
                     </view>
@@ -22,6 +22,12 @@
                 <view class="row" @click="telephone('video')">
                     <view class="left">
                         视频通话
+                    </view>
+                    <uni-icons type="arrowright"></uni-icons>
+                </view>
+                <view class="row" @click="moreClick('/pages/doctor/history',{})">
+                    <view class="left">
+                        查看聊天记录
                     </view>
                     <uni-icons type="arrowright"></uni-icons>
                 </view>
@@ -54,7 +60,12 @@ export default {
         }
     },
     onLoad(e) {
-        e.userID = e.userID || (e.conversationID.split('C2C')[1])
+        if(!e.userID){
+            e.userID = e.conversationID.split('C2C')[1] // 目标用户ID
+        }
+        if(!e.conversationID){
+            e.conversationID = 'C2C'+e.userID // 会话ID
+        }
         this.chatInfo = e
     },
     onPullDownRefresh() {
@@ -102,9 +113,13 @@ export default {
                 })
             }
         },
-        moreClick(target) {
+        moreClick(target,e) {
             this.$pageTo({
-                url: target
+                url: target,
+                options:{
+                    ...this.chatInfo,
+                    ...e
+                }
             })
             this.$refs.moreHandle.close()
         },

@@ -1,7 +1,7 @@
 import TIM from './tim-js.js'
 import store from '../store/index.js'
 import tim from './tim'
-import {request_uploadImg} from './https'
+import {request_saveMsg, request_uploadImg} from './https'
 import {SDK_APP_ID} from './config'
 
 let uni, userID, request_getUserSig, userSig, userInfo
@@ -272,6 +272,21 @@ function sendMessage(message, success, failed) {
         // if (typeof failed === 'function') {
         //     failed()
         // }
+    })
+
+    const {from, conversationID, ID, time, payload} = message
+    request_saveMsg({
+        data: {
+            userID: from, // 用户ID
+            conversationID, // 会话ID
+            messageID: ID,// 消息ID
+            patientID: '',// 就诊卡ID
+            messageTime: time,
+            payload, // 消息内容
+            extra: '' // 额外的数据
+        }
+    }).then(res => {
+        console.log(res, '===saveMsg')
     })
 }
 

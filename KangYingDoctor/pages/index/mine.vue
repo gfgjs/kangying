@@ -89,8 +89,8 @@
 			})
 		},
 		onNavigationBarButtonTap(e) {
-			uni.switchTab({
-				url: '/pages/index/patient'
+			uni.navigateTo({
+				url: '/pages/doctor/consulting-desk'
 			})
 		},
 		methods: {
@@ -105,7 +105,7 @@
 			setTitleNViewStyle(index, show, text) {
 				let pages = getCurrentPages();
 				let page = pages[pages.length - 1];
-				// #ifdef APP-PLUS  
+				// #ifdef APP-PLUS
 				let currentWebview = page.$getAppWebview();
 				if (show) {
 					if (index === 0) {
@@ -130,9 +130,9 @@
 						})
 					}
 				}
-				// #endif  
+				// #endif
 
-				// #ifdef H5  
+				// #ifdef H5
 				if (show) {
 					if (index === 0) {
 						document.querySelectorAll('.uni-page-head-hd .uni-page-head-btn')[1].classList.add('uni-page-head-btn-red-dot');
@@ -147,7 +147,7 @@
 							'uni-page-head-btn-red-dot');
 					}
 				}
-				// #endif  
+				// #endif
 			},
 		}
 	}

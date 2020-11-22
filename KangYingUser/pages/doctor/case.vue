@@ -136,6 +136,7 @@
 			if (e.tab == 2) {
 				this.loadList()
 			}
+			console.log('onLoad')
 		},
 		methods: {
 		    loadList(){
@@ -145,8 +146,14 @@
                     if (res.code === 0) {
                         this.prescriptionList = res.data || []
                         if(this.record_id){
-                            // todo 从聊天过来，打开对应的药方
-
+                            res.data.forEach(item=>{
+                                if(item.Record.id == this.record_id){
+                                    this.$pageTo({
+                                        url:'/pages/doctor/prescript',
+                                        options:{id:item.Id,from:'chat'}
+                                    })
+                                }
+                            })
                         }
                     }
                 })
@@ -166,7 +173,7 @@
 			viewMedList(item) {
 				this.$pageTo({
 					url:'/pages/doctor/prescript',
-					options:{id:item.PreId}
+					options:{id:item.Id}
 				})
 				return
 				this.viewItemList = item.Goods

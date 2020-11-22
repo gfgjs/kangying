@@ -51,7 +51,7 @@
         "app-plus": {
           "titleNView": {
             "type": "default",
-            "titleText": "患者管理"
+            "titleText": "诊疗室"
           }
         }
       }
@@ -206,7 +206,16 @@
         "enablePullDownRefresh": true
       }
     }
-  ],
+      ,{
+            "path" : "pages/doctor/history",
+            "style" :
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": true
+            }
+
+        }
+    ],
   "globalStyle": {
     "navigationBarTextStyle": "white",
     "navigationBarTitleText": "医生端",

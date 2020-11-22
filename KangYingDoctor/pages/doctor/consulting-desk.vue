@@ -1,13 +1,14 @@
 <!-- 咨询服务台 -->
 <template>
     <view>
-        <!-- <view class="header">
+        <view class="header">
             <view class="buttons-box">
-                <view class="item" v-for="(item,index) in tabs" :key="item" @click="clickTab(item,index)" :class="index==currIndex&&'item-checked'">{{item}}</view>
+                <view class="item" v-for="(item,index) in tabs" :key="item" @click="clickTab(item,index)"
+                      :class="index==currIndex&&'item-checked'">{{ item }}
+                </view>
             </view>
-        </view> -->
-        <!-- <view class="header-place"></view> -->
-
+        </view>
+        <view class="header-place"></view>
         <!--        <view class="row-title" style="display: flex;justify-content: space-between;">筛选就诊卡-->
         <!--            <picker class="left" :range="cardListNames" @change="cardChange">-->
         <!--                <view>{{ currentCard.p_name || '全部' }}-->
@@ -15,23 +16,34 @@
         <!--                </view>-->
         <!--            </picker>-->
         <!--        </view>-->
-        <view class="item-content" v-for="(item,index) in conversationList" :key='index' @click="toChat(item)">
-            <image :src="item.userProfile.avatar" mode=""></image>
-            <view class="right">
-                <view class="name">{{ item.userProfile.nick }}</view>
-                <view class="text" v-if="item.lastMessage.payload">
-                    {{
-                        item.lastMessage.payload.text
-                        || (item.lastMessage.payload.description === 'image' && '[ 图片 ]')
-                        || (item.lastMessage.payload.description === 'telephone' && '[ 语音/视频电话 ]')
-                        || (item.lastMessage.payload.description === 'patientCard' && '[ 卡片信息 ]')
-                        || (item.lastMessage.payload.description === 'PAGE_LINK' && '[ 链接信息 ]')
-                    }}
+        <view v-if="currIndex===0">
+            <view class="item-content" v-for="(item,index) in conversationList" :key='index' @click="toChat(item)">
+                <image :src="item.userProfile.avatar" mode=""></image>
+                <view class="right">
+                    <view class="name">{{ item.userProfile.nick }}</view>
+                    <view class="text" v-if="item.lastMessage.payload">
+                        {{
+                            item.lastMessage.payload.text
+                            || (item.lastMessage.payload.description === 'image' && '[ 图片 ]')
+                            || (item.lastMessage.payload.description === 'telephone' && '[ 语音/视频电话 ]')
+                            || (item.lastMessage.payload.description === 'patientCard' && '[ 卡片信息 ]')
+                            || (item.lastMessage.payload.description === 'PAGE_LINK' && '[ 链接信息 ]')
+                        }}
+                    </view>
+                </view>
+                <view>{{ formatMinute(item.lastMessage.lastTime * 1000) }}</view>
+            </view>
+            <view class="no-data" v-if="!conversationList.length">暂无数据</view>
+        </view>
+        <view v-if="currIndex===1">
+            <view class="item-content" v-for="(item,index) in historyConversationList" :key='index' @click="chatWith(item.userID)">
+                <image :src="item.avatar" mode=""></image>
+                <view class="right">
+                    <view class="name">{{ item.nick }}</view>
                 </view>
             </view>
-            <view>{{formatMinute(item.lastMessage.lastTime*1000)}}</view>
+            <view class="no-data" v-if="!historyConversationList.length">暂无数据</view>
         </view>
-        <view class="no-data" v-if="!conversationList.length">暂无数据</view>
     </view>
 </template>
 
@@ -47,6 +59,7 @@ import {
 import IM from '../../common/im.js'
 import store from "../../store";
 import {formatDate, formatMinute} from "../../common/util";
+import {request_getConversation} from "../../common/https";
 
 export default {
     data() {
@@ -61,7 +74,8 @@ export default {
             currentCard: {},
             caseList: [],
             formatDate,
-            formatMinute
+            formatMinute,
+            historyConversationList:[]
         };
     },
     watch: {
@@ -76,7 +90,6 @@ export default {
     },
     onLoad() {
         if (this.isSDKReady) {
-            console.log('========')
             this.getConversationList()
         }
 
@@ -93,6 +106,21 @@ export default {
         //         this.getRecordList()
         //     }
         // })
+    },
+    onShow() {
+        request_getConversation({uni, data: {user_id: this.userID}}).then(res => {
+            if(res.data&&res.data.length){
+                IM.tim.getUserProfile({
+                    userIDList: res.data.map(item=>item.split('C2C')[1]) // 请注意：即使只拉取一个用户的资料，也需要用数组类型，例如：userIDList: ['user1']
+                }).then((imResponse) => {
+                    console.log(imResponse.data)
+                    this.historyConversationList = imResponse.data
+                    // console.log(imResponse.data); // 存储用户资料的数组 - [Profile]
+                }).catch(function (imError) {
+                    // console.warn('getUserProfile error:', imError); // 获取其他用户资料失败的相关信息
+                });
+            }
+        })
     },
     onPullDownRefresh() {
         setTimeout(() => {
@@ -159,7 +187,7 @@ export default {
         ...mapActions([])
     },
     computed: {
-        ...mapGetters(['isSDKReady', 'conversationList'])
+        ...mapGetters(['isSDKReady', 'conversationList', 'userID'])
     }
 }
 </script>
@@ -170,21 +198,20 @@ page {
 }
 
 .header-place {
-    height: 64px;
+    height:44px;
 }
 
 .header {
     position: fixed;
     width: 100%;
-    padding: 10px 0;
-    height: 64px;
+    //padding: 10px 0;
+    height: 44px;
     background-color: $base-color;
     z-index: 1;
 
     .buttons-box {
         display: flex;
-        height: 44px;
-        // width: 50%;
+        height: 40px;
         border: 1px solid white;
         border-radius: 4px;
         position: absolute;

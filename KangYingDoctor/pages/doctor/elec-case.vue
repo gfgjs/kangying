@@ -84,13 +84,15 @@
 					this.diagnosis = this.recordInfo.now_record.diagnosis
 				}
 			})
-            IM.sendCustomMessage({
-                data:'请查看病例信息',
-                description:'PAGE_LINK',
-                extension: JSON.stringify({record_id:this.info.record_id,tab:0})
-            },this.info.targetUserID)
 		},
 		methods:{
+		    sendCard(){
+                IM.sendCustomMessage({
+                    data:'请查看病例信息',
+                    description:'PAGE_LINK',
+                    extension: JSON.stringify({record_id:this.info.record_id,tab:0})
+                },this.info.targetUserID)
+            },
 			update(){
 				request_recordUp({
 					uni,
@@ -104,6 +106,7 @@
 				}).then(res=>{
 					if(res.code === 0){
 						this.$api.msg(res.data)
+                        this.sendCard()
 						setTimeout(()=>{
 							uni.navigateBack()
 						},1000)

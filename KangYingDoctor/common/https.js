@@ -110,6 +110,16 @@ export const uploadImg = e => {
 export const request_imInit = e => {
 	return request(e, '/v1/p/im/init')
 }
+// 存储聊天消息到后台
+export const request_saveMsg = e => {
+	return request(e, '/v1/p/im/saveMsg','POST','application/json')
+}
+export const request_getConversation = e => {
+	return request(e, '/v1/p/im/getConversation', 'GET')
+}
+export const request_getMsg = e => {
+	return request(e, '/v1/p/im/getMsg', 'GET')
+}
 // 登录相关
 export const request_sendReSms = e => {
 	return request(e, '/v1/p/user/sendReSms')
@@ -196,7 +206,7 @@ export const request_patientData = e => {
 }
 // 医生获取病例
 export const request_getUserLast = e => {
-	return request(e, '/v1/d/getUserLast', 'GET')
+	return request(e, '/v1/d/getUserLastV2', 'GET')
 }
 // 医生获取病例
 export const request_recordList = e => {

@@ -88,6 +88,17 @@ export const request_uploadImg = e => {
 export const request_imInit = e => {
     return request(e, '/v1/p/im/init')
 }
+// 存储聊天消息到后台
+export const request_saveMsg = e => {
+    return request(e, '/v1/p/im/saveMsg','POST','application/json')
+}
+
+export const request_getConversation = e => {
+    return request(e, '/v1/p/im/getConversation', 'GET')
+}
+export const request_getMsg = e => {
+    return request(e, '/v1/p//im/getMsg', 'GET')
+}
 // 登录相关
 export const request_sendReSms = e => {
     return request(e, '/v1/p/user/sendReSms')

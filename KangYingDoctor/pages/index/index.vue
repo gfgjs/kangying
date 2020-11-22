@@ -38,6 +38,10 @@
 					<view class="number">{{patientCount.inspect}}</view>
 					<view class="name">全部患者</view>
 				</view>
+<!--                <view class="row-item" @click="toPage('/pages/doctor/consulting-desk','all')">-->
+<!--                    <view class="number">{{patientCount.inspect}}</view>-->
+<!--                    <view class="name">全部患者</view>-->
+<!--                </view>-->
 			</view>
 		</view>
 		<view class="common-place"></view>

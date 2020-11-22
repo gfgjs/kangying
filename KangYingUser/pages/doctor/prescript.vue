@@ -1,86 +1,88 @@
 <template>
-	<view>
-		<view class="view-panel" v-if="pid&&hasAgree&&hasPay&&viewItemList.length">
-			<scroll-view scroll-y class="content">
-				<view class="item-content" v-for="(item,index) in viewItemList" :key="'med_'+index">
-					<view class="left">
-						<view class="name">{{item.GoodsInfo.m_name}}</view>
-						<view class="bottom-row">
-							<view class="norm">规格：{{item.GoodsInfo.spec}} 数量：{{item.GoodsNumber}}</view>
-						</view>
-						<view class="bottom-row">
-							<view class="norm">医嘱：{{item.Guide}}</view>
-						</view>
-					</view>
-					<view class="little-title" @click="previewImage([item.GoodsInfo.instructions])">查看说明</view>
-					<!-- <uni-icons type="plus-filled" size="24" class="icon" @click="addMedToTemp(item)"></uni-icons> -->
-				</view>
-			</scroll-view>
-		</view>
-		<view v-else-if="pid!=0" class="no-pay">
-			<view>需要付费查看此药方</view>
-			<view class="button" @click="toPay">去支付</view>
-			<view class="has-pay" @click="getInfo">已支付？点此刷新</view>
-		</view>
+    <view>
+        <view class="view-panel" v-if="pid&&hasAgree&&hasPay&&viewItemList.length">
+            <scroll-view scroll-y class="content">
+                <view class="item-content" v-for="(item,index) in viewItemList" :key="'med_'+index">
+                    <view class="left">
+                        <view class="name">{{ item.GoodsInfo.m_name }}</view>
+                        <view class="bottom-row">
+                            <view class="norm">规格：{{ item.GoodsInfo.spec }} 数量：{{ item.GoodsNumber }}</view>
+                        </view>
+                        <view class="bottom-row">
+                            <view class="norm">医嘱：{{ item.Guide }}</view>
+                        </view>
+                    </view>
+                    <view class="little-title" @click="previewImage([item.GoodsInfo.instructions])">查看说明</view>
+                    <!-- <uni-icons type="plus-filled" size="24" class="icon" @click="addMedToTemp(item)"></uni-icons> -->
+                </view>
+            </scroll-view>
+        </view>
+        <view v-else-if="pid!=0" class="no-pay">
+            <view>需要付费查看此药方</view>
+            <view class="button" @click="toPay">去支付</view>
+            <view class="has-pay" @click="getInfo">已支付？点此刷新</view>
+        </view>
         <view v-else class="no-data">
             暂无数据
         </view>
-		<uni-popup ref="agreement" class="view-panel">
-			<view class="agreement">
-				<view class="title" style="text-align: center;padding: 10px 0;">互联网诊疗风险告知及知情同意书</view>
-				<textarea :value="agree" disabled></textarea>
-				<view class="buttons">
-					<view class="button button-cancel" @click="disAgree">不同意</view>
-					<view class="button" @click="agreement">同意</view>
-				</view>
-			</view>
-		</uni-popup>
-		<uni-popup ref="payType">
-			<radio-group class="pay-type">
-				<label class="row" @click="pay(1)">
-					<view class="left">
-						<image src="../../static/imgs/alipay.png" mode=""></image>
-						<view>支付宝支付</view>
-					</view>
-					<uni-icons type="arrowright"></uni-icons>
-					<!-- <radio  checked=""  id="pay-ali"></radio> -->
-				</label>
-				<label class="row" @click="pay(2)">
-					<view class="left">
-						<image src="../../static/imgs/weixin.png" mode=""></image>
-						<view>微信支付</view>
-					</view>
-					<uni-icons type="arrowright"></uni-icons>
-					<!-- <radio id="pay-wx"></radio> -->
-				</label>
-			</radio-group>
-		</uni-popup>
-	</view>
+        <uni-popup ref="agreement" class="view-panel">
+            <view class="agreement">
+                <view class="title" style="text-align: center;padding: 10px 0;">互联网诊疗风险告知及知情同意书</view>
+                <textarea :value="agree" disabled></textarea>
+                <view class="buttons">
+                    <view class="button button-cancel" @click="disAgree">不同意</view>
+                    <view class="button" @click="agreement">同意</view>
+                </view>
+            </view>
+        </uni-popup>
+        <uni-popup ref="payType">
+            <radio-group class="pay-type">
+                <label class="row" @click="pay(1)">
+                    <view class="left">
+                        <image src="../../static/imgs/alipay.png" mode=""></image>
+                        <view>支付宝支付</view>
+                    </view>
+                    <uni-icons type="arrowright"></uni-icons>
+                    <!-- <radio  checked=""  id="pay-ali"></radio> -->
+                </label>
+                <label class="row" @click="pay(2)">
+                    <view class="left">
+                        <image src="../../static/imgs/weixin.png" mode=""></image>
+                        <view>微信支付</view>
+                    </view>
+                    <uni-icons type="arrowright"></uni-icons>
+                    <!-- <radio id="pay-wx"></radio> -->
+                </label>
+            </radio-group>
+        </uni-popup>
+    </view>
 </template>
 
 <script>
-	import {
-		request_recordList,
-		request_prescriptionList,
-		request_prescriptionPay,
-		request_prescriptionInfo
-	} from '../../common/https.js'
-	import {
-		formatDate,
-		formatMinute
-	} from '../../common/util.js'
-	export default {
-		data() {
-			return {
-				pid: '',
-				payType: 1,
-				prescriptionList: [],
-				viewItemList: [],
-				formatDate,
-				formatMinute,
-				hasAgree: false,
-				hasPay: false,
-				agree: `根据《互联网诊疗管理办法（试行）》《互联网医院管理办法（试行）》、《远程医疗服务管理办法（试行）》等法规的要求，患者应知晓互联网诊疗相关的执业规则并接受风险告知和签署知情同意书，知情同意书等文件可以以电子文件形式签订。
+import {
+    request_recordList,
+    request_prescriptionList,
+    request_prescriptionPay,
+    request_prescriptionInfo
+} from '../../common/https.js'
+import {
+    formatDate,
+    formatMinute
+} from '../../common/util.js'
+
+export default {
+    data() {
+        return {
+            pid: '',
+            payType: 1,
+            prescriptionList: [],
+            viewItemList: [],
+            formatDate,
+            formatMinute,
+            hasAgree: false,
+            hasPay: false,
+            pageFrom: '',
+            agree: `根据《互联网诊疗管理办法（试行）》《互联网医院管理办法（试行）》、《远程医疗服务管理办法（试行）》等法规的要求，患者应知晓互联网诊疗相关的执业规则并接受风险告知和签署知情同意书，知情同意书等文件可以以电子文件形式签订。
 				互联网诊疗服务规范及风险告知
 				互联网诊疗开展部分常见病、慢性病复诊和“互联网+”家庭医生签约服务。互联网医院开展部分常见病、慢性病复诊时，医师应当掌握患者病历资料，确定已有明确诊断后，针对相同诊断进行复诊并开具处方。互联网医院可以提供家庭医生签约服务，可以委托符合条件的第三方机构配送药品，可以开展远程医疗服务。
 				互联网医院可以提供药品配送相关的服务，但实际服务提供方为合作第三方。相关的服务质量和售后保障实际由第三方负责。
@@ -107,253 +109,264 @@
 				我确认已经知晓并同意以上全部内容，理解相关的风险，愿意接受互联网医院的服务以及接受疾病诊疗服务，并签署本知情同意书。
 				我确认未得到服务结果会百分之百成功的许诺。
 				我同意诊疗内容在去除姓名、头像、出生日期等信息后将设置为默认展示，医生给予的指导建议同时也会帮助其他相似情况的患者。`
-			};
-		},
-		onLoad(o) {
-			this.pid = o.id
-		},
-		onPullDownRefresh() {
-			// this.refresh()
-			setTimeout(() => {
-				uni.stopPullDownRefresh()
-			}, 500)
-		},
-		onShow() {
-			this.getInfo()
+        };
+    },
+    onLoad(o) {
+        if (!o.id || o.id === 'undefined') {
+            this.$api.msg('药方信息错误，请重新选择')
+        } else {
+            this.pid = o.id
+        }
+        this.pageFrom = o.from
+    },
+    onPullDownRefresh() {
+        // this.refresh()
+        setTimeout(() => {
+            uni.stopPullDownRefresh()
+        }, 500)
+    },
+    onBackPress(options) {
+        if (options.from === 'navigateBack') {
+            return false
+        } else if (this.pageFrom === 'chat') {
+            uni.navigateBack({delta: 2})
+            return true
+        }
+    },
+    onShow() {
+        this.getInfo()
 
-			const status = uni.getStorageSync('USER_AGREEMENT')
+        const status = uni.getStorageSync('USER_AGREEMENT')
 
-			//同意协议的有效期为30分钟
-			if (status) {
-				if (Date.now() - status.time > 3600 * 1000) {
-					this.hasAgree = false
-					setTimeout(() => {
-						this.$refs.agreement.open()
-					})
-				}else{
-					this.hasAgree = true
-				}
-			} else {
-				setTimeout(() => {
-					this.$refs.agreement.open()
-				})
-			}
-		},
-		methods: {
-			toPay() {
-				this.$refs.payType.open()
-			},
-			pay(type) {
-				this.payType = type
-				this.$refs.payType.close()
-				request_prescriptionPay({
-					uni,
-					data: {
-						id: this.pid,
-						pay_type: this.payType
-					}
-				}).then(res => {
-					console.log(res)
-					if (res.code === 0) {
-						uni.requestPayment({
-							provider: res.data.provider,
-							orderInfo: res.data.orderInfo,
-							success: (res) => {
-								this.hasPay = true
-								this.getInfo()
-								console.log('success:' + JSON.stringify(res));
-							},
-							fail: (err) => {
-								this.$api.msg('支付失败')
-								console.log('fail:' + JSON.stringify(err));
-							}
-						})
-					} else {
-						this.$api.msg(res.err)
-					}
-				})
-			},
-			getInfo() {
-				request_prescriptionInfo({
-					uni,
-					data: {
-						id: this.pid
-					}
-				}).then(res => {
-				    if(res.code===0){
-                        this.viewItemList = res.data.Goods
-                        this.hasPay = res.data.PayStatus
-                    }else{
-				        this.$api.msg(res.err)
-                    }
-				})
-			},
-			agreement() {
-				uni.setStorageSync('USER_AGREEMENT', {
-					time: Date.now(),
-					status: true
-				})
+        //同意协议的有效期为30分钟
+        if (status) {
+            if (Date.now() - status.time > 3600 * 1000) {
+                this.hasAgree = false
+                setTimeout(() => {
+                    this.$refs.agreement.open()
+                })
+            } else {
+                this.hasAgree = true
+            }
+        } else {
+            setTimeout(() => {
+                this.$refs.agreement.open()
+            })
+        }
+    },
+    methods: {
+        toPay() {
+            this.$refs.payType.open()
+        },
+        pay(type) {
+            this.payType = type
+            this.$refs.payType.close()
+            request_prescriptionPay({
+                uni,
+                data: {
+                    id: this.pid,
+                    pay_type: this.payType
+                }
+            }).then(res => {
+                console.log(res)
+                if (res.code === 0) {
+                    uni.requestPayment({
+                        provider: res.data.provider,
+                        orderInfo: res.data.orderInfo,
+                        success: (res) => {
+                            this.hasPay = true
+                            this.getInfo()
+                            console.log('success:' + JSON.stringify(res));
+                        },
+                        fail: (err) => {
+                            this.$api.msg('支付失败')
+                            console.log('fail:' + JSON.stringify(err));
+                        }
+                    })
+                } else {
+                    this.$api.msg(res.err)
+                }
+            })
+        },
+        getInfo() {
+            request_prescriptionInfo({
+                uni,
+                data: {
+                    id: this.pid
+                }
+            }).then(res => {
+                if (res.code === 0) {
+                    this.viewItemList = res.data.Goods
+                    this.hasPay = res.data.PayStatus
+                } else {
+                    this.$api.msg(res.err)
+                }
+            })
+        },
+        agreement() {
+            uni.setStorageSync('USER_AGREEMENT', {
+                time: Date.now(),
+                status: true
+            })
 
-				this.$refs.agreement.close()
-				this.hasAgree = true
-				if (this.hasPay) {
+            this.$refs.agreement.close()
+            this.hasAgree = true
+            if (this.hasPay) {
 
-				} else {
-					this.toPay()
-				}
-			},
-			disAgree() {
-				this.$refs.agreement.close()
-				uni.navigateBack({
+            } else {
+                this.toPay()
+            }
+        },
+        disAgree() {
+            this.$refs.agreement.close()
+            uni.navigateBack({})
+        },
+        previewImage(urls) {
+            uni.previewImage({
+                urls
+            })
+        },
+        viewMedList(item) {
+            this.viewItemList = item.Goods
+            if (1) {
+                this.$refs.agreement.open()
+            } else {
+                this.$refs.viewPanel.open()
+            }
 
-				})
-			},
-			previewImage(urls) {
-				uni.previewImage({
-					urls
-				})
-			},
-			viewMedList(item) {
-				this.viewItemList = item.Goods
-				if (1) {
-					this.$refs.agreement.open()
-				} else {
-					this.$refs.viewPanel.open()
-				}
-
-			},
-		}
-	}
+        },
+    }
+}
 </script>
 
 <style lang="scss">
-	.no-pay {
-		width: 100%;
-		height: 80vh;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
+.no-pay {
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-		.button {
-			margin-top: 20px;
-		}
+    .button {
+        margin-top: 20px;
+    }
 
-		.has-pay {
-			margin-top: 20px;
-			color: $base-color;
-			border-bottom: 1px solid $base-color;
-			// text-decoration: underline ;
-		}
-	}
+    .has-pay {
+        margin-top: 20px;
+        color: $base-color;
+        border-bottom: 1px solid $base-color;
+        // text-decoration: underline ;
+    }
+}
 
-	.pay-type {
-		background-color: white;
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		width: 100vw;
+.pay-type {
+    background-color: white;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
 
-		.row {
-			padding: 20px;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			width: 100%;
+    .row {
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
 
-			.left {
-				display: flex;
-				align-items: center;
-				font-size: 16px;
+        .left {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
 
-				image {
-					width: 31px;
-					height: 31px;
-					margin-right: 10px;
-				}
-			}
-		}
-	}
+            image {
+                width: 31px;
+                height: 31px;
+                margin-right: 10px;
+            }
+        }
+    }
+}
 
-	.view-panel {
-		.agreement {
-			height: 80vh;
-			width: 90vw;
-			background-color: white;
-			border-radius: 4px;
-			display: flex;
-			flex-direction: column;
+.view-panel {
+    .agreement {
+        height: 80vh;
+        width: 90vw;
+        background-color: white;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
 
-			textarea {
-				flex: 1;
-				padding: 10px;
-				width: 100%;
-			}
+        textarea {
+            flex: 1;
+            padding: 10px;
+            width: 100%;
+        }
 
-			.buttons {
-				display: flex;
-				justify-content: space-around;
-				padding-bottom: 10px;
-			}
+        .buttons {
+            display: flex;
+            justify-content: space-around;
+            padding-bottom: 10px;
+        }
 
-			// overflow-y: scroll;
-		}
-
-
-		.content {
-			height: 100%;
-			width: 100%;
-			background-color: white;
-			border-radius: 4px;
-			overflow: hidden;
+        // overflow-y: scroll;
+    }
 
 
-			.little-title {
-				color: $base-color;
-				font-size: 16px;
-			}
+    .content {
+        height: 100%;
+        width: 100%;
+        background-color: white;
+        border-radius: 4px;
+        overflow: hidden;
 
-			.item-content {
-				padding: 10px 10px;
-				font-size: 14px;
-				height: auto;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				border-bottom: 1px solid #e5e5e5;
 
-				.left {
-					display: flex;
-					flex-direction: column;
-					justify-content: space-around;
-					height: 100%;
+        .little-title {
+            color: $base-color;
+            font-size: 16px;
+        }
 
-					.name {
-						width: 55vw;
-						white-space: nowrap;
-						overflow: hidden;
-						text-overflow: ellipsis;
-					}
+        .item-content {
+            padding: 10px 10px;
+            font-size: 14px;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e5e5e5;
 
-					.bottom-row {
-						display: flex;
-						justify-content: space-between;
-					}
-				}
+            .left {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                height: 100%;
 
-				.icon {
-					color: $base-color !important;
-				}
-			}
+                .name {
+                    width: 55vw;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
 
-			.item-content:first-of-type {
-				border-top: 1px solid #e5e5e5;
-			}
+                .bottom-row {
+                    display: flex;
+                    justify-content: space-between;
+                }
+            }
 
-			.item-content:last-of-type {
-				// border: none;
-			}
-		}
+            .icon {
+                color: $base-color !important;
+            }
+        }
 
-	}
+        .item-content:first-of-type {
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .item-content:last-of-type {
+            // border: none;
+        }
+    }
+
+}
 </style>

@@ -33,6 +33,12 @@
                     </view>
                     <uni-icons type="arrowright"></uni-icons>
                 </view>
+                <view class="row" @click="moreClick('/pages/doctor/history')">
+                    <view class="left">
+                        查看聊天记录
+                    </view>
+                    <uni-icons type="arrowright"></uni-icons>
+                </view>
                 <view class="row" @click="finishChat">
                     <view class="left">
                         结束问诊
@@ -57,22 +63,34 @@ export default {
         return {
             chatInfo: null,
             record_id: null,
-            targetUserID: ''
+            targetUserID: '',
+            recordState:{}
         }
     },
     computed:{
         ...mapGetters(['currentConversation'])
     },
     onLoad(e) {
-        e.userID = e.userID || (e.conversationID.split('C2C')[1])
+        if(!e.userID){
+            e.userID = e.conversationID.split('C2C')[1] // 目标用户ID
+        }
+        if(!e.conversationID){
+            e.conversationID = 'C2C'+e.userID // 会话ID
+        }
+
         this.chatInfo = e
-        
         this.targetUserID = e.userID
+
         request_getUserLast({
             data: {user_id: this.targetUserID.split('_')[1]},
             noLoading: true
         }).then(res => {
-            this.record_id = res.data
+            this.record_id = res.data.record_id
+            this.recordState = res.data
+            if(res.data.record_status === 1){
+                IM.sendText(this.targetUserID,'你好，请问有什么可以帮你')
+                this.changeRecordStatus(3)
+            }
         })
     },
     onPullDownRefresh() {
@@ -98,7 +116,7 @@ export default {
         changeRecordStatus(status) {
             request_recordNotice({
                 data: {
-                    record_id: this.record_id,
+                    order_id: this.record_id,
                     status
                 }
             }).then(res => {
@@ -112,7 +130,8 @@ export default {
                 url: target,
                 options: {
                     record_id: this.record_id,
-                    targetUserID: this.targetUserID
+                    targetUserID: this.targetUserID,
+                    ...this.chatInfo
                 }
             })
             this.$refs.moreHandle.close()
